@@ -211,7 +211,6 @@
       session.hintsShown = rec.hints || 0;
     }
 
-    $('topicChip').textContent = problem.topic;
     $('dateChip').textContent = session.mode === 'practice'
       ? '연습 · ' + PROBLEMS.labels[session.level]
       : prettyDate(session.dateKey);

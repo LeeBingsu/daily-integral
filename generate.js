@@ -1300,19 +1300,19 @@ add('monster', '삼각함수 고차', 'sec(x)^5',
           '$\\int\\sec^{3}=\\dfrac{\\sec\\tan+\\ln|\\sec+\\tan|}{2}$',
           '두 결과를 합친다']
 });
-add('monster', '삼각함수 고차', 'tan(x)^5', 'tan(x)^4/4 - tan(x)^2/2 - ln(cos(x))', {
+add('hard', '삼각함수 고차', 'tan(x)^5', 'tan(x)^4/4 - tan(x)^2/2 - ln(cos(x))', {
   domain: D.trig, lnAbs: true,
   hints: ['$\\tan^{5}=\\tan^{3}(\\sec^{2}-1)$ 로 두 단계 내린다.', '마지막에 $\\int\\tan x\\,dx$ 가 남는다.'],
   steps: ['$\\int\\tan^{5}=\\dfrac{\\tan^{4}}{4}-\\int\\tan^{3}$',
           '$\\int\\tan^{3}=\\dfrac{\\tan^{2}}{2}+\\ln|\\cos x|$']
 });
-add('monster', '삼각함수 짝수차', 'sin(x)^4', '3x/8 - sin(2x)/4 + sin(4x)/32', {
+add('hard', '삼각함수 짝수차', 'sin(x)^4', '3x/8 - sin(2x)/4 + sin(4x)/32', {
   domain: D.trigW,
   hints: ['반각공식을 두 번 적용한다.', '$\\sin^{4}=\\left(\\dfrac{1-\\cos 2x}{2}\\right)^{2}$ 에서 $\\cos^{2}2x$ 를 또 내린다.'],
   steps: ['$\\sin^{4}x=\\dfrac{1-2\\cos 2x+\\cos^{2}2x}{4}$',
           '$\\cos^{2}2x=\\dfrac{1+\\cos 4x}{2}$', '$=\\dfrac{3}{8}-\\dfrac{\\cos 2x}{2}+\\dfrac{\\cos 4x}{8}$']
 });
-add('monster', '삼각함수 짝수차', 'cos(x)^4', '3x/8 + sin(2x)/4 + sin(4x)/32', {
+add('hard', '삼각함수 짝수차', 'cos(x)^4', '3x/8 + sin(2x)/4 + sin(4x)/32', {
   domain: D.trigW,
   hints: ['$\\cos^{4}=\\left(\\dfrac{1+\\cos 2x}{2}\\right)^{2}$ 로 시작한다.', '$\\sin^{4}$ 와 가운데 항의 부호만 다르다.'],
   steps: ['$\\cos^{4}x=\\dfrac{1+2\\cos 2x+\\cos^{2}2x}{4}$', '$=\\dfrac{3}{8}+\\dfrac{\\cos 2x}{2}+\\dfrac{\\cos 4x}{8}$']
@@ -1363,35 +1363,35 @@ add('monster', '삼각 유리식', 'sin(x)/(sin(x)+cos(x))', 'x/2 - ln(sin(x)+co
 });
 
 // 반복 부분적분 (고차)
-add('monster', '반복 부분적분', 'x^3*e^x', '(x^3-3x^2+6x-6)*e^x', {
+add('hard', '반복 부분적분', 'x^3*e^x', '(x^3-3x^2+6x-6)*e^x', {
   domain: D.all,
   hints: ['부분적분을 세 번 한다.', '계수가 $3!,\\;3\\cdot 2,\\;\\ldots$ 로 떨어지는 규칙을 본다.'],
   steps: ['$\\int x^{3}e^{x}=x^{3}e^{x}-3\\int x^{2}e^{x}$', '$\\int x^{2}e^{x}=(x^{2}-2x+2)e^{x}$',
           '$=(x^{3}-3x^{2}+6x-6)e^{x}$']
 });
-add('monster', '반복 부분적분', 'x^4*e^x', '(x^4-4x^3+12x^2-24x+24)*e^x', {
+add('hard', '반복 부분적분', 'x^4*e^x', '(x^4-4x^3+12x^2-24x+24)*e^x', {
   domain: D.all,
   hints: ['부분적분을 네 번 한다.', '표(tabular) 방식으로 정리하면 실수가 줄어든다.'],
   steps: ['$\\int x^{4}e^{x}=x^{4}e^{x}-4\\int x^{3}e^{x}$', '$\\int x^{3}e^{x}=(x^{3}-3x^{2}+6x-6)e^{x}$',
           '$=(x^{4}-4x^{3}+12x^{2}-24x+24)e^{x}$']
 });
-add('monster', '반복 부분적분', 'x^3*sin(x)', '-x^3*cos(x)+3x^2*sin(x)+6x*cos(x)-6sin(x)', {
+add('hard', '반복 부분적분', 'x^3*sin(x)', '-x^3*cos(x)+3x^2*sin(x)+6x*cos(x)-6sin(x)', {
   domain: D.trigW,
   hints: ['부분적분을 세 번 한다.', '$\\cos\\to\\sin\\to\\cos$ 순환과 부호를 함께 관리한다.'],
   steps: ['$u=x^{3},\\;dv=\\sin x\\,dx$', '$-x^{3}\\cos x+3\\int x^{2}\\cos x\\,dx$',
           '$=-x^{3}\\cos x+3x^{2}\\sin x+6x\\cos x-6\\sin x$']
 });
-add('monster', '반복 부분적분', 'x^3*cos(x)', 'x^3*sin(x)+3x^2*cos(x)-6x*sin(x)-6cos(x)', {
+add('hard', '반복 부분적분', 'x^3*cos(x)', 'x^3*sin(x)+3x^2*cos(x)-6x*sin(x)-6cos(x)', {
   domain: D.trigW,
   hints: ['$u=x^{3},\\;dv=\\cos x\\,dx$ 로 시작한다.', '$\\sin$ 문제와 부호 배치가 다르다.'],
   steps: ['$x^{3}\\sin x-3\\int x^{2}\\sin x\\,dx$', '$=x^{3}\\sin x+3x^{2}\\cos x-6x\\sin x-6\\cos x$']
 });
-add('monster', '반복 부분적분', 'ln(x)^3', 'x*(ln(x)^3-3ln(x)^2+6ln(x)-6)', {
+add('hard', '반복 부분적분', 'ln(x)^3', 'x*(ln(x)^3-3ln(x)^2+6ln(x)-6)', {
   domain: D.pos,
   hints: ['$dv=dx$ 로 두고 세 번 부분적분한다.', '$\\int(\\ln x)^{2}dx$ 결과가 중간에 필요하다.'],
   steps: ['$x(\\ln x)^{3}-3\\int(\\ln x)^{2}dx$', '$\\int(\\ln x)^{2}=x(\\ln x)^{2}-2x\\ln x+2x$']
 });
-add('monster', '반복 부분적분', 'ln(x)^4', 'x*(ln(x)^4-4ln(x)^3+12ln(x)^2-24ln(x)+24)', {
+add('hard', '반복 부분적분', 'ln(x)^4', 'x*(ln(x)^4-4ln(x)^3+12ln(x)^2-24ln(x)+24)', {
   domain: D.pos,
   hints: ['$t=\\ln x$ 로 치환하면 $\\int t^{4}e^{t}dt$ 가 된다.', '$x^{4}e^{x}$ 문제와 같은 계수가 나온다.'],
   steps: ['$t=\\ln x,\\;dx=e^{t}dt$', '$\\int t^{4}e^{t}dt=(t^{4}-4t^{3}+12t^{2}-24t+24)e^{t}$']
@@ -1401,7 +1401,7 @@ add('hard', '부분적분', 'x*ln(x)^2', 'x^2*(ln(x)^2/2 - ln(x)/2 + 1/4)', {
   hints: ['$u=(\\ln x)^{2},\\;dv=x\\,dx$ 로 둔다.', '남는 적분이 $\\int x\\ln x\\,dx$ 다.'],
   steps: ['$\\dfrac{x^{2}(\\ln x)^{2}}{2}-\\int x\\ln x\\,dx$', '$\\int x\\ln x\\,dx=\\dfrac{x^{2}\\ln x}{2}-\\dfrac{x^{2}}{4}$']
 });
-add('monster', '부분적분', 'x^2*ln(x)^2', 'x^3*(ln(x)^2/3 - 2ln(x)/9 + 2/27)', {
+add('hard', '부분적분', 'x^2*ln(x)^2', 'x^3*(ln(x)^2/3 - 2ln(x)/9 + 2/27)', {
   domain: D.pos,
   hints: ['$u=(\\ln x)^{2},\\;dv=x^{2}dx$ 로 둔다.', '두 번 부분적분해야 로그가 사라진다.'],
   steps: ['$\\dfrac{x^{3}(\\ln x)^{2}}{3}-\\dfrac{2}{3}\\int x^{2}\\ln x\\,dx$',
@@ -1433,7 +1433,7 @@ add('monster', '삼중 부분적분', 'x*e^x*cos(x)', 'e^x*(x*(sin(x)+cos(x))-si
 });
 [[1, 1], [2, 1]].forEach(function (q) {
   var a = q[0], b = q[1], bb = 2 * b, den = a * a + bb * bb;
-  add('monster', '곱-합 + 순환', 'e^(' + K(a) + ')sin(' + K(b) + ')cos(' + K(b) + ')',
+  add('hard', '곱-합 + 순환', 'e^(' + K(a) + ')sin(' + K(b) + ')cos(' + K(b) + ')',
       'e^(' + K(a) + ')*(' + K(a, 'sin(' + K(bb) + ')') + ' - ' + K(bb, 'cos(' + K(bb) + ')') + ')/' + (2 * den), {
     domain: [0.05, 1.5],
     hints: ['먼저 $\\sin ' + K(b) + '\\cos ' + K(b) + ' = \\dfrac{\\sin ' + K(bb) + '}{2}$ 로 합친다.',
@@ -1445,45 +1445,45 @@ add('monster', '삼중 부분적분', 'x*e^x*cos(x)', 'e^x*(x*(sin(x)+cos(x))-si
 });
 
 // 역함수 고급
-add('monster', '역삼각 고급', 'asin(x)^2', 'x*asin(x)^2+2*sqrt(1-x^2)*asin(x)-2x', {
+add('hard', '역삼각 고급', 'asin(x)^2', 'x*asin(x)^2+2*sqrt(1-x^2)*asin(x)-2x', {
   domain: D.unit,
   hints: ['$dv=dx$ 로 부분적분하면 $\\int\\dfrac{x\\arcsin x}{\\sqrt{1-x^{2}}}dx$ 가 남는다.',
           '그 적분을 다시 부분적분한다.'],
   steps: ['$x(\\arcsin x)^{2}-2\\int\\dfrac{x\\arcsin x}{\\sqrt{1-x^{2}}}dx$',
           '$\\int\\dfrac{x\\arcsin x}{\\sqrt{1-x^{2}}}dx=-\\sqrt{1-x^{2}}\\arcsin x+x$']
 });
-add('monster', '역삼각 고급', 'x^2*atan(x)', 'x^3*atan(x)/3 - x^2/6 + ln(1+x^2)/6', {
+add('hard', '역삼각 고급', 'x^2*atan(x)', 'x^3*atan(x)/3 - x^2/6 + ln(1+x^2)/6', {
   domain: [0.1, 2.5],
   hints: ['$u=\\arctan x,\\;dv=x^{2}dx$ 로 둔다.', '남는 $\\int\\dfrac{x^{3}}{1+x^{2}}dx$ 는 나눗셈으로 정리한다.'],
   steps: ['$\\dfrac{x^{3}\\arctan x}{3}-\\dfrac{1}{3}\\int\\dfrac{x^{3}}{1+x^{2}}dx$',
           '$\\dfrac{x^{3}}{1+x^{2}}=x-\\dfrac{x}{1+x^{2}}$']
 });
-add('monster', '역삼각 고급', 'atan(sqrt(x))', '(x+1)*atan(sqrt(x))-sqrt(x)', {
+add('hard', '역삼각 고급', 'atan(sqrt(x))', '(x+1)*atan(sqrt(x))-sqrt(x)', {
   domain: [0.2, 3.0],
   hints: ['$t=\\sqrt{x}$ 로 치환한 뒤 부분적분한다.', '$v=\\dfrac{x+1}{1}$ 처럼 적분상수를 잘 고르면 깔끔해진다.'],
   steps: ['$u=\\arctan\\sqrt{x},\\;v=x+1$',
           '$(x+1)\\arctan\\sqrt{x}-\\int\\dfrac{x+1}{2\\sqrt{x}(1+x)}dx$']
 });
-add('monster', '유리식 부분적분', '1/(x^2+1)^2', 'x/(2*(x^2+1))+atan(x)/2', {
+add('hard', '유리식 부분적분', '1/(x^2+1)^2', 'x/(2*(x^2+1))+atan(x)/2', {
   domain: [-1.5, 2.2],
   hints: ['$x=\\tan\\theta$ 로 치환하면 $\\int\\cos^{2}\\theta\\,d\\theta$ 가 된다.', '점화식으로 풀어도 된다.'],
   steps: ['$x=\\tan\\theta,\\;dx=\\sec^{2}\\theta\\,d\\theta$', '$\\int\\cos^{2}\\theta\\,d\\theta=\\dfrac{\\theta}{2}+\\dfrac{\\sin 2\\theta}{4}$']
 });
-add('monster', '유리식 부분적분', 'x^2/(x^2+1)^2', 'atan(x)/2 - x/(2*(x^2+1))', {
+add('hard', '유리식 부분적분', 'x^2/(x^2+1)^2', 'atan(x)/2 - x/(2*(x^2+1))', {
   domain: [-1.5, 2.2],
   hints: ['$\\dfrac{x^{2}}{(x^{2}+1)^{2}}=\\dfrac{1}{x^{2}+1}-\\dfrac{1}{(x^{2}+1)^{2}}$', '앞 문제 결과를 재활용한다.'],
   steps: ['$\\dfrac{x^{2}}{(x^{2}+1)^{2}}=\\dfrac{1}{x^{2}+1}-\\dfrac{1}{(x^{2}+1)^{2}}$',
           '$\\arctan x-\\left(\\dfrac{x}{2(x^{2}+1)}+\\dfrac{\\arctan x}{2}\\right)$']
 });
 [1, 2, 4].forEach(function (a) {
-  add('monster', '치환+부분분수', 'x^3/(x^2+' + a + ')^2', 'ln(x^2+' + a + ')/2 + ' + a + '/(2*(x^2+' + a + '))', {
+  add('hard', '치환+부분분수', 'x^3/(x^2+' + a + ')^2', 'ln(x^2+' + a + ')/2 + ' + a + '/(2*(x^2+' + a + '))', {
     domain: [0.1, 2.5],
     hints: ['$u=x^{2}+' + a + '$ 로 두면 $x^{2}=u-' + a + '$ 다.',
             '$\\dfrac{1}{2}\\int\\dfrac{u-' + a + '}{u^{2}}du$ 로 정리된다.'],
     steps: ['$u=x^{2}+' + a + ',\\;du=2x\\,dx$', '$\\dfrac{1}{2}\\int\\left(\\dfrac{1}{u}-\\dfrac{' + a + '}{u^{2}}\\right)du$']
   });
 });
-add('monster', '기교', 'e^x*(x^2+1)/(x+1)^2', 'e^x*(x-1)/(x+1)', {
+add('hard', '기교', 'e^x*(x^2+1)/(x+1)^2', 'e^x*(x-1)/(x+1)', {
   domain: [0.1, 2.2],
   hints: ['$\\dfrac{x^{2}+1}{(x+1)^{2}}=f(x)+f\'(x)$ 꼴로 쪼갤 수 있는지 본다.',
           '$\\int e^{x}(f+f\')dx=e^{x}f$ 를 쓴다.'],
@@ -1492,7 +1492,7 @@ add('monster', '기교', 'e^x*(x^2+1)/(x+1)^2', 'e^x*(x-1)/(x+1)', {
 });
 [1, 2].forEach(function (a) {
   var a2 = a * a;
-  add('monster', '삼각치환 고급', 'x^2*sqrt(' + a2 + '-x^2)',
+  add('hard', '삼각치환 고급', 'x^2*sqrt(' + a2 + '-x^2)',
       C(a2 * a2, 8, 'asin(' + X(a) + ')') + ' - x*(' + a2 + '-2x^2)*sqrt(' + a2 + '-x^2)/8', {
     domain: [-0.72 * a, 0.72 * a],
     hints: ['$x=' + KL(a, '\\sin\\theta') + '$ 로 치환하면 $\\int\\sin^{2}\\theta\\cos^{2}\\theta\\,d\\theta$ 가 된다.',
@@ -1514,7 +1514,7 @@ add('hard', '쌍곡선 짝수차', 'tanh(x)^4', 'x-tanh(x)-tanh(x)^3/3', {
   steps: ['$\\int\\tanh^{4}=\\int\\tanh^{2}-\\int\\tanh^{2}\\operatorname{sech}^{2}$',
           '$=x-\\tanh x-\\dfrac{\\tanh^{3}x}{3}$']
 });
-add('monster', '역쌍곡선 고급', 'x*asinh(x)', '(2x^2+1)*asinh(x)/4 - x*sqrt(x^2+1)/4', {
+add('hard', '역쌍곡선 고급', 'x*asinh(x)', '(2x^2+1)*asinh(x)/4 - x*sqrt(x^2+1)/4', {
   domain: [0.1, 2.2],
   hints: ['$u=\\operatorname{arsinh}x,\\;dv=x\\,dx$ 로 둔다.',
           '$v=\\dfrac{x^{2}}{2}$ 대신 $\\dfrac{x^{2}+1}{2}$ 를 쓰면 남는 적분이 간단해진다.'],
@@ -1526,7 +1526,7 @@ add('hard', '역쌍곡선 고급', 'acosh(x)', 'x*acosh(x)-sqrt(x^2-1)', {
   hints: ['$dv=dx$ 로 부분적분한다.', '$\\dfrac{d}{dx}\\operatorname{arcosh}x=\\dfrac{1}{\\sqrt{x^{2}-1}}$'],
   steps: ['$u=\\operatorname{arcosh}x,\\;dv=dx$', '$x\\operatorname{arcosh}x-\\int\\dfrac{x}{\\sqrt{x^{2}-1}}dx$']
 });
-add('monster', '쌍곡선 고급', 'x^2*sqrt(x^2+1)',
+add('hard', '쌍곡선 고급', 'x^2*sqrt(x^2+1)',
     'x*(x^2+1)^(3/2)/4 - x*sqrt(x^2+1)/8 - asinh(x)/8', {
   domain: [-1.3, 2.0],
   hints: ['$x=\\sinh\\theta$ 로 치환하면 $\\int\\sinh^{2}\\theta\\cosh^{2}\\theta\\,d\\theta$ 가 된다.',
@@ -1534,7 +1534,7 @@ add('monster', '쌍곡선 고급', 'x^2*sqrt(x^2+1)',
   steps: ['$x=\\sinh\\theta$', '$\\dfrac{1}{4}\\int\\sinh^{2}2\\theta\\,d\\theta$',
           '$\\sinh^{2}u=\\dfrac{\\cosh 2u-1}{2}$ 를 한 번 더 적용한다']
 });
-add('monster', '쌍곡선 고급', 'sqrt(x^2+1)^3',
+add('hard', '쌍곡선 고급', 'sqrt(x^2+1)^3',
     'x*(x^2+1)^(3/2)/4 + 3*x*sqrt(x^2+1)/8 + 3*asinh(x)/8', {
   domain: [-1.3, 2.0],
   hints: ['$(x^{2}+1)^{3/2}$ 이므로 $x=\\sinh\\theta$ 로 두면 $\\int\\cosh^{4}\\theta\\,d\\theta$ 다.',
@@ -1544,7 +1544,7 @@ add('monster', '쌍곡선 고급', 'sqrt(x^2+1)^3',
 });
 [[2, 1], [3, 2]].forEach(function (q) {
   var a = q[0], b = q[1], den = a * a - b * b;
-  add('monster', '쌍곡선 순환', 'e^(' + K(a) + ')cosh(' + K(b) + ')',
+  add('hard', '쌍곡선 순환', 'e^(' + K(a) + ')cosh(' + K(b) + ')',
       'e^(' + K(a) + ')*(' + K(a, 'cosh(' + K(b) + ')') + ' - ' + K(b, 'sinh(' + K(b) + ')') + ')/' + den, {
     domain: [0.05, 1.3],
     hints: ['$\\cosh$ 를 지수로 풀어 항별로 적분한다.', '분모는 $' + (a * a) + '-' + (b * b) + '=' + den + '$ 이다.'],
@@ -1561,7 +1561,7 @@ add('hard', '부분적분', 'x*sec(x)^2', 'x*tan(x)+ln(cos(x))', {
   steps: ['$u=x,\\;v=\\tan x$', '$x\\tan x-\\int\\tan x\\,dx = x\\tan x+\\ln|\\cos x|$']
 });
 
-add('monster', '반복 부분적분', 'ln(x)^2/x^2', '-(ln(x)^2+2ln(x)+2)/x', {
+add('hard', '반복 부분적분', 'ln(x)^2/x^2', '-(ln(x)^2+2ln(x)+2)/x', {
   domain: [0.4, 3.0],
   hints: ['$u=(\\ln x)^{2},\\;dv=x^{-2}dx$ 로 두고 두 번 부분적분한다.',
           '$\\int\\dfrac{\\ln x}{x^{2}}dx=-\\dfrac{\\ln x+1}{x}$ 를 중간에 쓴다.'],
@@ -1569,21 +1569,21 @@ add('monster', '반복 부분적분', 'ln(x)^2/x^2', '-(ln(x)^2+2ln(x)+2)/x', {
           '$\\int\\dfrac{\\ln x}{x^{2}}dx=-\\dfrac{\\ln x+1}{x}$',
           '$= -\\dfrac{(\\ln x)^{2}+2\\ln x+2}{x}$']
 });
-add('monster', '부분적분', 'atan(x)/x^2', '-atan(x)/x+ln(x)-ln(1+x^2)/2', {
+add('hard', '부분적분', 'atan(x)/x^2', '-atan(x)/x+ln(x)-ln(1+x^2)/2', {
   domain: [0.3, 2.5], lnAbs: true,
   hints: ['$u=\\arctan x,\\;dv=x^{-2}dx$ 로 둔다.',
           '남는 $\\int\\dfrac{dx}{x(1+x^{2})}$ 는 부분분수로 나눈다.'],
   steps: ['$-\\dfrac{\\arctan x}{x}+\\int\\dfrac{dx}{x(1+x^{2})}$',
           '$\\dfrac{1}{x(1+x^{2})}=\\dfrac{1}{x}-\\dfrac{x}{1+x^{2}}$']
 });
-add('monster', '부분적분', 'ln(x)/(1+x)^2', '-ln(x)/(1+x)+ln(x)-ln(1+x)', {
+add('hard', '부분적분', 'ln(x)/(1+x)^2', '-ln(x)/(1+x)+ln(x)-ln(1+x)', {
   domain: [0.3, 3.0], lnAbs: true,
   hints: ['$dv=(1+x)^{-2}dx$ 로 두면 $v=-\\dfrac{1}{1+x}$ 다.',
           '남는 $\\int\\dfrac{dx}{x(1+x)}$ 는 부분분수다.'],
   steps: ['$-\\dfrac{\\ln x}{1+x}+\\int\\dfrac{dx}{x(1+x)}$',
           '$\\dfrac{1}{x(1+x)}=\\dfrac{1}{x}-\\dfrac{1}{1+x}$']
 });
-add('monster', '기교', 'x*e^x/(1+x)^2', 'e^x/(1+x)', {
+add('hard', '기교', 'x*e^x/(1+x)^2', 'e^x/(1+x)', {
   domain: [0.2, 2.5],
   hints: ['$\\dfrac{x}{(1+x)^{2}}=\\dfrac{1}{1+x}-\\dfrac{1}{(1+x)^{2}}$ 로 쪼갠다.',
           '$f=\\dfrac{1}{1+x}$ 라 하면 $f\'=-\\dfrac{1}{(1+x)^{2}}$ 이고 $\\int e^{x}(f+f\')dx=e^{x}f$ 다.'],
@@ -1599,14 +1599,14 @@ add('monster', '기교', '(1+x)/(x*(1+x*e^x))', 'ln(x*e^x)-ln(1+x*e^x)', {
 });
 
 // 삼각 유리식 (몬스터)
-add('monster', '삼각 유리식', 'sin(x)/(1+sin(x))', 'x-tan(x)+sec(x)', {
+add('hard', '삼각 유리식', 'sin(x)/(1+sin(x))', 'x-tan(x)+sec(x)', {
   domain: [0.2, 1.2],
   hints: ['$\\dfrac{\\sin x}{1+\\sin x}=1-\\dfrac{1}{1+\\sin x}$ 로 쪼갠다.',
           '$\\int\\dfrac{dx}{1+\\sin x}=\\tan x-\\sec x$ 를 쓴다.'],
   steps: ['$\\dfrac{\\sin x}{1+\\sin x}=1-\\dfrac{1}{1+\\sin x}$',
           '$\\int\\dfrac{dx}{1+\\sin x}=\\tan x-\\sec x$']
 });
-add('monster', '삼각 유리식', 'cos(x)/(1+cos(x))', 'x-tan(x/2)', {
+add('hard', '삼각 유리식', 'cos(x)/(1+cos(x))', 'x-tan(x/2)', {
   domain: [0.2, 2.4],
   hints: ['$\\dfrac{\\cos x}{1+\\cos x}=1-\\dfrac{1}{1+\\cos x}$', '$\\int\\dfrac{dx}{1+\\cos x}=\\tan\\dfrac{x}{2}$'],
   steps: ['$\\dfrac{\\cos x}{1+\\cos x}=1-\\dfrac{1}{1+\\cos x}$', '$1+\\cos x=2\\cos^{2}\\dfrac{x}{2}$']
@@ -1625,14 +1625,14 @@ add('monster', '삼각 유리식', 'cos(x)/(1+cos(x))', 'x-tan(x/2)', {
 });
 
 // 근호가 있는 유리식
-add('monster', '삼각치환 고급', 'sqrt(x^2+1)/x', 'sqrt(x^2+1)-ln((1+sqrt(x^2+1))/x)', {
+add('hard', '삼각치환 고급', 'sqrt(x^2+1)/x', 'sqrt(x^2+1)-ln((1+sqrt(x^2+1))/x)', {
   domain: [0.35, 2.6], lnAbs: true,
   hints: ['$x=\\sinh\\theta$ 로 두면 $\\int\\dfrac{\\cosh^{2}\\theta}{\\sinh\\theta}d\\theta$ 가 된다.',
           '$u=\\sqrt{x^{2}+1}$ 치환으로 유리식으로 바꿔도 된다.'],
   steps: ['$u=\\sqrt{x^{2}+1},\\;u\\,du=x\\,dx$', '$\\int\\dfrac{u^{2}}{u^{2}-1}du$',
           '$= u+\\dfrac{1}{2}\\ln\\left|\\dfrac{u-1}{u+1}\\right|$ 를 정리한다']
 });
-add('monster', '삼각치환 고급', 'sqrt(x^2-1)/x', 'sqrt(x^2-1)-atan(sqrt(x^2-1))', {
+add('hard', '삼각치환 고급', 'sqrt(x^2-1)/x', 'sqrt(x^2-1)-atan(sqrt(x^2-1))', {
   domain: [1.3, 3.2],
   hints: ['$x=\\sec\\theta$ 로 두면 $\\int\\tan^{2}\\theta\\,d\\theta$ 가 된다.',
           '$\\tan^{2}=\\sec^{2}-1$ 로 내린다.'],
@@ -1641,35 +1641,35 @@ add('monster', '삼각치환 고급', 'sqrt(x^2-1)/x', 'sqrt(x^2-1)-atan(sqrt(x^
 });
 
 // x^n 치환 + 부분적분
-add('monster', '치환+부분적분', 'x^3*e^(x^2)', 'e^(x^2)*(x^2-1)/2', {
+add('hard', '치환+부분적분', 'x^3*e^(x^2)', 'e^(x^2)*(x^2-1)/2', {
   domain: [0.1, 1.3],
   hints: ['$u=x^{2}$ 로 두면 $\\dfrac{1}{2}\\int ue^{u}du$ 가 된다.', '그다음은 부분적분이다.'],
   steps: ['$u=x^{2},\\;du=2x\\,dx$', '$\\dfrac{1}{2}\\int ue^{u}du=\\dfrac{(u-1)e^{u}}{2}$']
 });
-add('monster', '치환+부분적분', 'x^5*e^(x^2)', 'e^(x^2)*(x^4-2x^2+2)/2', {
+add('hard', '치환+부분적분', 'x^5*e^(x^2)', 'e^(x^2)*(x^4-2x^2+2)/2', {
   domain: [0.1, 1.2],
   hints: ['$u=x^{2}$ 로 두면 $\\dfrac{1}{2}\\int u^{2}e^{u}du$ 다.', '부분적분을 두 번 한다.'],
   steps: ['$u=x^{2}$', '$\\dfrac{1}{2}\\int u^{2}e^{u}du=\\dfrac{(u^{2}-2u+2)e^{u}}{2}$']
 });
-add('monster', '치환+부분적분', 'x^3*sin(x^2)', '(sin(x^2)-x^2*cos(x^2))/2', {
+add('hard', '치환+부분적분', 'x^3*sin(x^2)', '(sin(x^2)-x^2*cos(x^2))/2', {
   domain: [0.2, 1.6],
   hints: ['$u=x^{2}$ 로 두면 $\\dfrac{1}{2}\\int u\\sin u\\,du$ 가 된다.', '부분적분으로 마무리한다.'],
   steps: ['$u=x^{2},\\;du=2x\\,dx$', '$\\dfrac{1}{2}\\int u\\sin u\\,du=\\dfrac{\\sin u-u\\cos u}{2}$']
 });
-add('monster', '부분적분', 'x*csc(x)^2', '-x*cot(x)+ln(sin(x))', {
+add('hard', '부분적분', 'x*csc(x)^2', '-x*cot(x)+ln(sin(x))', {
   domain: [0.45, 2.3], lnAbs: true,
   hints: ['$u=x,\\;dv=\\csc^{2}x\\,dx$ 로 둔다.', '남는 $\\int\\cot x\\,dx$ 를 처리한다.'],
   steps: ['$u=x,\\;v=-\\cot x$', '$-x\\cot x+\\int\\cot x\\,dx=-x\\cot x+\\ln|\\sin x|$']
 });
 
 // 쌍곡선 4차
-add('monster', '쌍곡선 짝수차', 'sinh(x)^4', '3x/8 - sinh(2x)/4 + sinh(4x)/32', {
+add('hard', '쌍곡선 짝수차', 'sinh(x)^4', '3x/8 - sinh(2x)/4 + sinh(4x)/32', {
   domain: [0.2, 1.4],
   hints: ['$\\sinh^{2}u=\\dfrac{\\cosh 2u-1}{2}$ 를 두 번 적용한다.', '$\\sin^{4}$ 과 형태가 비슷하지만 부호가 다르다.'],
   steps: ['$\\sinh^{4}x=\\dfrac{(\\cosh 2x-1)^{2}}{4}$',
           '$\\cosh^{2}2x=\\dfrac{\\cosh 4x+1}{2}$', '$=\\dfrac{3}{8}-\\dfrac{\\cosh 2x}{2}+\\dfrac{\\cosh 4x}{8}$']
 });
-add('monster', '쌍곡선 짝수차', 'cosh(x)^4', '3x/8 + sinh(2x)/4 + sinh(4x)/32', {
+add('hard', '쌍곡선 짝수차', 'cosh(x)^4', '3x/8 + sinh(2x)/4 + sinh(4x)/32', {
   domain: [0.2, 1.4],
   hints: ['$\\cosh^{2}u=\\dfrac{\\cosh 2u+1}{2}$ 를 두 번 적용한다.', '$\\sinh^{4}$ 과 가운데 항의 부호만 다르다.'],
   steps: ['$\\cosh^{4}x=\\dfrac{(\\cosh 2x+1)^{2}}{4}$', '$=\\dfrac{3}{8}+\\dfrac{\\cosh 2x}{2}+\\dfrac{\\cosh 4x}{8}$']
@@ -2601,6 +2601,390 @@ add('monster', '반각 치환', '1/(3+5*cos(x))', 'ln((2+tan(x/2))/(2-tan(x/2)))
           '정리하면 $\\int\\dfrac{dt}{4-t^{2}}$ 가 된다.'],
   steps: ['$t=\\tan\\dfrac x2$', '$\\int\\dfrac{2dt}{8-2t^{2}}=\\int\\dfrac{dt}{4-t^{2}}$',
           '$=\\dfrac14\\ln\\left|\\dfrac{2+t}{2-t}\\right|$']
+});
+
+// ================================================================== 몬스터 추가분 3
+// MIT Integration Bee (2023~2026) 준결승·결승·타이브레이커 부정적분 문제들.
+// 출처: https://math.mit.edu/~yyao1/integrationbee.html
+
+add('monster', '위장된 미분', 'x^2/sqrt(4*e^(2*x)+(x^2+2*x+2)^2)', '-asinh((x^2+2*x+2)/(2*e^x))', {
+  domain: [0.2, 2.4],
+  hints: ['$g=\\dfrac{x^{2}+2x+2}{2e^{x}}$ 로 두고 $g\'$ 를 계산해 본다.',
+          '$g\'=-\\dfrac{x^{2}}{2e^{x}}$ 이고, 근호 안은 정확히 $4e^{2x}(1+g^{2})$ 다.'],
+  steps: ['$g=\\dfrac{x^{2}+2x+2}{2e^{x}},\;g\'=-\\dfrac{x^{2}}{2e^{x}}$',
+          '$\\sqrt{4e^{2x}+(x^{2}+2x+2)^{2}}=2e^{x}\\sqrt{1+g^{2}}$',
+          '$-\\dfrac{d}{dx}\\operatorname{arsinh}g=-\\dfrac{g\'}{\\sqrt{1+g^{2}}}=$ 피적분함수']
+});
+add('monster', '삼각 곱 항등식', '1/(cos(x)*cos(x+2*pi/3)*cos(x-2*pi/3))^2', '16*tan(3*x)/3', {
+  domain: [0.05, 0.48],
+  hints: ['$\\cos\\theta\\cos\\left(\\theta+\\dfrac{2\\pi}{3}\\right)\\cos\\left(\\theta-\\dfrac{2\\pi}{3}\\right)=\\dfrac{\\cos 3\\theta}{4}$',
+          '정리하면 $16\\sec^{2}3x$ 만 남는다.'],
+  steps: ['세 코사인의 곱은 $\\dfrac{\\cos 3x}{4}$',
+          '$\\int\\dfrac{16}{\\cos^{2}3x}dx=\\dfrac{16\\tan 3x}{3}$']
+});
+add('monster', '미분 꼴 알아보기', '(x+1)*e^x*ln(x)', 'e^x*(x*ln(x)-1)', {
+  domain: D.pos,
+  hints: ['$\\int e^{x}(f+f\')dx=e^{x}f$ 를 노리고 $f=x\\ln x-1$ 을 시험한다.',
+          '$f\'=\\ln x+1$ 이므로 $f+f\'=x\\ln x+\\ln x=(x+1)\\ln x$'],
+  steps: ['$f=x\\ln x-1,\;f\'=\\ln x+1$', '$f+f\'=(x+1)\\ln x$', '$=e^{x}(x\\ln x-1)$']
+});
+add('monster', '세제곱근 인수분해', 'x/(x^3-3*x-2)^(1/3)', '((x+1)*(x-2)^2)^(1/3)', {
+  domain: [2.3, 4.5],
+  hints: ['$x^{3}-3x-2=(x+1)^{2}(x-2)$ 로 인수분해된다.',
+          '$F=\\sqrt[3]{(x+1)(x-2)^{2}}$ 를 세제곱해서 음함수 미분해 본다.'],
+  steps: ['$F^{3}=(x+1)(x-2)^{2}$', '$3F^{2}F\'=3x(x-2)$',
+          '$F\'=\\dfrac{x(x-2)}{(x+1)^{2/3}(x-2)^{4/3}}=\\dfrac{x}{\\sqrt[3]{(x+1)^{2}(x-2)}}$']
+});
+add('monster', '고차 부분분수', '1/(x^8-x^6)', 'ln((x-1)/(x+1))/2+1/x+1/(3*x^3)+1/(5*x^5)', {
+  domain: [1.4, 3.4], lnAbs: true,
+  hints: ['$t=x^{2}$ 로 보면 $\\dfrac{1}{t^{3}(t-1)}=\\dfrac{1}{t-1}-\\dfrac1t-\\dfrac{1}{t^{2}}-\\dfrac{1}{t^{3}}$ 다.',
+          '되돌리면 $\\dfrac{1}{x^{2}-1}-\\dfrac{1}{x^{2}}-\\dfrac{1}{x^{4}}-\\dfrac{1}{x^{6}}$'],
+  steps: ['$\\dfrac{1}{x^{6}(x^{2}-1)}=\\dfrac{1}{x^{2}-1}-\\dfrac{1}{x^{2}}-\\dfrac{1}{x^{4}}-\\dfrac{1}{x^{6}}$',
+          '$=\\dfrac12\\ln\\left|\\dfrac{x-1}{x+1}\\right|+\\dfrac1x+\\dfrac{1}{3x^{3}}+\\dfrac{1}{5x^{5}}$']
+});
+add('monster', '역수 치환', '(3*x^2+7*x-5)*(x+1/x)*e^(x+1/x)', '(3*x^3-2*x^2+5*x)*e^(x+1/x)', {
+  domain: [0.5, 2.0],
+  hints: ['답을 $P(x)e^{x+1/x}$ 꼴로 놓고 $P$ 를 미정계수로 찾는다.',
+          '$\\left(Pe^{u}\\right)\'=\\left(P\'+P\\left(1-\\dfrac{1}{x^{2}}\\right)\\right)e^{u}$'],
+  steps: ['$P=3x^{3}-2x^{2}+5x$ 로 두면',
+          '$P\'+P\\left(1-\\dfrac{1}{x^{2}}\\right)=3x^{3}+7x^{2}-2x+7-\\dfrac5x$',
+          '이는 $(3x^{2}+7x-5)\\left(x+\\dfrac1x\\right)$ 와 같다']
+});
+add('monster', '부분분수', '(x+24)/(x^3+25*x^2+144*x)', 'ln(x)/6-5*ln(x+9)/21+ln(x+16)/14', {
+  domain: D.pos, lnAbs: true,
+  hints: ['$x^{3}+25x^{2}+144x=x(x+9)(x+16)$ 로 인수분해된다.',
+          '가리기(cover-up)로 $x=0,\\,-9,\\,-16$ 을 차례로 대입한다.'],
+  steps: ['$\\dfrac{x+24}{x(x+9)(x+16)}=\\dfrac{1/6}{x}-\\dfrac{5/21}{x+9}+\\dfrac{1/14}{x+16}$',
+          '각 항을 로그로 적분한다']
+});
+add('monster', '역수 치환', 'sqrt((x^6+1)*(x^2+1))/x^3',
+    '((1-1/x^2)*sqrt(x^4-x^2+1)+asinh((x^2-1)/x))/2', {
+  domain: [0.4, 2.6],
+  hints: ['$(x^{6}+1)(x^{2}+1)=(x^{2}+1)^{2}(x^{4}-x^{2}+1)$ 로 묶인다.',
+          '$u=x-\\dfrac1x$ 로 두면 $x^{4}-x^{2}+1=x^{2}(u^{2}+1)$ 이고 $du=\\left(1+\\dfrac{1}{x^{2}}\\right)dx$ 다.'],
+  steps: ['피적분함수 $=\\left(1+\\dfrac{1}{x^{2}}\\right)\\sqrt{u^{2}+1}$',
+          '$\\int\\sqrt{u^{2}+1}\\,du=\\dfrac{u\\sqrt{u^{2}+1}+\\operatorname{arsinh}u}{2}$']
+});
+add('monster', '위장된 치환', '(arctan(x)-x*arctan(x))/(1-x+x^2-x^3)', 'arctan(x)^2/2', {
+  domain: [0.15, 0.9],
+  hints: ['분모를 $(1-x)(1+x^{2})$ 로 인수분해한다.', '분자는 $(1-x)\\arctan x$ 이므로 통째로 약분된다.'],
+  steps: ['$\\dfrac{(1-x)\\arctan x}{(1-x)(1+x^{2})}=\\dfrac{\\arctan x}{1+x^{2}}$',
+          '$u=\\arctan x:\;\\dfrac{\\arctan^{2}x}{2}$']
+});
+add('monster', '적분대회 결승', 'e^(x/2)*cos(x)/(3*cos(x)+4*sin(x))^(1/3)',
+    '6*(3*cos(x)+4*sin(x))^(2/3)*e^(x/2)/25', {
+  domain: [0.2, 2.0],
+  hints: ['답을 $c\\,(3\\cos x+4\\sin x)^{2/3}e^{x/2}$ 로 놓고 미분해 계수를 맞춘다.',
+          '$\\sin$ 항이 저절로 사라지고 $\\cos$ 항만 남는 것이 핵심이다.'],
+  steps: ['$F=c(3\\cos x+4\\sin x)^{2/3}e^{x/2}$',
+          '$F\'=c\\,e^{x/2}(3\\cos x+4\\sin x)^{-1/3}\\left[\\dfrac23(4\\cos x-3\\sin x)+\\dfrac12(3\\cos x+4\\sin x)\\right]$',
+          '대괄호 $=\\dfrac{25}{6}\\cos x$ 이므로 $c=\\dfrac{6}{25}$']
+});
+add('monster', '적분대회 결승', '1/(x^4+1)^(1/4)',
+    'arctan(x/(1+x^4)^(1/4))/2+ln(((1+x^4)^(1/4)+x)/((1+x^4)^(1/4)-x))/4', {
+  domain: [0.3, 2.6], lnAbs: true,
+  hints: ['$t=\\dfrac{x}{\\sqrt[4]{1+x^{4}}}$ 로 두면 $dt=\\dfrac{dx}{(1+x^{4})^{5/4}}$ 이고 $1-t^{4}=\\dfrac{1}{1+x^{4}}$ 다.',
+          '$\\int\\dfrac{dt}{1-t^{4}}$ 로 바뀐다.'],
+  steps: ['$t=\\dfrac{x}{\\sqrt[4]{1+x^{4}}}$ 치환',
+          '$\\int\\dfrac{dt}{1-t^{4}}=\\dfrac{\\arctan t}{2}+\\dfrac14\\ln\\left|\\dfrac{1+t}{1-t}\\right|$',
+          '$t$ 를 되돌린다']
+});
+add('monster', '숨은 완전제곱', 'sqrt(x^4-4*x+3)',
+    '(x^2+2*x+3)^(3/2)/3-(x+1)*sqrt(x^2+2*x+3)-2*ln(sqrt(x^2+2*x+3)+x+1)', {
+  domain: [1.3, 3.4],
+  hints: ['$x^{4}-4x+3=(x-1)^{2}(x^{2}+2x+3)$ 으로 인수분해된다.',
+          '$x>1$ 에서는 $\\sqrt{x^{4}-4x+3}=(x-1)\\sqrt{x^{2}+2x+3}$ 다.'],
+  steps: ['$(x-1)\\sqrt{x^{2}+2x+3}=\\left((x+1)-2\\right)\\sqrt{u}$, $u=x^{2}+2x+3$',
+          '$\\int(x+1)\\sqrt u\\,dx=\\dfrac{u^{3/2}}{3}$',
+          '$\\int\\dfrac{2u\\,dx}{\\sqrt u}$ 를 $\\sqrt{(x+1)^{2}+2}$ 로 보고 정리한다']
+});
+add('monster', '이항 전개', '(x/(x-1))^4', 'x+4*ln(x-1)-6/(x-1)-2/(x-1)^2-1/(3*(x-1)^3)', {
+  domain: [1.6, 4.0], lnAbs: true,
+  hints: ['$\\dfrac{x}{x-1}=1+\\dfrac{1}{x-1}$ 로 쓰고 네제곱을 이항전개한다.',
+          '$1+\\dfrac{4}{x-1}+\\dfrac{6}{(x-1)^{2}}+\\dfrac{4}{(x-1)^{3}}+\\dfrac{1}{(x-1)^{4}}$'],
+  steps: ['이항전개 후 항별로 적분한다',
+          '$=x+4\\ln|x-1|-\\dfrac{6}{x-1}-\\dfrac{2}{(x-1)^{2}}-\\dfrac{1}{3(x-1)^{3}}$']
+});
+add('monster', '탄젠트 덧셈정리', '(tan(3*x)+tan(4*x))*cos(3*x)*cos(4*x)/cos(7*x)', '-ln(cos(7*x))/7', {
+  domain: [0.02, 0.2], lnAbs: true,
+  hints: ['분자를 통분하면 $\\sin 3x\\cos 4x+\\cos 3x\\sin 4x$ 다.',
+          '덧셈정리로 $\\sin 7x$ 가 되어 $\\tan 7x$ 만 남는다.'],
+  steps: ['$(\\tan 3x+\\tan 4x)\\cos 3x\\cos 4x=\\sin(3x+4x)=\\sin 7x$',
+          '$\\int\\tan 7x\\,dx=-\\dfrac{\\ln|\\cos 7x|}{7}$']
+});
+add('monster', '지수탑 미분', 'ln(x)*((x/e)^x+(e/x)^x)', '(x/e)^x-(e/x)^x', {
+  domain: [0.4, 2.6],
+  hints: ['$\\left(\\dfrac xe\\right)^{x}=e^{x(\\ln x-1)}$, $\\left(\\dfrac ex\\right)^{x}=e^{x(1-\\ln x)}$ 로 쓴다.',
+          '두 함수의 도함수가 각각 $+\\ln x$ 배, $-\\ln x$ 배다.'],
+  steps: ['$\\dfrac{d}{dx}\\left(\\dfrac xe\\right)^{x}=\\left(\\dfrac xe\\right)^{x}\\ln x$',
+          '$\\dfrac{d}{dx}\\left(\\dfrac ex\\right)^{x}=-\\left(\\dfrac ex\\right)^{x}\\ln x$',
+          '차를 취하면 합이 나온다']
+});
+add('monster', '삼각 곱의 합 변환',
+    'cos(3*x)*cos(5*x)*cos(6*x)*cos(7*x)-cos(x)*cos(2*x)*cos(4*x)*cos(8*x)',
+    'sin(21*x)/168-sin(13*x)/104', {
+  domain: [0.2, 1.2],
+  hints: ['네 코사인의 곱을 두 번씩 묶어 합으로 바꾸면 각각 8개 항이 된다.',
+          '두 전개는 $\\cos 21x$ 와 $\\cos 13x$ 만 빼고 전부 같다.'],
+  steps: ['첫 곱 $=\\dfrac18(\\cos 21x+\\cos 15x+\\cos 11x+\\cos 9x+\\cos 7x+\\cos 5x+\\cos 3x+\\cos x)$',
+          '둘째 곱은 $\\cos 21x$ 자리에 $\\cos 13x$ 가 온다',
+          '차 $=\\dfrac{\\cos 21x-\\cos 13x}{8}$']
+});
+add('monster', '분수 지수', '(1-2*x)/((1+x)^2*x^(2/3))', '3*x^(1/3)/(1+x)', {
+  domain: D.pos,
+  hints: ['답을 $\\dfrac{3x^{1/3}}{1+x}$ 로 놓고 몫의 미분법을 확인해 본다.',
+          '$x^{-2/3}\\left[(1+x)-3x\\right]=(1-2x)x^{-2/3}$'],
+  steps: ['$\\left(\\dfrac{3x^{1/3}}{1+x}\\right)\'=\\dfrac{x^{-2/3}(1+x)-3x^{1/3}}{(1+x)^{2}}$',
+          '$=\\dfrac{1-2x}{(1+x)^{2}x^{2/3}}$']
+});
+add('monster', '위장된 미분', 'e^(cos(x))*cos(2*x+sin(x))', 'e^(cos(x))*(sin(x+sin(x))-sin(sin(x)))', {
+  domain: D.trigW,
+  hints: ['$2x+\\sin x=(x+\\sin x)+x$ 로 쪼개 덧셈정리를 쓴다.',
+          '$\\left(e^{\\cos x}\\sin(x+\\sin x)\\right)\'$ 와 $\\left(e^{\\cos x}\\sin(\\sin x)\\right)\'$ 를 비교한다.'],
+  steps: ['$\\left(e^{\\cos x}\\sin(x+\\sin x)\\right)\'=e^{\\cos x}\\left[(1+\\cos x)\\cos(x+\\sin x)-\\sin x\\sin(x+\\sin x)\\right]$',
+          '$\\left(e^{\\cos x}\\sin(\\sin x)\\right)\'=e^{\\cos x}\\left[\\cos x\\cos(\\sin x)-\\sin x\\sin(\\sin x)\\right]$',
+          '두 식을 빼면 $e^{\\cos x}\\cos(2x+\\sin x)$ 가 남는다']
+});
+add('monster', '로그 치환', '(3*ln(x)-1+2*x)/(x*ln(x)+x^2+2*x^4)', '3*ln(x)-ln(ln(x)+x+2*x^3)', {
+  domain: [1.2, 3.0], lnAbs: true,
+  hints: ['분모를 $x\\left(\\ln x+x+2x^{3}\\right)$ 로 묶는다.',
+          '$w=\\ln x+x+2x^{3}$ 라 하면 $\\dfrac3x-\\dfrac{w\'}{w}$ 가 피적분함수와 같은지 확인한다.'],
+  steps: ['$w=\\ln x+x+2x^{3},\;w\'=\\dfrac1x+1+6x^{2}$',
+          '$\\dfrac3x-\\dfrac{w\'}{w}=\\dfrac{3w-xw\'}{xw}=\\dfrac{3\\ln x+2x-1}{xw}$',
+          '$=3\\ln x-\\ln|w|$']
+});
+add('monster', '무리 지수', '(sqrt(x+1)-sqrt(x))^pi',
+    '((sqrt(x+1)-sqrt(x))^(pi+2)/(pi+2)-(sqrt(x+1)-sqrt(x))^(pi-2)/(pi-2))/2', {
+  domain: [0.3, 3.0],
+  hints: ['$t=\\sqrt{x+1}-\\sqrt x$ 로 두면 $\\dfrac1t=\\sqrt{x+1}+\\sqrt x$ 다.',
+          '$\\sqrt x=\\dfrac{1}{2}\\left(\\dfrac1t-t\\right)$ 에서 $dx$ 를 $t$ 로 표현한다.'],
+  steps: ['$t=\\sqrt{x+1}-\\sqrt x,\;dx=-\\dfrac{1}{2}\\left(\\dfrac{1}{t^{3}}-\\dfrac1t\\right)dt$',
+          '$\\int t^{\\pi}dx=\\dfrac12\\int\\left(t^{\\pi+1}-t^{\\pi-3}\\right)\\dfrac{dt}{t}\\cdot(-1)$ 를 정리',
+          '$=\\dfrac12\\left(\\dfrac{t^{\\pi+2}}{\\pi+2}-\\dfrac{t^{\\pi-2}}{\\pi-2}\\right)$']
+});
+add('monster', '역삼각 배각', 'sin(4*arctan(x))', '-4/(1+x^2)-2*ln(1+x^2)', {
+  domain: [-1.5, 1.7],
+  hints: ['$\\theta=\\arctan x$ 이면 $\\sin 2\\theta=\\dfrac{2x}{1+x^{2}},\;\\cos 2\\theta=\\dfrac{1-x^{2}}{1+x^{2}}$ 다.',
+          '$\\sin 4\\theta=2\\sin 2\\theta\\cos 2\\theta=\\dfrac{4x(1-x^{2})}{(1+x^{2})^{2}}$'],
+  steps: ['$\\sin(4\\arctan x)=\\dfrac{4x(1-x^{2})}{(1+x^{2})^{2}}$',
+          '$u=1+x^{2}$ 로 두면 $\\int\\dfrac{2(2-u)}{u^{2}}du$',
+          '$=-\\dfrac{4}{1+x^{2}}-2\\ln(1+x^{2})$']
+});
+add('monster', '삼각 치환', '(sin(x)+cos(x))/sqrt(25*sin(x)^2+16*cos(x)^2)',
+    'asinh(3*sin(x)/4)/3-asin(3*cos(x)/5)/3', {
+  domain: D.trigW,
+  hints: ['$25\\sin^{2}+16\\cos^{2}$ 는 $16+9\\sin^{2}$ 이자 $25-9\\cos^{2}$ 다.',
+          '$\\cos x\\,dx$ 항에는 앞의 표현을, $\\sin x\\,dx$ 항에는 뒤의 표현을 쓴다.'],
+  steps: ['$\\int\\dfrac{\\cos x\\,dx}{\\sqrt{16+9\\sin^{2}x}}=\\dfrac13\\operatorname{arsinh}\\dfrac{3\\sin x}{4}$',
+          '$\\int\\dfrac{\\sin x\\,dx}{\\sqrt{25-9\\cos^{2}x}}=-\\dfrac13\\arcsin\\dfrac{3\\cos x}{5}$']
+});
+add('monster', '역수 치환', 'sqrt(x)/(1+x^2)',
+    '(arctan((x-1)/sqrt(2*x))-atanh(sqrt(2*x)/(x+1)))/sqrt(2)', {
+  domain: [1.35, 3.4],
+  hints: ['$t=\\sqrt x$ 로 두면 $\\int\\dfrac{2t^{2}}{1+t^{4}}dt$ 로 $\\sqrt{\\tan x}$ 문제와 같은 꼴이 된다.',
+          '$t^{2}\\pm1$ 로 쪼갠 뒤 $u=t\\mp\\dfrac1t$ 치환을 각각 쓴다.'],
+  steps: ['$t=\\sqrt x:\;\\int\\dfrac{2t^{2}}{1+t^{4}}dt$',
+          '$=\\int\\dfrac{t^{2}+1}{t^{4}+1}dt+\\int\\dfrac{t^{2}-1}{t^{4}+1}dt$',
+          '$\\arctan$ 항과 $\\operatorname{artanh}$ 항이 남는다']
+});
+
+// ================================================================== 역쌍곡선함수 보강
+
+// --- 보통: 1차식 대입과 기본 치환
+add('medium', '역쌍곡선함수', 'asinh(2*x)', 'x*asinh(2*x)-sqrt(4*x^2+1)/2', {
+  domain: [-1.5, 1.7],
+  hints: ['$dv=dx$ 로 부분적분한다.', '$\\left(\\operatorname{arsinh}2x\\right)\'=\\dfrac{2}{\\sqrt{1+4x^{2}}}$'],
+  steps: ['$=x\\operatorname{arsinh}2x-\\int\\dfrac{2x}{\\sqrt{1+4x^{2}}}dx$',
+          '$=x\\operatorname{arsinh}2x-\\dfrac{\\sqrt{4x^{2}+1}}{2}$']
+});
+add('medium', '역쌍곡선함수', 'acosh(2*x)', 'x*acosh(2*x)-sqrt(4*x^2-1)/2', {
+  domain: [0.7, 1.7],
+  hints: ['$dv=dx$ 로 부분적분한다.', '$\\left(\\operatorname{arcosh}2x\\right)\'=\\dfrac{2}{\\sqrt{4x^{2}-1}}$'],
+  steps: ['$=x\\operatorname{arcosh}2x-\\int\\dfrac{2x}{\\sqrt{4x^{2}-1}}dx$',
+          '$=x\\operatorname{arcosh}2x-\\dfrac{\\sqrt{4x^{2}-1}}{2}$']
+});
+add('medium', '역쌍곡선함수', 'atanh(2*x)', 'x*atanh(2*x)+ln(1-4*x^2)/4', {
+  domain: [-0.36, 0.36],
+  hints: ['$dv=dx$ 로 부분적분한다.', '$\\left(\\operatorname{artanh}2x\\right)\'=\\dfrac{2}{1-4x^{2}}$'],
+  steps: ['$=x\\operatorname{artanh}2x-\\int\\dfrac{2x}{1-4x^{2}}dx$',
+          '$=x\\operatorname{artanh}2x+\\dfrac{\\ln(1-4x^{2})}{4}$']
+});
+add('medium', '역쌍곡선 치환', 'asinh(x)/sqrt(1+x^2)', 'asinh(x)^2/2', {
+  domain: [-1.5, 1.7],
+  hints: ['$u=\\operatorname{arsinh}x$ 로 두면 $du=\\dfrac{dx}{\\sqrt{1+x^{2}}}$ 다.', '$\\int u\\,du$ 만 남는다.'],
+  steps: ['$u=\\operatorname{arsinh}x$', '$\\int u\\,du=\\dfrac{\\operatorname{arsinh}^{2}x}{2}$']
+});
+add('medium', '역쌍곡선 치환', 'acosh(x)/sqrt(x^2-1)', 'acosh(x)^2/2', {
+  domain: D.gt1,
+  hints: ['$u=\\operatorname{arcosh}x$ 로 두면 $du=\\dfrac{dx}{\\sqrt{x^{2}-1}}$ 다.', '$\\int u\\,du$ 꼴이다.'],
+  steps: ['$u=\\operatorname{arcosh}x$', '$\\int u\\,du=\\dfrac{\\operatorname{arcosh}^{2}x}{2}$']
+});
+add('medium', '역쌍곡선 치환', 'atanh(x)/(1-x^2)', 'atanh(x)^2/2', {
+  domain: D.unit,
+  hints: ['$u=\\operatorname{artanh}x$ 로 두면 $du=\\dfrac{dx}{1-x^{2}}$ 다.', '$\\int u\\,du$ 꼴이다.'],
+  steps: ['$u=\\operatorname{artanh}x$', '$\\int u\\,du=\\dfrac{\\operatorname{artanh}^{2}x}{2}$']
+});
+
+// --- 어려움: 부분적분 조합
+add('hard', '역쌍곡선 부분적분', 'x*acosh(x)', '(2*x^2-1)*acosh(x)/4-x*sqrt(x^2-1)/4', {
+  domain: D.gt1,
+  hints: ['$v=\\dfrac{2x^{2}-1}{4}$ 로 잡으면 남는 적분이 깔끔해진다.',
+          '$\\int\\dfrac{2x^{2}-1}{4\\sqrt{x^{2}-1}}dx=\\dfrac{x\\sqrt{x^{2}-1}}{4}$'],
+  steps: ['$v=\\dfrac{2x^{2}-1}{4}$ 로 부분적분',
+          '$=\\dfrac{(2x^{2}-1)\\operatorname{arcosh}x}{4}-\\dfrac{x\\sqrt{x^{2}-1}}{4}$']
+});
+add('hard', '역쌍곡선 부분적분', 'x*atanh(x)', '(x^2-1)*atanh(x)/2+x/2', {
+  domain: D.unit,
+  hints: ['$v=\\dfrac{x^{2}-1}{2}$ 로 잡으면 $\\dfrac{x^{2}-1}{1-x^{2}}=-1$ 로 약분된다.',
+          '남는 적분이 $\\dfrac12\\int dx$ 가 된다.'],
+  steps: ['$v=\\dfrac{x^{2}-1}{2}$ 로 부분적분',
+          '$=\\dfrac{(x^{2}-1)\\operatorname{artanh}x}{2}+\\dfrac x2$']
+});
+add('hard', '역쌍곡선 부분적분', 'x^2*asinh(x)', 'x^3*asinh(x)/3-(x^2+1)^(3/2)/9+sqrt(x^2+1)/3', {
+  domain: [-1.5, 1.7],
+  hints: ['$v=\\dfrac{x^{3}}{3}$ 로 부분적분하면 $\\dfrac13\\int\\dfrac{x^{3}}{\\sqrt{1+x^{2}}}dx$ 가 남는다.',
+          '$u=1+x^{2}$ 로 두면 $\\dfrac12\\int\\dfrac{u-1}{\\sqrt u}du$ 다.'],
+  steps: ['$=\\dfrac{x^{3}\\operatorname{arsinh}x}{3}-\\dfrac13\\int\\dfrac{x^{3}dx}{\\sqrt{1+x^{2}}}$',
+          '$\\int\\dfrac{x^{3}dx}{\\sqrt{1+x^{2}}}=\\dfrac{(1+x^{2})^{3/2}}{3}-\\sqrt{1+x^{2}}$']
+});
+add('hard', '역쌍곡선 부분적분', 'asinh(x)^2', 'x*asinh(x)^2-2*sqrt(1+x^2)*asinh(x)+2*x', {
+  domain: [-1.5, 1.7],
+  hints: ['부분적분 후 $\\int\\dfrac{2x\\operatorname{arsinh}x}{\\sqrt{1+x^{2}}}dx$ 가 남는다.',
+          '$\\left(2\\sqrt{1+x^{2}}\\right)\'=\\dfrac{2x}{\\sqrt{1+x^{2}}}$ 로 한 번 더 부분적분한다.'],
+  steps: ['$=x\\operatorname{arsinh}^{2}x-\\int\\dfrac{2x\\operatorname{arsinh}x}{\\sqrt{1+x^{2}}}dx$',
+          '$=x\\operatorname{arsinh}^{2}x-2\\sqrt{1+x^{2}}\\operatorname{arsinh}x+2x$']
+});
+add('hard', '역쌍곡선 부분적분', 'x*asinh(x)/sqrt(1+x^2)', 'sqrt(1+x^2)*asinh(x)-x', {
+  domain: [-1.5, 1.7],
+  hints: ['$dv=\\dfrac{x\\,dx}{\\sqrt{1+x^{2}}}\\Rightarrow v=\\sqrt{1+x^{2}}$',
+          '남는 적분에서 $\\dfrac{\\sqrt{1+x^{2}}}{\\sqrt{1+x^{2}}}=1$ 로 약분된다.'],
+  steps: ['$=\\sqrt{1+x^{2}}\\operatorname{arsinh}x-\\int dx$',
+          '$=\\sqrt{1+x^{2}}\\operatorname{arsinh}x-x$']
+});
+add('hard', '역쌍곡선 부분적분', 'x*acosh(x)/sqrt(x^2-1)', 'sqrt(x^2-1)*acosh(x)-x', {
+  domain: D.gt1,
+  hints: ['$v=\\sqrt{x^{2}-1}$ 로 부분적분한다.', '남는 적분은 $\\int dx$ 다.'],
+  steps: ['$=\\sqrt{x^{2}-1}\\operatorname{arcosh}x-\\int dx$', '$=\\sqrt{x^{2}-1}\\operatorname{arcosh}x-x$']
+});
+add('hard', '역쌍곡선 부분적분', 'atanh(x)/x^2', 'ln(x)-ln(1-x^2)/2-atanh(x)/x', {
+  domain: [0.15, 0.8],
+  hints: ['$v=-\\dfrac1x$ 로 부분적분한다.', '남는 $\\int\\dfrac{dx}{x(1-x^{2})}=\\ln|x|-\\dfrac12\\ln|1-x^{2}|$'],
+  steps: ['$=-\\dfrac{\\operatorname{artanh}x}{x}+\\int\\dfrac{dx}{x(1-x^{2})}$',
+          '$\\dfrac{1}{x(1-x^{2})}=\\dfrac1x+\\dfrac{x}{1-x^{2}}$']
+});
+add('hard', '역쌍곡선 부분적분', 'acosh(x)/x^2', 'atan(sqrt(x^2-1))-acosh(x)/x', {
+  domain: D.gt1,
+  hints: ['$v=-\\dfrac1x$ 로 부분적분한다.', '남는 $\\int\\dfrac{dx}{x\\sqrt{x^{2}-1}}=\\arctan\\sqrt{x^{2}-1}$'],
+  steps: ['$=-\\dfrac{\\operatorname{arcosh}x}{x}+\\int\\dfrac{dx}{x\\sqrt{x^{2}-1}}$',
+          '$=\\arctan\\sqrt{x^{2}-1}-\\dfrac{\\operatorname{arcosh}x}{x}$']
+});
+add('hard', '역쌍곡선 치환', 'asinh(x)^2/sqrt(1+x^2)', 'asinh(x)^3/3', {
+  domain: [-1.5, 1.7],
+  hints: ['$u=\\operatorname{arsinh}x$ 로 두면 $\\int u^{2}du$ 다.', '거듭제곱 법칙으로 끝난다.'],
+  steps: ['$u=\\operatorname{arsinh}x$', '$\\int u^{2}du=\\dfrac{\\operatorname{arsinh}^{3}x}{3}$']
+});
+add('hard', '역쌍곡선 치환', '1/(sqrt(1+x^2)*asinh(x))', 'ln(asinh(x))', {
+  domain: [0.3, 2.6], lnAbs: true,
+  hints: ['$u=\\operatorname{arsinh}x$ 로 두면 $\\int\\dfrac{du}{u}$ 다.', '결과는 로그의 로그 꼴이다.'],
+  steps: ['$u=\\operatorname{arsinh}x,\;du=\\dfrac{dx}{\\sqrt{1+x^{2}}}$',
+          '$\\int\\dfrac{du}{u}=\\ln\\left|\\operatorname{arsinh}x\\right|$']
+});
+add('hard', '역쌍곡선 치환', '1/(sqrt(x^2+1)*(asinh(x)^2+1))', 'atan(asinh(x))', {
+  domain: [-1.5, 1.7],
+  hints: ['$u=\\operatorname{arsinh}x$ 로 두면 $\\int\\dfrac{du}{u^{2}+1}$ 다.', '$\\arctan$ 이 남는다.'],
+  steps: ['$u=\\operatorname{arsinh}x$', '$\\arctan\\left(\\operatorname{arsinh}x\\right)$']
+});
+add('hard', '역쌍곡선 부분적분', 'x^3*asinh(x)',
+    'x^4*asinh(x)/4-x^3*sqrt(1+x^2)/16+3*x*sqrt(1+x^2)/32-3*asinh(x)/32', {
+  domain: [-1.5, 1.7],
+  hints: ['$v=\\dfrac{x^{4}}{4}$ 로 부분적분하면 $\\dfrac14\\int\\dfrac{x^{4}}{\\sqrt{1+x^{2}}}dx$ 가 남는다.',
+          '$I_{n}=\\dfrac{x^{n-1}\\sqrt{1+x^{2}}}{n}-\\dfrac{n-1}{n}I_{n-2}$ 점화식을 쓴다.'],
+  steps: ['$I_{2}=\\dfrac{x\\sqrt{1+x^{2}}}{2}-\\dfrac{\\operatorname{arsinh}x}{2}$',
+          '$I_{4}=\\dfrac{x^{3}\\sqrt{1+x^{2}}}{4}-\\dfrac34I_{2}$',
+          '$\\dfrac{x^{4}\\operatorname{arsinh}x}{4}-\\dfrac{I_{4}}{4}$ 를 정리한다']
+});
+
+// --- 몬스터: 역쌍곡선 항등식과 위장
+add('monster', '역쌍곡선 배각', 'asinh(2*x*sqrt(1+x^2))', '2*x*asinh(x)-2*sqrt(1+x^2)', {
+  domain: [0.2, 1.6],
+  hints: ['$\\sinh 2t=2\\sinh t\\cosh t$ 를 거꾸로 읽는다.',
+          '$x=\\sinh t$ 로 두면 피적분함수는 그냥 $2t=2\\operatorname{arsinh}x$ 다.'],
+  steps: ['$\\operatorname{arsinh}\\left(2x\\sqrt{1+x^{2}}\\right)=2\\operatorname{arsinh}x$',
+          '$2\\int\\operatorname{arsinh}x\\,dx=2x\\operatorname{arsinh}x-2\\sqrt{1+x^{2}}$']
+});
+add('monster', '역쌍곡선 배각', 'acosh(2*x^2-1)', '2*x*acosh(x)-2*sqrt(x^2-1)', {
+  domain: D.gt1,
+  hints: ['$\\cosh 2t=2\\cosh^{2}t-1$ 을 거꾸로 읽는다.',
+          '$x=\\cosh t\;(t\\ge 0)$ 이면 피적분함수는 $2t=2\\operatorname{arcosh}x$ 다.'],
+  steps: ['$\\operatorname{arcosh}(2x^{2}-1)=2\\operatorname{arcosh}x$',
+          '$2\\int\\operatorname{arcosh}x\\,dx=2x\\operatorname{arcosh}x-2\\sqrt{x^{2}-1}$']
+});
+add('monster', '역쌍곡선 배각', 'atanh(2*x/(1+x^2))', '2*x*atanh(x)+ln(1-x^2)', {
+  domain: D.unit,
+  hints: ['쌍곡선 배각공식 $\\tanh 2t=\\dfrac{2\\tanh t}{1+\\tanh^{2}t}$ 를 거꾸로 읽는다.',
+          '$x=\\tanh t$ 로 두면 피적분함수가 그냥 $2t=2\\operatorname{artanh}x$ 가 된다.'],
+  steps: ['$\\operatorname{artanh}\\dfrac{2x}{1+x^{2}}=2\\operatorname{artanh}x$',
+          '$2\\int\\operatorname{artanh}x\\,dx=2x\\operatorname{artanh}x+\\ln(1-x^{2})$']
+});
+add('monster', '역쌍곡선 치환', 'asinh(x)/(1+x^2)^(3/2)', 'x*asinh(x)/sqrt(1+x^2)-ln(1+x^2)/2', {
+  domain: [0.2, 2.4],
+  hints: ['$x=\\sinh t$ 로 두면 $\\int\\dfrac{t}{\\cosh^{2}t}dt$ 로 바뀐다.',
+          '$\\int t\\operatorname{sech}^{2}t\\,dt=t\\tanh t-\\ln\\cosh t$'],
+  steps: ['$x=\\sinh t,\;dx=\\cosh t\\,dt$', '$\\int t\\operatorname{sech}^{2}t\\,dt=t\\tanh t-\\ln\\cosh t$',
+          '$\\tanh t=\\dfrac{x}{\\sqrt{1+x^{2}}},\;\\cosh t=\\sqrt{1+x^{2}}$']
+});
+add('monster', '역쌍곡선 치환', 'atanh(x)/(1-x^2)^(3/2)', 'x*atanh(x)/sqrt(1-x^2)-1/sqrt(1-x^2)', {
+  domain: D.unit,
+  hints: ['$x=\\tanh t$ 로 두면 $\\int t\\cosh t\\,dt$ 로 바뀐다.',
+          '$\\int t\\cosh t\\,dt=t\\sinh t-\\cosh t$'],
+  steps: ['$x=\\tanh t,\;dx=\\operatorname{sech}^{2}t\\,dt,\;(1-x^{2})^{3/2}=\\operatorname{sech}^{3}t$',
+          '$\\int t\\cosh t\\,dt=t\\sinh t-\\cosh t$',
+          '$\\sinh t=\\dfrac{x}{\\sqrt{1-x^{2}}},\;\\cosh t=\\dfrac{1}{\\sqrt{1-x^{2}}}$']
+});
+add('monster', '역쌍곡선 치환', 'acosh(x)/(x^2-1)^(3/2)', 'ln(x^2-1)/2-x*acosh(x)/sqrt(x^2-1)', {
+  domain: D.gt1,
+  hints: ['$x=\\cosh t$ 로 두면 $\\int\\dfrac{t}{\\sinh^{2}t}dt$ 로 바뀐다.',
+          '$\\int t\\operatorname{csch}^{2}t\\,dt=-t\\coth t+\\ln|\\sinh t|$'],
+  steps: ['$x=\\cosh t$', '$-t\\coth t+\\ln\\sinh t$',
+          '$\\coth t=\\dfrac{x}{\\sqrt{x^{2}-1}},\;\\sinh t=\\sqrt{x^{2}-1}$']
+});
+add('monster', '역쌍곡선 부분적분', 'asinh(sqrt(x))', '(2*x+1)*asinh(sqrt(x))/2-sqrt(x^2+x)/2', {
+  domain: [0.3, 3.0],
+  hints: ['$dv=dx$ 로 부분적분하면 $\\dfrac12\\int\\sqrt{\\dfrac{x}{1+x}}dx$ 가 남는다.',
+          '$u=\\sqrt x$ 로 다시 치환하면 $2\\int\\dfrac{u^{2}}{\\sqrt{1+u^{2}}}du$ 다.'],
+  steps: ['$=x\\operatorname{arsinh}\\sqrt x-\\dfrac12\\int\\dfrac{\\sqrt x}{\\sqrt{1+x}}dx$',
+          '$\\int\\sqrt{\\dfrac{x}{1+x}}dx=\\sqrt{x(1+x)}-\\operatorname{arsinh}\\sqrt x$',
+          '정리하면 $\\dfrac{(2x+1)\\operatorname{arsinh}\\sqrt x}{2}-\\dfrac{\\sqrt{x^{2}+x}}{2}$']
+});
+add('monster', '역쌍곡선 부분적분', 'atanh(sqrt(x))', '(x-1)*atanh(sqrt(x))+sqrt(x)', {
+  domain: [0.05, 0.82],
+  hints: ['$v=x-1$ 로 잡으면 남는 적분이 크게 줄어든다.',
+          '$\\left(\\operatorname{artanh}\\sqrt x\\right)\'=\\dfrac{1}{2\\sqrt x(1-x)}$'],
+  steps: ['$v=x-1$ 로 부분적분: $(x-1)\\operatorname{artanh}\\sqrt x+\\int\\dfrac{dx}{2\\sqrt x}$',
+          '$=(x-1)\\operatorname{artanh}\\sqrt x+\\sqrt x$']
+});
+add('monster', '역쌍곡선 위장', 'atanh(1/x)', 'x*atanh(1/x)+ln(x^2-1)/2', {
+  domain: D.gt1, lnAbs: true,
+  hints: ['$\\operatorname{artanh}\\dfrac1x=\\dfrac12\\ln\\dfrac{x+1}{x-1}$ 이므로 $|x|>1$ 에서 정의된다.',
+          '$\\left(\\operatorname{artanh}\\dfrac1x\\right)\'=-\\dfrac{1}{x^{2}-1}$'],
+  steps: ['$dv=dx$ 로 부분적분: $x\\operatorname{artanh}\\dfrac1x+\\int\\dfrac{x\\,dx}{x^{2}-1}$',
+          '$=x\\operatorname{artanh}\\dfrac1x+\\dfrac{\\ln|x^{2}-1|}{2}$']
+});
+add('monster', '역쌍곡선 지수', 'e^x*atanh(e^x)', 'e^x*atanh(e^x)+ln(1-e^(2*x))/2', {
+  domain: [-2.2, -0.3],
+  hints: ['$u=e^{x}$ 로 두면 $\\int\\operatorname{artanh}u\\,du$ 다.',
+          '$\\int\\operatorname{artanh}u\\,du=u\\operatorname{artanh}u+\\dfrac{\\ln(1-u^{2})}{2}$'],
+  steps: ['$u=e^{x},\;du=e^{x}dx$', '$\\int\\operatorname{artanh}u\\,du=u\\operatorname{artanh}u+\\dfrac{\\ln(1-u^{2})}{2}$',
+          '$u$ 를 되돌린다']
+});
+add('monster', '역쌍곡선 부분적분', 'asinh(x)*sqrt(1+x^2)',
+    'x*sqrt(1+x^2)*asinh(x)/2+asinh(x)^2/4-x^2/4', {
+  domain: [0.2, 2.0],
+  hints: ['$v=\\dfrac{x\\sqrt{1+x^{2}}+\\operatorname{arsinh}x}{2}$ 로 부분적분한다.',
+          '남는 적분은 $\\int\\left(\\dfrac x2+\\dfrac{\\operatorname{arsinh}x}{2\\sqrt{1+x^{2}}}\\right)dx$ 다.'],
+  steps: ['$v=\\int\\sqrt{1+x^{2}}dx=\\dfrac{x\\sqrt{1+x^{2}}+\\operatorname{arsinh}x}{2}$',
+          '$\\int\\dfrac{v}{\\sqrt{1+x^{2}}}dx=\\dfrac{x^{2}}{4}+\\dfrac{\\operatorname{arsinh}^{2}x}{4}$',
+          '두 결과를 뺀다']
 });
 
 // ================================================================== 검증 + 출력

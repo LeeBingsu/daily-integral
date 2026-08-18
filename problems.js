@@ -8,7 +8,7 @@
  *   answer    : 기준 부정적분(ASCII, +C 생략)
  *   domain    : 수치 비교에 쓰는 안전한 구간 (특이점 회피)
  *
- *   전체 640문항 - 쉬움 163 / 보통 147 / 어려움 233 / 몬스터 97
+ *   전체 692문항 - 쉬움 163 / 보통 153 / 어려움 287 / 몬스터 89
  */
 (function (root, factory) {
   var api = factory();
@@ -2500,6 +2500,54 @@
       domain: [0.25, 1.6],
       hints: ['$u=x,\\;dv=\\cosh 2x\\,dx$ 로 둔다.', '남는 적분은 $\\int\\sinh$ 다.'],
       steps: ['$u=x,\\;v=\\frac{1}{2} \\sinh\\left(2 x\\right)$', '$= \\frac{1}{2} x \\sinh\\left(2 x\\right) + \\frac{-1}{4} \\cosh\\left(2 x\\right)$']
+    },
+    {
+      id: 'm148', topic: '역쌍곡선함수',
+      integrand: 'asinh(2*x)', latex: '\\operatorname{arsinh}\\left(2 x\\right)',
+      answer: 'x*asinh(2*x)-sqrt(4*x^2+1)/2', answerLatex: 'x \\operatorname{arsinh}\\left(2 x\\right) - \\frac{\\sqrt{4 x^{2} + 1}}{2}+C',
+      domain: [-1.5, 1.7],
+      hints: ['$dv=dx$ 로 부분적분한다.', '$\\left(\\operatorname{arsinh}2x\\right)\'=\\dfrac{2}{\\sqrt{1+4x^{2}}}$'],
+      steps: ['$=x\\operatorname{arsinh}2x-\\int\\dfrac{2x}{\\sqrt{1+4x^{2}}}dx$', '$=x\\operatorname{arsinh}2x-\\dfrac{\\sqrt{4x^{2}+1}}{2}$']
+    },
+    {
+      id: 'm149', topic: '역쌍곡선함수',
+      integrand: 'acosh(2*x)', latex: '\\operatorname{arcosh}\\left(2 x\\right)',
+      answer: 'x*acosh(2*x)-sqrt(4*x^2-1)/2', answerLatex: 'x \\operatorname{arcosh}\\left(2 x\\right) - \\frac{\\sqrt{4 x^{2} - 1}}{2}+C',
+      domain: [0.7, 1.7],
+      hints: ['$dv=dx$ 로 부분적분한다.', '$\\left(\\operatorname{arcosh}2x\\right)\'=\\dfrac{2}{\\sqrt{4x^{2}-1}}$'],
+      steps: ['$=x\\operatorname{arcosh}2x-\\int\\dfrac{2x}{\\sqrt{4x^{2}-1}}dx$', '$=x\\operatorname{arcosh}2x-\\dfrac{\\sqrt{4x^{2}-1}}{2}$']
+    },
+    {
+      id: 'm150', topic: '역쌍곡선함수',
+      integrand: 'atanh(2*x)', latex: '\\operatorname{artanh}\\left(2 x\\right)',
+      answer: 'x*atanh(2*x)+ln(1-4*x^2)/4', answerLatex: 'x \\operatorname{artanh}\\left(2 x\\right) + \\frac{\\ln\\left(1 - 4 x^{2}\\right)}{4}+C',
+      domain: [-0.36, 0.36],
+      hints: ['$dv=dx$ 로 부분적분한다.', '$\\left(\\operatorname{artanh}2x\\right)\'=\\dfrac{2}{1-4x^{2}}$'],
+      steps: ['$=x\\operatorname{artanh}2x-\\int\\dfrac{2x}{1-4x^{2}}dx$', '$=x\\operatorname{artanh}2x+\\dfrac{\\ln(1-4x^{2})}{4}$']
+    },
+    {
+      id: 'm151', topic: '역쌍곡선 치환',
+      integrand: 'asinh(x)/sqrt(1+x^2)', latex: '\\frac{\\operatorname{arsinh} x}{\\sqrt{1 + x^{2}}}',
+      answer: 'asinh(x)^2/2', answerLatex: '\\frac{\\left(\\operatorname{arsinh} x\\right)^{2}}{2}+C',
+      domain: [-1.5, 1.7],
+      hints: ['$u=\\operatorname{arsinh}x$ 로 두면 $du=\\dfrac{dx}{\\sqrt{1+x^{2}}}$ 다.', '$\\int u\\,du$ 만 남는다.'],
+      steps: ['$u=\\operatorname{arsinh}x$', '$\\int u\\,du=\\dfrac{\\operatorname{arsinh}^{2}x}{2}$']
+    },
+    {
+      id: 'm152', topic: '역쌍곡선 치환',
+      integrand: 'acosh(x)/sqrt(x^2-1)', latex: '\\frac{\\operatorname{arcosh} x}{\\sqrt{x^{2} - 1}}',
+      answer: 'acosh(x)^2/2', answerLatex: '\\frac{\\left(\\operatorname{arcosh} x\\right)^{2}}{2}+C',
+      domain: [1.35, 3.4],
+      hints: ['$u=\\operatorname{arcosh}x$ 로 두면 $du=\\dfrac{dx}{\\sqrt{x^{2}-1}}$ 다.', '$\\int u\\,du$ 꼴이다.'],
+      steps: ['$u=\\operatorname{arcosh}x$', '$\\int u\\,du=\\dfrac{\\operatorname{arcosh}^{2}x}{2}$']
+    },
+    {
+      id: 'm153', topic: '역쌍곡선 치환',
+      integrand: 'atanh(x)/(1-x^2)', latex: '\\frac{\\operatorname{artanh} x}{1 - x^{2}}',
+      answer: 'atanh(x)^2/2', answerLatex: '\\frac{\\left(\\operatorname{artanh} x\\right)^{2}}{2}+C',
+      domain: [-0.72, 0.72],
+      hints: ['$u=\\operatorname{artanh}x$ 로 두면 $du=\\dfrac{dx}{1-x^{2}}$ 다.', '$\\int u\\,du$ 꼴이다.'],
+      steps: ['$u=\\operatorname{artanh}x$', '$\\int u\\,du=\\dfrac{\\operatorname{artanh}^{2}x}{2}$']
     }
   ];
 
@@ -3713,7 +3761,31 @@
       steps: ['$\\dfrac{x^{3}}{x^{4}(x^{4}+1)}$', '$u=x^{4}$', '$\\dfrac{1}{4}\\ln\\left|\\dfrac{x^{4}}{x^{4}+1}\\right|$']
     },
     {
-      id: 'h152', topic: '삼각함수 홀수차',
+      id: 'h152', topic: '삼각함수 고차',
+      integrand: 'tan(x)^5', latex: '\\tan^{5} x',
+      answer: 'tan(x)^4/4 - tan(x)^2/2 - ln(cos(x))', answerLatex: '\\frac{\\tan^{4} x}{4} - \\frac{\\tan^{2} x}{2} - \\ln\\left|\\cos x\\right|+C',
+      domain: [0.25, 1.15],
+      hints: ['$\\tan^{5}=\\tan^{3}(\\sec^{2}-1)$ 로 두 단계 내린다.', '마지막에 $\\int\\tan x\\,dx$ 가 남는다.'],
+      steps: ['$\\int\\tan^{5}=\\dfrac{\\tan^{4}}{4}-\\int\\tan^{3}$', '$\\int\\tan^{3}=\\dfrac{\\tan^{2}}{2}+\\ln|\\cos x|$']
+    },
+    {
+      id: 'h153', topic: '삼각함수 짝수차',
+      integrand: 'sin(x)^4', latex: '\\sin^{4} x',
+      answer: '3x/8 - sin(2x)/4 + sin(4x)/32', answerLatex: '\\frac{3 x}{8} - \\frac{\\sin\\left(2 x\\right)}{4} + \\frac{\\sin\\left(4 x\\right)}{32}+C',
+      domain: [0.25, 2.85],
+      hints: ['반각공식을 두 번 적용한다.', '$\\sin^{4}=\\left(\\dfrac{1-\\cos 2x}{2}\\right)^{2}$ 에서 $\\cos^{2}2x$ 를 또 내린다.'],
+      steps: ['$\\sin^{4}x=\\dfrac{1-2\\cos 2x+\\cos^{2}2x}{4}$', '$\\cos^{2}2x=\\dfrac{1+\\cos 4x}{2}$', '$=\\dfrac{3}{8}-\\dfrac{\\cos 2x}{2}+\\dfrac{\\cos 4x}{8}$']
+    },
+    {
+      id: 'h154', topic: '삼각함수 짝수차',
+      integrand: 'cos(x)^4', latex: '\\cos^{4} x',
+      answer: '3x/8 + sin(2x)/4 + sin(4x)/32', answerLatex: '\\frac{3 x}{8} + \\frac{\\sin\\left(2 x\\right)}{4} + \\frac{\\sin\\left(4 x\\right)}{32}+C',
+      domain: [0.25, 2.85],
+      hints: ['$\\cos^{4}=\\left(\\dfrac{1+\\cos 2x}{2}\\right)^{2}$ 로 시작한다.', '$\\sin^{4}$ 와 가운데 항의 부호만 다르다.'],
+      steps: ['$\\cos^{4}x=\\dfrac{1+2\\cos 2x+\\cos^{2}2x}{4}$', '$=\\dfrac{3}{8}+\\dfrac{\\cos 2x}{2}+\\dfrac{\\cos 4x}{8}$']
+    },
+    {
+      id: 'h155', topic: '삼각함수 홀수차',
       integrand: 'sin(x)^5', latex: '\\sin^{5} x',
       answer: '-cos(x)+2cos(x)^3/3-cos(x)^5/5', answerLatex: '-\\cos x + \\frac{2 \\cos^{3} x}{3} - \\frac{\\cos^{5} x}{5}+C',
       domain: [0.25, 2.85],
@@ -3721,7 +3793,7 @@
       steps: ['$\\sin^{5}x=(1-\\cos^{2}x)^{2}\\sin x$', '$u=\\cos x:\\;-\\int(1-u^{2})^{2}du$']
     },
     {
-      id: 'h153', topic: '삼각함수 홀수차',
+      id: 'h156', topic: '삼각함수 홀수차',
       integrand: 'cos(x)^5', latex: '\\cos^{5} x',
       answer: 'sin(x)-2sin(x)^3/3+sin(x)^5/5', answerLatex: '\\sin x - \\frac{2 \\sin^{3} x}{3} + \\frac{\\sin^{5} x}{5}+C',
       domain: [0.25, 2.85],
@@ -3729,7 +3801,55 @@
       steps: ['$\\cos^{5}x=(1-\\sin^{2}x)^{2}\\cos x$', '$u=\\sin x:\\;\\int(1-u^{2})^{2}du$']
     },
     {
-      id: 'h154', topic: '부분적분',
+      id: 'h157', topic: '반복 부분적분',
+      integrand: 'x^3*e^x', latex: 'x^{3} e^{x}',
+      answer: '(x^3-3x^2+6x-6)*e^x', answerLatex: '\\left(x^{3} - 3 x^{2} + 6 x - 6\\right) e^{x}+C',
+      domain: [-1.5, 1.7],
+      hints: ['부분적분을 세 번 한다.', '계수가 $3!,\\;3\\cdot 2,\\;\\ldots$ 로 떨어지는 규칙을 본다.'],
+      steps: ['$\\int x^{3}e^{x}=x^{3}e^{x}-3\\int x^{2}e^{x}$', '$\\int x^{2}e^{x}=(x^{2}-2x+2)e^{x}$', '$=(x^{3}-3x^{2}+6x-6)e^{x}$']
+    },
+    {
+      id: 'h158', topic: '반복 부분적분',
+      integrand: 'x^4*e^x', latex: 'x^{4} e^{x}',
+      answer: '(x^4-4x^3+12x^2-24x+24)*e^x', answerLatex: '\\left(x^{4} - 4 x^{3} + 12 x^{2} - 24 x + 24\\right) e^{x}+C',
+      domain: [-1.5, 1.7],
+      hints: ['부분적분을 네 번 한다.', '표(tabular) 방식으로 정리하면 실수가 줄어든다.'],
+      steps: ['$\\int x^{4}e^{x}=x^{4}e^{x}-4\\int x^{3}e^{x}$', '$\\int x^{3}e^{x}=(x^{3}-3x^{2}+6x-6)e^{x}$', '$=(x^{4}-4x^{3}+12x^{2}-24x+24)e^{x}$']
+    },
+    {
+      id: 'h159', topic: '반복 부분적분',
+      integrand: 'x^3*sin(x)', latex: 'x^{3} \\sin x',
+      answer: '-x^3*cos(x)+3x^2*sin(x)+6x*cos(x)-6sin(x)', answerLatex: '-x^{3} \\cos x + 3 x^{2} \\sin x + 6 x \\cos x - 6 \\sin x+C',
+      domain: [0.25, 2.85],
+      hints: ['부분적분을 세 번 한다.', '$\\cos\\to\\sin\\to\\cos$ 순환과 부호를 함께 관리한다.'],
+      steps: ['$u=x^{3},\\;dv=\\sin x\\,dx$', '$-x^{3}\\cos x+3\\int x^{2}\\cos x\\,dx$', '$=-x^{3}\\cos x+3x^{2}\\sin x+6x\\cos x-6\\sin x$']
+    },
+    {
+      id: 'h160', topic: '반복 부분적분',
+      integrand: 'x^3*cos(x)', latex: 'x^{3} \\cos x',
+      answer: 'x^3*sin(x)+3x^2*cos(x)-6x*sin(x)-6cos(x)', answerLatex: 'x^{3} \\sin x + 3 x^{2} \\cos x - 6 x \\sin x - 6 \\cos x+C',
+      domain: [0.25, 2.85],
+      hints: ['$u=x^{3},\\;dv=\\cos x\\,dx$ 로 시작한다.', '$\\sin$ 문제와 부호 배치가 다르다.'],
+      steps: ['$x^{3}\\sin x-3\\int x^{2}\\sin x\\,dx$', '$=x^{3}\\sin x+3x^{2}\\cos x-6x\\sin x-6\\cos x$']
+    },
+    {
+      id: 'h161', topic: '반복 부분적분',
+      integrand: 'ln(x)^3', latex: '\\left(\\ln x\\right)^{3}',
+      answer: 'x*(ln(x)^3-3ln(x)^2+6ln(x)-6)', answerLatex: 'x \\left(\\left(\\ln x\\right)^{3} - 3 \\left(\\ln x\\right)^{2} + 6 \\ln x - 6\\right)+C',
+      domain: [0.35, 2.6],
+      hints: ['$dv=dx$ 로 두고 세 번 부분적분한다.', '$\\int(\\ln x)^{2}dx$ 결과가 중간에 필요하다.'],
+      steps: ['$x(\\ln x)^{3}-3\\int(\\ln x)^{2}dx$', '$\\int(\\ln x)^{2}=x(\\ln x)^{2}-2x\\ln x+2x$']
+    },
+    {
+      id: 'h162', topic: '반복 부분적분',
+      integrand: 'ln(x)^4', latex: '\\left(\\ln x\\right)^{4}',
+      answer: 'x*(ln(x)^4-4ln(x)^3+12ln(x)^2-24ln(x)+24)', answerLatex: 'x \\left(\\left(\\ln x\\right)^{4} - 4 \\left(\\ln x\\right)^{3} + 12 \\left(\\ln x\\right)^{2} - 24 \\ln x + 24\\right)+C',
+      domain: [0.35, 2.6],
+      hints: ['$t=\\ln x$ 로 치환하면 $\\int t^{4}e^{t}dt$ 가 된다.', '$x^{4}e^{x}$ 문제와 같은 계수가 나온다.'],
+      steps: ['$t=\\ln x,\\;dx=e^{t}dt$', '$\\int t^{4}e^{t}dt=(t^{4}-4t^{3}+12t^{2}-24t+24)e^{t}$']
+    },
+    {
+      id: 'h163', topic: '부분적분',
       integrand: 'x*ln(x)^2', latex: 'x \\left(\\ln x\\right)^{2}',
       answer: 'x^2*(ln(x)^2/2 - ln(x)/2 + 1/4)', answerLatex: 'x^{2} \\left(\\frac{\\left(\\ln x\\right)^{2}}{2} - \\frac{\\ln x}{2} + \\frac{1}{4}\\right)+C',
       domain: [0.35, 2.6],
@@ -3737,7 +3857,15 @@
       steps: ['$\\dfrac{x^{2}(\\ln x)^{2}}{2}-\\int x\\ln x\\,dx$', '$\\int x\\ln x\\,dx=\\dfrac{x^{2}\\ln x}{2}-\\dfrac{x^{2}}{4}$']
     },
     {
-      id: 'h155', topic: '부분적분',
+      id: 'h164', topic: '부분적분',
+      integrand: 'x^2*ln(x)^2', latex: 'x^{2} \\left(\\ln x\\right)^{2}',
+      answer: 'x^3*(ln(x)^2/3 - 2ln(x)/9 + 2/27)', answerLatex: 'x^{3} \\left(\\frac{\\left(\\ln x\\right)^{2}}{3} - \\frac{2 \\ln x}{9} + \\frac{2}{27}\\right)+C',
+      domain: [0.35, 2.6],
+      hints: ['$u=(\\ln x)^{2},\\;dv=x^{2}dx$ 로 둔다.', '두 번 부분적분해야 로그가 사라진다.'],
+      steps: ['$\\dfrac{x^{3}(\\ln x)^{2}}{3}-\\dfrac{2}{3}\\int x^{2}\\ln x\\,dx$', '$\\int x^{2}\\ln x\\,dx=\\dfrac{x^{3}\\ln x}{3}-\\dfrac{x^{3}}{9}$']
+    },
+    {
+      id: 'h165', topic: '부분적분',
       integrand: 'ln(x)/x^2', latex: '\\frac{\\ln x}{x^{2}}',
       answer: '-ln(x)/x - 1/x', answerLatex: '\\frac{-\\ln x}{x} - \\frac{1}{x}+C',
       domain: [0.4, 3],
@@ -3745,7 +3873,7 @@
       steps: ['$u=\\ln x,\\;v=-\\dfrac{1}{1x^{1}}$', '$-\\dfrac{\\ln x}{1x^{1}}+1\\int x^{-2}dx$']
     },
     {
-      id: 'h156', topic: '부분적분',
+      id: 'h166', topic: '부분적분',
       integrand: 'ln(x)/x^3', latex: '\\frac{\\ln x}{x^{3}}',
       answer: '(-1/2)*ln(x)/x^2 - (1)/(4*x^2)', answerLatex: '\\frac{\\frac{-1}{2} \\ln x}{x^{2}} - \\frac{1}{4 x^{2}}+C',
       domain: [0.4, 3],
@@ -3753,7 +3881,7 @@
       steps: ['$u=\\ln x,\\;v=-\\dfrac{1}{2x^{2}}$', '$-\\dfrac{\\ln x}{2x^{2}}+\\dfrac{1}{2}\\int x^{-3}dx$']
     },
     {
-      id: 'h157', topic: '부분적분',
+      id: 'h167', topic: '부분적분',
       integrand: 'ln(x)/x^4', latex: '\\frac{\\ln x}{x^{4}}',
       answer: '(-1/3)*ln(x)/x^3 - (1)/(9*x^3)', answerLatex: '\\frac{\\frac{-1}{3} \\ln x}{x^{3}} - \\frac{1}{9 x^{3}}+C',
       domain: [0.4, 3],
@@ -3761,7 +3889,111 @@
       steps: ['$u=\\ln x,\\;v=-\\dfrac{1}{3x^{3}}$', '$-\\dfrac{\\ln x}{3x^{3}}+\\dfrac{1}{3}\\int x^{-4}dx$']
     },
     {
-      id: 'h158', topic: '쌍곡선 짝수차',
+      id: 'h168', topic: '곱-합 + 순환',
+      integrand: 'e^(x)sin(x)cos(x)', latex: 'e^{x} \\sin x \\cos x',
+      answer: 'e^(x)*(sin(2x) - 2cos(2x))/10', answerLatex: '\\frac{e^{x} \\left(\\sin\\left(2 x\\right) - 2 \\cos\\left(2 x\\right)\\right)}{10}+C',
+      domain: [0.05, 1.5],
+      hints: ['먼저 $\\sin x\\cos x = \\dfrac{\\sin 2x}{2}$ 로 합친다.', '그다음은 표준 순환 부분적분이다.'],
+      steps: ['$\\sin x\\cos x = \\dfrac{\\sin 2x}{2}$', '$\\dfrac{1}{2}\\int e^{x}\\sin 2x\\,dx$', '$= \\frac{e^{x} \\left(\\sin\\left(2 x\\right) - 2 \\cos\\left(2 x\\right)\\right)}{10}$']
+    },
+    {
+      id: 'h169', topic: '곱-합 + 순환',
+      integrand: 'e^(2x)sin(x)cos(x)', latex: 'e^{2 x} \\sin x \\cos x',
+      answer: 'e^(2x)*(2sin(2x) - 2cos(2x))/16', answerLatex: '\\frac{e^{2 x} \\left(2 \\sin\\left(2 x\\right) - 2 \\cos\\left(2 x\\right)\\right)}{16}+C',
+      domain: [0.05, 1.5],
+      hints: ['먼저 $\\sin x\\cos x = \\dfrac{\\sin 2x}{2}$ 로 합친다.', '그다음은 표준 순환 부분적분이다.'],
+      steps: ['$\\sin x\\cos x = \\dfrac{\\sin 2x}{2}$', '$\\dfrac{1}{2}\\int e^{2x}\\sin 2x\\,dx$', '$= \\frac{e^{2 x} \\left(2 \\sin\\left(2 x\\right) - 2 \\cos\\left(2 x\\right)\\right)}{16}$']
+    },
+    {
+      id: 'h170', topic: '역삼각 고급',
+      integrand: 'asin(x)^2', latex: '\\left(\\arcsin x\\right)^{2}',
+      answer: 'x*asin(x)^2+2*sqrt(1-x^2)*asin(x)-2x', answerLatex: 'x \\left(\\arcsin x\\right)^{2} + 2 \\sqrt{1 - x^{2}} \\arcsin x - 2 x+C',
+      domain: [-0.72, 0.72],
+      hints: ['$dv=dx$ 로 부분적분하면 $\\int\\dfrac{x\\arcsin x}{\\sqrt{1-x^{2}}}dx$ 가 남는다.', '그 적분을 다시 부분적분한다.'],
+      steps: ['$x(\\arcsin x)^{2}-2\\int\\dfrac{x\\arcsin x}{\\sqrt{1-x^{2}}}dx$', '$\\int\\dfrac{x\\arcsin x}{\\sqrt{1-x^{2}}}dx=-\\sqrt{1-x^{2}}\\arcsin x+x$']
+    },
+    {
+      id: 'h171', topic: '역삼각 고급',
+      integrand: 'x^2*atan(x)', latex: 'x^{2} \\arctan x',
+      answer: 'x^3*atan(x)/3 - x^2/6 + ln(1+x^2)/6', answerLatex: '\\frac{x^{3} \\arctan x}{3} - \\frac{x^{2}}{6} + \\frac{\\ln\\left(1 + x^{2}\\right)}{6}+C',
+      domain: [0.1, 2.5],
+      hints: ['$u=\\arctan x,\\;dv=x^{2}dx$ 로 둔다.', '남는 $\\int\\dfrac{x^{3}}{1+x^{2}}dx$ 는 나눗셈으로 정리한다.'],
+      steps: ['$\\dfrac{x^{3}\\arctan x}{3}-\\dfrac{1}{3}\\int\\dfrac{x^{3}}{1+x^{2}}dx$', '$\\dfrac{x^{3}}{1+x^{2}}=x-\\dfrac{x}{1+x^{2}}$']
+    },
+    {
+      id: 'h172', topic: '역삼각 고급',
+      integrand: 'atan(sqrt(x))', latex: '\\arctan\\left(\\sqrt{x}\\right)',
+      answer: '(x+1)*atan(sqrt(x))-sqrt(x)', answerLatex: '\\left(x + 1\\right) \\arctan\\left(\\sqrt{x}\\right) - \\sqrt{x}+C',
+      domain: [0.2, 3],
+      hints: ['$t=\\sqrt{x}$ 로 치환한 뒤 부분적분한다.', '$v=x+1$ 처럼 적분상수를 잘 고르면 깔끔해진다.'],
+      steps: ['$u=\\arctan\\sqrt{x},\\;v=x+1$', '$(x+1)\\arctan\\sqrt{x}-\\int\\dfrac{x+1}{2\\sqrt{x}(1+x)}dx$']
+    },
+    {
+      id: 'h173', topic: '유리식 부분적분',
+      integrand: '1/(x^2+1)^2', latex: '\\frac{1}{\\left(x^{2} + 1\\right)^{2}}',
+      answer: 'x/(2*(x^2+1))+atan(x)/2', answerLatex: '\\frac{x}{2 \\left(x^{2} + 1\\right)} + \\frac{\\arctan x}{2}+C',
+      domain: [-1.5, 2.2],
+      hints: ['$x=\\tan\\theta$ 로 치환하면 $\\int\\cos^{2}\\theta\\,d\\theta$ 가 된다.', '점화식으로 풀어도 된다.'],
+      steps: ['$x=\\tan\\theta,\\;dx=\\sec^{2}\\theta\\,d\\theta$', '$\\int\\cos^{2}\\theta\\,d\\theta=\\dfrac{\\theta}{2}+\\dfrac{\\sin 2\\theta}{4}$']
+    },
+    {
+      id: 'h174', topic: '유리식 부분적분',
+      integrand: 'x^2/(x^2+1)^2', latex: '\\frac{x^{2}}{\\left(x^{2} + 1\\right)^{2}}',
+      answer: 'atan(x)/2 - x/(2*(x^2+1))', answerLatex: '\\frac{\\arctan x}{2} - \\frac{x}{2 \\left(x^{2} + 1\\right)}+C',
+      domain: [-1.5, 2.2],
+      hints: ['$\\dfrac{x^{2}}{(x^{2}+1)^{2}}=\\dfrac{1}{x^{2}+1}-\\dfrac{1}{(x^{2}+1)^{2}}$', '앞 문제 결과를 재활용한다.'],
+      steps: ['$\\dfrac{x^{2}}{(x^{2}+1)^{2}}=\\dfrac{1}{x^{2}+1}-\\dfrac{1}{(x^{2}+1)^{2}}$', '$\\arctan x-\\left(\\dfrac{x}{2(x^{2}+1)}+\\dfrac{\\arctan x}{2}\\right)$']
+    },
+    {
+      id: 'h175', topic: '치환+부분분수',
+      integrand: 'x^3/(x^2+1)^2', latex: '\\frac{x^{3}}{\\left(x^{2} + 1\\right)^{2}}',
+      answer: 'ln(x^2+1)/2 + 1/(2*(x^2+1))', answerLatex: '\\frac{\\ln\\left(x^{2} + 1\\right)}{2} + \\frac{1}{2 \\left(x^{2} + 1\\right)}+C',
+      domain: [0.1, 2.5],
+      hints: ['$u=x^{2}+1$ 로 두면 $x^{2}=u-1$ 다.', '$\\dfrac{1}{2}\\int\\dfrac{u-1}{u^{2}}du$ 로 정리된다.'],
+      steps: ['$u=x^{2}+1,\\;du=2x\\,dx$', '$\\dfrac{1}{2}\\int\\left(\\dfrac{1}{u}-\\dfrac{1}{u^{2}}\\right)du$']
+    },
+    {
+      id: 'h176', topic: '치환+부분분수',
+      integrand: 'x^3/(x^2+2)^2', latex: '\\frac{x^{3}}{\\left(x^{2} + 2\\right)^{2}}',
+      answer: 'ln(x^2+2)/2 + 2/(2*(x^2+2))', answerLatex: '\\frac{\\ln\\left(x^{2} + 2\\right)}{2} + \\frac{2}{2 \\left(x^{2} + 2\\right)}+C',
+      domain: [0.1, 2.5],
+      hints: ['$u=x^{2}+2$ 로 두면 $x^{2}=u-2$ 다.', '$\\dfrac{1}{2}\\int\\dfrac{u-2}{u^{2}}du$ 로 정리된다.'],
+      steps: ['$u=x^{2}+2,\\;du=2x\\,dx$', '$\\dfrac{1}{2}\\int\\left(\\dfrac{1}{u}-\\dfrac{2}{u^{2}}\\right)du$']
+    },
+    {
+      id: 'h177', topic: '치환+부분분수',
+      integrand: 'x^3/(x^2+4)^2', latex: '\\frac{x^{3}}{\\left(x^{2} + 4\\right)^{2}}',
+      answer: 'ln(x^2+4)/2 + 4/(2*(x^2+4))', answerLatex: '\\frac{\\ln\\left(x^{2} + 4\\right)}{2} + \\frac{4}{2 \\left(x^{2} + 4\\right)}+C',
+      domain: [0.1, 2.5],
+      hints: ['$u=x^{2}+4$ 로 두면 $x^{2}=u-4$ 다.', '$\\dfrac{1}{2}\\int\\dfrac{u-4}{u^{2}}du$ 로 정리된다.'],
+      steps: ['$u=x^{2}+4,\\;du=2x\\,dx$', '$\\dfrac{1}{2}\\int\\left(\\dfrac{1}{u}-\\dfrac{4}{u^{2}}\\right)du$']
+    },
+    {
+      id: 'h178', topic: '기교',
+      integrand: 'e^x*(x^2+1)/(x+1)^2', latex: '\\frac{e^{x} \\left(x^{2} + 1\\right)}{\\left(x + 1\\right)^{2}}',
+      answer: 'e^x*(x-1)/(x+1)', answerLatex: '\\frac{e^{x} \\left(x - 1\\right)}{x + 1}+C',
+      domain: [0.1, 2.2],
+      hints: ['$\\dfrac{x^{2}+1}{(x+1)^{2}}=f(x)+f\'(x)$ 꼴로 쪼갤 수 있는지 본다.', '$\\int e^{x}(f+f\')dx=e^{x}f$ 를 쓴다.'],
+      steps: ['$\\dfrac{x^{2}+1}{(x+1)^{2}}=\\dfrac{x-1}{x+1}+\\dfrac{2}{(x+1)^{2}}$', '$f=\\dfrac{x-1}{x+1},\\;f\'=\\dfrac{2}{(x+1)^{2}}$', '$\\int e^{x}(f+f\')dx=e^{x}f$']
+    },
+    {
+      id: 'h179', topic: '삼각치환 고급',
+      integrand: 'x^2*sqrt(1-x^2)', latex: 'x^{2} \\sqrt{1 - x^{2}}',
+      answer: '(1/8)*asin(x) - x*(1-2x^2)*sqrt(1-x^2)/8', answerLatex: '\\frac{1}{8} \\arcsin x - \\frac{x \\left(1 - 2 x^{2}\\right) \\sqrt{1 - x^{2}}}{8}+C',
+      domain: [-0.72, 0.72],
+      hints: ['$x=\\sin\\theta$ 로 치환하면 $\\int\\sin^{2}\\theta\\cos^{2}\\theta\\,d\\theta$ 가 된다.', '$\\sin^{2}\\theta\\cos^{2}\\theta=\\dfrac{\\sin^{2}2\\theta}{4}$ 로 차수를 내린다.'],
+      steps: ['$x=\\sin\\theta$', '$1\\int\\dfrac{\\sin^{2}2\\theta}{4}d\\theta$', '반각공식을 한 번 더 적용한 뒤 $x$ 로 되돌린다']
+    },
+    {
+      id: 'h180', topic: '삼각치환 고급',
+      integrand: 'x^2*sqrt(4-x^2)', latex: 'x^{2} \\sqrt{4 - x^{2}}',
+      answer: '2*asin(x/2) - x*(4-2x^2)*sqrt(4-x^2)/8', answerLatex: '2 \\arcsin\\left(\\frac{x}{2}\\right) - \\frac{x \\left(4 - 2 x^{2}\\right) \\sqrt{4 - x^{2}}}{8}+C',
+      domain: [-1.44, 1.44],
+      hints: ['$x=2\\sin\\theta$ 로 치환하면 $\\int\\sin^{2}\\theta\\cos^{2}\\theta\\,d\\theta$ 가 된다.', '$\\sin^{2}\\theta\\cos^{2}\\theta=\\dfrac{\\sin^{2}2\\theta}{4}$ 로 차수를 내린다.'],
+      steps: ['$x=2\\sin\\theta$', '$16\\int\\dfrac{\\sin^{2}2\\theta}{4}d\\theta$', '반각공식을 한 번 더 적용한 뒤 $x$ 로 되돌린다']
+    },
+    {
+      id: 'h181', topic: '쌍곡선 짝수차',
       integrand: 'sech(x)^4', latex: '\\operatorname{sech}^{4} x',
       answer: 'tanh(x)-tanh(x)^3/3', answerLatex: '\\tanh x - \\frac{\\tanh^{3} x}{3}+C',
       domain: [0.25, 1.6],
@@ -3769,7 +4001,7 @@
       steps: ['$\\operatorname{sech}^{4}x=(1-\\tanh^{2}x)\\operatorname{sech}^{2}x$', '$u=\\tanh x:\\;\\int(1-u^{2})du$']
     },
     {
-      id: 'h159', topic: '쌍곡선 짝수차',
+      id: 'h182', topic: '쌍곡선 짝수차',
       integrand: 'tanh(x)^4', latex: '\\tanh^{4} x',
       answer: 'x-tanh(x)-tanh(x)^3/3', answerLatex: 'x - \\tanh x - \\frac{\\tanh^{3} x}{3}+C',
       domain: [0.25, 1.6],
@@ -3777,7 +4009,15 @@
       steps: ['$\\int\\tanh^{4}=\\int\\tanh^{2}-\\int\\tanh^{2}\\operatorname{sech}^{2}$', '$=x-\\tanh x-\\dfrac{\\tanh^{3}x}{3}$']
     },
     {
-      id: 'h160', topic: '역쌍곡선 고급',
+      id: 'h183', topic: '역쌍곡선 고급',
+      integrand: 'x*asinh(x)', latex: 'x \\operatorname{arsinh} x',
+      answer: '(2x^2+1)*asinh(x)/4 - x*sqrt(x^2+1)/4', answerLatex: '\\frac{\\left(2 x^{2} + 1\\right) \\operatorname{arsinh} x}{4} - \\frac{x \\sqrt{x^{2} + 1}}{4}+C',
+      domain: [0.1, 2.2],
+      hints: ['$u=\\operatorname{arsinh}x,\\;dv=x\\,dx$ 로 둔다.', '$v=\\dfrac{x^{2}}{2}$ 대신 $\\dfrac{x^{2}+1}{2}$ 를 쓰면 남는 적분이 간단해진다.'],
+      steps: ['$u=\\operatorname{arsinh}x,\\;v=\\dfrac{2x^{2}+1}{4}$ 로 잡는다', '남는 적분 $\\int\\dfrac{x^{2}}{\\sqrt{x^{2}+1}}dx$ 를 정리한다']
+    },
+    {
+      id: 'h184', topic: '역쌍곡선 고급',
       integrand: 'acosh(x)', latex: '\\operatorname{arcosh} x',
       answer: 'x*acosh(x)-sqrt(x^2-1)', answerLatex: 'x \\operatorname{arcosh} x - \\sqrt{x^{2} - 1}+C',
       domain: [1.3, 3.2],
@@ -3785,7 +4025,39 @@
       steps: ['$u=\\operatorname{arcosh}x,\\;dv=dx$', '$x\\operatorname{arcosh}x-\\int\\dfrac{x}{\\sqrt{x^{2}-1}}dx$']
     },
     {
-      id: 'h161', topic: '부분적분',
+      id: 'h185', topic: '쌍곡선 고급',
+      integrand: 'x^2*sqrt(x^2+1)', latex: 'x^{2} \\sqrt{x^{2} + 1}',
+      answer: 'x*(x^2+1)^(3/2)/4 - x*sqrt(x^2+1)/8 - asinh(x)/8', answerLatex: '\\frac{x \\left(x^{2} + 1\\right)^{\\frac{3}{2}}}{4} - \\frac{x \\sqrt{x^{2} + 1}}{8} - \\frac{\\operatorname{arsinh} x}{8}+C',
+      domain: [-1.3, 2],
+      hints: ['$x=\\sinh\\theta$ 로 치환하면 $\\int\\sinh^{2}\\theta\\cosh^{2}\\theta\\,d\\theta$ 가 된다.', '$\\sinh^{2}\\cosh^{2}=\\dfrac{\\sinh^{2}2\\theta}{4}$ 로 내린다.'],
+      steps: ['$x=\\sinh\\theta$', '$\\dfrac{1}{4}\\int\\sinh^{2}2\\theta\\,d\\theta$', '$\\sinh^{2}u=\\dfrac{\\cosh 2u-1}{2}$ 를 한 번 더 적용한다']
+    },
+    {
+      id: 'h186', topic: '쌍곡선 고급',
+      integrand: 'sqrt(x^2+1)^3', latex: '\\sqrt{x^{2} + 1}^{3}',
+      answer: 'x*(x^2+1)^(3/2)/4 + 3*x*sqrt(x^2+1)/8 + 3*asinh(x)/8', answerLatex: '\\frac{x \\left(x^{2} + 1\\right)^{\\frac{3}{2}}}{4} + \\frac{3 x \\sqrt{x^{2} + 1}}{8} + \\frac{3 \\operatorname{arsinh} x}{8}+C',
+      domain: [-1.3, 2],
+      hints: ['$(x^{2}+1)^{3/2}$ 이므로 $x=\\sinh\\theta$ 로 두면 $\\int\\cosh^{4}\\theta\\,d\\theta$ 다.', '$\\cosh^{4}$ 는 반각공식을 두 번 쓴다.'],
+      steps: ['$x=\\sinh\\theta$', '$\\int\\cosh^{4}\\theta\\,d\\theta$', '$\\cosh^{2}u=\\dfrac{\\cosh 2u+1}{2}$ 를 두 번 적용']
+    },
+    {
+      id: 'h187', topic: '쌍곡선 순환',
+      integrand: 'e^(2x)cosh(x)', latex: 'e^{2 x} \\cosh x',
+      answer: 'e^(2x)*(2cosh(x) - sinh(x))/3', answerLatex: '\\frac{e^{2 x} \\left(2 \\cosh x - \\sinh x\\right)}{3}+C',
+      domain: [0.05, 1.3],
+      hints: ['$\\cosh$ 를 지수로 풀어 항별로 적분한다.', '분모는 $4-1=3$ 이다.'],
+      steps: ['$\\cosh x = \\dfrac{e^{x}+e^{-x}}{2}$', '$= \\frac{e^{2 x} \\left(2 \\cosh x - \\sinh x\\right)}{3}$']
+    },
+    {
+      id: 'h188', topic: '쌍곡선 순환',
+      integrand: 'e^(3x)cosh(2x)', latex: 'e^{3 x} \\cosh\\left(2 x\\right)',
+      answer: 'e^(3x)*(3cosh(2x) - 2sinh(2x))/5', answerLatex: '\\frac{e^{3 x} \\left(3 \\cosh\\left(2 x\\right) - 2 \\sinh\\left(2 x\\right)\\right)}{5}+C',
+      domain: [0.05, 1.3],
+      hints: ['$\\cosh$ 를 지수로 풀어 항별로 적분한다.', '분모는 $9-4=5$ 이다.'],
+      steps: ['$\\cosh 2x = \\dfrac{e^{2x}+e^{-2x}}{2}$', '$= \\frac{e^{3 x} \\left(3 \\cosh\\left(2 x\\right) - 2 \\sinh\\left(2 x\\right)\\right)}{5}$']
+    },
+    {
+      id: 'h189', topic: '부분적분',
       integrand: 'x*sec(x)^2', latex: 'x \\sec^{2} x',
       answer: 'x*tan(x)+ln(cos(x))', answerLatex: 'x \\tan x + \\ln\\left|\\cos x\\right|+C',
       domain: [0.25, 1.15],
@@ -3793,7 +4065,119 @@
       steps: ['$u=x,\\;v=\\tan x$', '$x\\tan x-\\int\\tan x\\,dx = x\\tan x+\\ln|\\cos x|$']
     },
     {
-      id: 'h162', topic: '부분적분',
+      id: 'h190', topic: '반복 부분적분',
+      integrand: 'ln(x)^2/x^2', latex: '\\frac{\\left(\\ln x\\right)^{2}}{x^{2}}',
+      answer: '-(ln(x)^2+2ln(x)+2)/x', answerLatex: '\\frac{-\\left(\\left(\\ln x\\right)^{2} + 2 \\ln x + 2\\right)}{x}+C',
+      domain: [0.4, 3],
+      hints: ['$u=(\\ln x)^{2},\\;dv=x^{-2}dx$ 로 두고 두 번 부분적분한다.', '$\\int\\dfrac{\\ln x}{x^{2}}dx=-\\dfrac{\\ln x+1}{x}$ 를 중간에 쓴다.'],
+      steps: ['$-\\dfrac{(\\ln x)^{2}}{x}+2\\int\\dfrac{\\ln x}{x^{2}}dx$', '$\\int\\dfrac{\\ln x}{x^{2}}dx=-\\dfrac{\\ln x+1}{x}$', '$= -\\dfrac{(\\ln x)^{2}+2\\ln x+2}{x}$']
+    },
+    {
+      id: 'h191', topic: '부분적분',
+      integrand: 'atan(x)/x^2', latex: '\\frac{\\arctan x}{x^{2}}',
+      answer: '-atan(x)/x+ln(x)-ln(1+x^2)/2', answerLatex: '\\frac{-\\arctan x}{x} + \\ln\\left|x\\right| - \\frac{\\ln\\left|1 + x^{2}\\right|}{2}+C',
+      domain: [0.3, 2.5],
+      hints: ['$u=\\arctan x,\\;dv=x^{-2}dx$ 로 둔다.', '남는 $\\int\\dfrac{dx}{x(1+x^{2})}$ 는 부분분수로 나눈다.'],
+      steps: ['$-\\dfrac{\\arctan x}{x}+\\int\\dfrac{dx}{x(1+x^{2})}$', '$\\dfrac{1}{x(1+x^{2})}=\\dfrac{1}{x}-\\dfrac{x}{1+x^{2}}$']
+    },
+    {
+      id: 'h192', topic: '부분적분',
+      integrand: 'ln(x)/(1+x)^2', latex: '\\frac{\\ln x}{\\left(1 + x\\right)^{2}}',
+      answer: '-ln(x)/(1+x)+ln(x)-ln(1+x)', answerLatex: '\\frac{-\\ln\\left|x\\right|}{1 + x} + \\ln\\left|x\\right| - \\ln\\left|1 + x\\right|+C',
+      domain: [0.3, 3],
+      hints: ['$dv=(1+x)^{-2}dx$ 로 두면 $v=-\\dfrac{1}{1+x}$ 다.', '남는 $\\int\\dfrac{dx}{x(1+x)}$ 는 부분분수다.'],
+      steps: ['$-\\dfrac{\\ln x}{1+x}+\\int\\dfrac{dx}{x(1+x)}$', '$\\dfrac{1}{x(1+x)}=\\dfrac{1}{x}-\\dfrac{1}{1+x}$']
+    },
+    {
+      id: 'h193', topic: '기교',
+      integrand: 'x*e^x/(1+x)^2', latex: '\\frac{x e^{x}}{\\left(1 + x\\right)^{2}}',
+      answer: 'e^x/(1+x)', answerLatex: '\\frac{e^{x}}{1 + x}+C',
+      domain: [0.2, 2.5],
+      hints: ['$\\dfrac{x}{(1+x)^{2}}=\\dfrac{1}{1+x}-\\dfrac{1}{(1+x)^{2}}$ 로 쪼갠다.', '$f=\\dfrac{1}{1+x}$ 라 하면 $f\'=-\\dfrac{1}{(1+x)^{2}}$ 이고 $\\int e^{x}(f+f\')dx=e^{x}f$ 다.'],
+      steps: ['$\\dfrac{x}{(1+x)^{2}}=\\dfrac{1}{1+x}-\\dfrac{1}{(1+x)^{2}}$', '$f=\\dfrac{1}{1+x},\\; f\'=-\\dfrac{1}{(1+x)^{2}}$', '$\\int e^{x}(f+f\')dx=\\dfrac{e^{x}}{1+x}$']
+    },
+    {
+      id: 'h194', topic: '삼각 유리식',
+      integrand: 'sin(x)/(1+sin(x))', latex: '\\frac{\\sin x}{1 + \\sin x}',
+      answer: 'x-tan(x)+sec(x)', answerLatex: 'x - \\tan x + \\sec x+C',
+      domain: [0.2, 1.2],
+      hints: ['$\\dfrac{\\sin x}{1+\\sin x}=1-\\dfrac{1}{1+\\sin x}$ 로 쪼갠다.', '$\\int\\dfrac{dx}{1+\\sin x}=\\tan x-\\sec x$ 를 쓴다.'],
+      steps: ['$\\dfrac{\\sin x}{1+\\sin x}=1-\\dfrac{1}{1+\\sin x}$', '$\\int\\dfrac{dx}{1+\\sin x}=\\tan x-\\sec x$']
+    },
+    {
+      id: 'h195', topic: '삼각 유리식',
+      integrand: 'cos(x)/(1+cos(x))', latex: '\\frac{\\cos x}{1 + \\cos x}',
+      answer: 'x-tan(x/2)', answerLatex: 'x - \\tan\\left(\\frac{x}{2}\\right)+C',
+      domain: [0.2, 2.4],
+      hints: ['$\\dfrac{\\cos x}{1+\\cos x}=1-\\dfrac{1}{1+\\cos x}$', '$\\int\\dfrac{dx}{1+\\cos x}=\\tan\\dfrac{x}{2}$'],
+      steps: ['$\\dfrac{\\cos x}{1+\\cos x}=1-\\dfrac{1}{1+\\cos x}$', '$1+\\cos x=2\\cos^{2}\\dfrac{x}{2}$']
+    },
+    {
+      id: 'h196', topic: '삼각치환 고급',
+      integrand: 'sqrt(x^2+1)/x', latex: '\\frac{\\sqrt{x^{2} + 1}}{x}',
+      answer: 'sqrt(x^2+1)-ln((1+sqrt(x^2+1))/x)', answerLatex: '\\sqrt{x^{2} + 1} - \\ln\\left|\\frac{1 + \\sqrt{x^{2} + 1}}{x}\\right|+C',
+      domain: [0.35, 2.6],
+      hints: ['$x=\\sinh\\theta$ 로 두면 $\\int\\dfrac{\\cosh^{2}\\theta}{\\sinh\\theta}d\\theta$ 가 된다.', '$u=\\sqrt{x^{2}+1}$ 치환으로 유리식으로 바꿔도 된다.'],
+      steps: ['$u=\\sqrt{x^{2}+1},\\;u\\,du=x\\,dx$', '$\\int\\dfrac{u^{2}}{u^{2}-1}du$', '$= u+\\dfrac{1}{2}\\ln\\left|\\dfrac{u-1}{u+1}\\right|$ 를 정리한다']
+    },
+    {
+      id: 'h197', topic: '삼각치환 고급',
+      integrand: 'sqrt(x^2-1)/x', latex: '\\frac{\\sqrt{x^{2} - 1}}{x}',
+      answer: 'sqrt(x^2-1)-atan(sqrt(x^2-1))', answerLatex: '\\sqrt{x^{2} - 1} - \\arctan\\left(\\sqrt{x^{2} - 1}\\right)+C',
+      domain: [1.3, 3.2],
+      hints: ['$x=\\sec\\theta$ 로 두면 $\\int\\tan^{2}\\theta\\,d\\theta$ 가 된다.', '$\\tan^{2}=\\sec^{2}-1$ 로 내린다.'],
+      steps: ['$x=\\sec\\theta$', '$\\int\\tan^{2}\\theta\\,d\\theta=\\tan\\theta-\\theta$', '$\\tan\\theta=\\sqrt{x^{2}-1},\\;\\theta=\\operatorname{arcsec}x$']
+    },
+    {
+      id: 'h198', topic: '치환+부분적분',
+      integrand: 'x^3*e^(x^2)', latex: 'x^{3} e^{x^{2}}',
+      answer: 'e^(x^2)*(x^2-1)/2', answerLatex: '\\frac{e^{x^{2}} \\left(x^{2} - 1\\right)}{2}+C',
+      domain: [0.1, 1.3],
+      hints: ['$u=x^{2}$ 로 두면 $\\dfrac{1}{2}\\int ue^{u}du$ 가 된다.', '그다음은 부분적분이다.'],
+      steps: ['$u=x^{2},\\;du=2x\\,dx$', '$\\dfrac{1}{2}\\int ue^{u}du=\\dfrac{(u-1)e^{u}}{2}$']
+    },
+    {
+      id: 'h199', topic: '치환+부분적분',
+      integrand: 'x^5*e^(x^2)', latex: 'x^{5} e^{x^{2}}',
+      answer: 'e^(x^2)*(x^4-2x^2+2)/2', answerLatex: '\\frac{e^{x^{2}} \\left(x^{4} - 2 x^{2} + 2\\right)}{2}+C',
+      domain: [0.1, 1.2],
+      hints: ['$u=x^{2}$ 로 두면 $\\dfrac{1}{2}\\int u^{2}e^{u}du$ 다.', '부분적분을 두 번 한다.'],
+      steps: ['$u=x^{2}$', '$\\dfrac{1}{2}\\int u^{2}e^{u}du=\\dfrac{(u^{2}-2u+2)e^{u}}{2}$']
+    },
+    {
+      id: 'h200', topic: '치환+부분적분',
+      integrand: 'x^3*sin(x^2)', latex: 'x^{3} \\sin\\left(x^{2}\\right)',
+      answer: '(sin(x^2)-x^2*cos(x^2))/2', answerLatex: '\\frac{\\sin\\left(x^{2}\\right) - x^{2} \\cos\\left(x^{2}\\right)}{2}+C',
+      domain: [0.2, 1.6],
+      hints: ['$u=x^{2}$ 로 두면 $\\dfrac{1}{2}\\int u\\sin u\\,du$ 가 된다.', '부분적분으로 마무리한다.'],
+      steps: ['$u=x^{2},\\;du=2x\\,dx$', '$\\dfrac{1}{2}\\int u\\sin u\\,du=\\dfrac{\\sin u-u\\cos u}{2}$']
+    },
+    {
+      id: 'h201', topic: '부분적분',
+      integrand: 'x*csc(x)^2', latex: 'x \\csc^{2} x',
+      answer: '-x*cot(x)+ln(sin(x))', answerLatex: '-x \\cot x + \\ln\\left|\\sin x\\right|+C',
+      domain: [0.45, 2.3],
+      hints: ['$u=x,\\;dv=\\csc^{2}x\\,dx$ 로 둔다.', '남는 $\\int\\cot x\\,dx$ 를 처리한다.'],
+      steps: ['$u=x,\\;v=-\\cot x$', '$-x\\cot x+\\int\\cot x\\,dx=-x\\cot x+\\ln|\\sin x|$']
+    },
+    {
+      id: 'h202', topic: '쌍곡선 짝수차',
+      integrand: 'sinh(x)^4', latex: '\\sinh^{4} x',
+      answer: '3x/8 - sinh(2x)/4 + sinh(4x)/32', answerLatex: '\\frac{3 x}{8} - \\frac{\\sinh\\left(2 x\\right)}{4} + \\frac{\\sinh\\left(4 x\\right)}{32}+C',
+      domain: [0.2, 1.4],
+      hints: ['$\\sinh^{2}u=\\dfrac{\\cosh 2u-1}{2}$ 를 두 번 적용한다.', '$\\sin^{4}$ 과 형태가 비슷하지만 부호가 다르다.'],
+      steps: ['$\\sinh^{4}x=\\dfrac{(\\cosh 2x-1)^{2}}{4}$', '$\\cosh^{2}2x=\\dfrac{\\cosh 4x+1}{2}$', '$=\\dfrac{3}{8}-\\dfrac{\\cosh 2x}{2}+\\dfrac{\\cosh 4x}{8}$']
+    },
+    {
+      id: 'h203', topic: '쌍곡선 짝수차',
+      integrand: 'cosh(x)^4', latex: '\\cosh^{4} x',
+      answer: '3x/8 + sinh(2x)/4 + sinh(4x)/32', answerLatex: '\\frac{3 x}{8} + \\frac{\\sinh\\left(2 x\\right)}{4} + \\frac{\\sinh\\left(4 x\\right)}{32}+C',
+      domain: [0.2, 1.4],
+      hints: ['$\\cosh^{2}u=\\dfrac{\\cosh 2u+1}{2}$ 를 두 번 적용한다.', '$\\sinh^{4}$ 과 가운데 항의 부호만 다르다.'],
+      steps: ['$\\cosh^{4}x=\\dfrac{(\\cosh 2x+1)^{2}}{4}$', '$=\\dfrac{3}{8}+\\dfrac{\\cosh 2x}{2}+\\dfrac{\\cosh 4x}{8}$']
+    },
+    {
+      id: 'h204', topic: '부분적분',
       integrand: 'x*arctan(x)', latex: 'x \\arctan x',
       answer: '(x^2+1)*arctan(x)/2 - x/2', answerLatex: '\\frac{\\left(x^{2} + 1\\right) \\arctan x}{2} - \\frac{x}{2}+C',
       domain: [0.3, 2.4],
@@ -3801,7 +4185,7 @@
       steps: ['$v=\\dfrac{x^{2}+1}{2}$ 로 두면 $\\int x\\arctan x\\,dx=\\dfrac{(x^{2}+1)\\arctan x}{2}-\\dfrac12\\int dx$', '$=\\dfrac{(x^{2}+1)\\arctan x}{2}-\\dfrac{x}{2}$']
     },
     {
-      id: 'h163', topic: '지수 치환',
+      id: 'h205', topic: '지수 치환',
       integrand: 'e^(2*x)/sqrt(e^x+1)', latex: '\\frac{e^{2 x}}{\\sqrt{e^{x} + 1}}',
       answer: '2*(e^x+1)^(3/2)/3-2*sqrt(e^x+1)', answerLatex: '\\frac{2 \\left(e^{x} + 1\\right)^{\\frac{3}{2}}}{3} - 2 \\sqrt{e^{x} + 1}+C',
       domain: [-1, 1.6],
@@ -3809,7 +4193,7 @@
       steps: ['$u=e^{x}$', '$\\int\\dfrac{(u+1)-1}{\\sqrt{u+1}}du=\\dfrac{2(u+1)^{3/2}}{3}-2\\sqrt{u+1}$']
     },
     {
-      id: 'h164', topic: '삼각 치환',
+      id: 'h206', topic: '삼각 치환',
       integrand: '1/(x*sqrt(x^2-1))', latex: '\\frac{1}{x \\sqrt{x^{2} - 1}}',
       answer: 'arctan(sqrt(x^2-1))', answerLatex: '\\arctan\\left(\\sqrt{x^{2} - 1}\\right)+C',
       domain: [1.35, 3.4],
@@ -3817,7 +4201,7 @@
       steps: ['$u=\\sqrt{x^{2}-1},;x^{2}=u^{2}+1$', '$\\int\\dfrac{du}{u^{2}+1}=\\arctan\\sqrt{x^{2}-1}$']
     },
     {
-      id: 'h165', topic: '쌍곡선 치환',
+      id: 'h207', topic: '쌍곡선 치환',
       integrand: 'sqrt(1+x^2)/x^2', latex: '\\frac{\\sqrt{1 + x^{2}}}{x^{2}}',
       answer: 'asinh(x)-sqrt(1+x^2)/x', answerLatex: '\\operatorname{arsinh} x - \\frac{\\sqrt{1 + x^{2}}}{x}+C',
       domain: [0.35, 2.6],
@@ -3825,7 +4209,7 @@
       steps: ['$\\int\\dfrac{\\sqrt{1+x^{2}}}{x^{2}}dx=-\\dfrac{\\sqrt{1+x^{2}}}{x}+\\int\\dfrac{dx}{\\sqrt{1+x^{2}}}$', '$=\\operatorname{arsinh}x-\\dfrac{\\sqrt{1+x^{2}}}{x}$']
     },
     {
-      id: 'h166', topic: '역삼각 부분적분',
+      id: 'h208', topic: '역삼각 부분적분',
       integrand: 'arctan(sqrt(x))', latex: '\\arctan\\left(\\sqrt{x}\\right)',
       answer: '(x+1)*arctan(sqrt(x))-sqrt(x)', answerLatex: '\\left(x + 1\\right) \\arctan\\left(\\sqrt{x}\\right) - \\sqrt{x}+C',
       domain: [0.35, 2.6],
@@ -3833,7 +4217,7 @@
       steps: ['$v=x+1$ 로 부분적분: $(x+1)\\arctan\\sqrt{x}-\\int\\dfrac{x+1}{2\\sqrt{x}(1+x)}dx$', '$=(x+1)\\arctan\\sqrt{x}-\\sqrt{x}$']
     },
     {
-      id: 'h167', topic: '미분 꼴 알아보기',
+      id: 'h209', topic: '미분 꼴 알아보기',
       integrand: 'e^x*(1/x-1/x^2)', latex: 'e^{x} \\left(\\frac{1}{x} - \\frac{1}{x^{2}}\\right)',
       answer: 'e^x/x', answerLatex: '\\frac{e^{x}}{x}+C',
       domain: [0.35, 2.6],
@@ -3841,7 +4225,7 @@
       steps: ['$f=\\dfrac1x$', '$\\int e^{x}(f+f\')dx=e^{x}f=\\dfrac{e^{x}}{x}$']
     },
     {
-      id: 'h168', topic: '미분 꼴 알아보기',
+      id: 'h210', topic: '미분 꼴 알아보기',
       integrand: 'e^x*(x*ln(x)+1)/x', latex: '\\frac{e^{x} \\left(x \\ln x + 1\\right)}{x}',
       answer: 'e^x*ln(x)', answerLatex: 'e^{x} \\ln x+C',
       domain: [0.35, 2.6],
@@ -3849,7 +4233,7 @@
       steps: ['$e^{x}\\left(\\ln x+\\dfrac1x\\right)$', '$\\int e^{x}(f+f\')dx=e^{x}\\ln x$']
     },
     {
-      id: 'h169', topic: '미분 꼴 알아보기',
+      id: 'h211', topic: '미분 꼴 알아보기',
       integrand: '(ln(x)-1)/ln(x)^2', latex: '\\frac{\\ln x - 1}{\\left(\\ln x\\right)^{2}}',
       answer: 'x/ln(x)', answerLatex: '\\frac{x}{\\ln x}+C',
       domain: [1.4, 4.2],
@@ -3857,7 +4241,7 @@
       steps: ['$\\left(\\dfrac{x}{\\ln x}\\right)\'=\\dfrac{\\ln x-x\\cdot\\frac1x}{\\ln^{2}x}=\\dfrac{\\ln x-1}{\\ln^{2}x}$', '따라서 원시함수는 $\\dfrac{x}{\\ln x}$']
     },
     {
-      id: 'h170', topic: '미분 꼴 알아보기',
+      id: 'h212', topic: '미분 꼴 알아보기',
       integrand: '(x*cos(x)-sin(x))/x^2', latex: '\\frac{x \\cos x - \\sin x}{x^{2}}',
       answer: 'sin(x)/x', answerLatex: '\\frac{\\sin x}{x}+C',
       domain: [0.3, 2.8],
@@ -3865,7 +4249,7 @@
       steps: ['$\\left(\\dfrac{\\sin x}{x}\\right)\'=\\dfrac{x\\cos x-\\sin x}{x^{2}}$', '$=\\dfrac{\\sin x}{x}$']
     },
     {
-      id: 'h171', topic: '로그 치환',
+      id: 'h213', topic: '로그 치환',
       integrand: 'e^x*(x+1)/(x*e^x+1)', latex: '\\frac{e^{x} \\left(x + 1\\right)}{x e^{x} + 1}',
       answer: 'ln(x*e^x+1)', answerLatex: '\\ln\\left(x e^{x} + 1\\right)+C',
       domain: [0.2, 2.2],
@@ -3873,7 +4257,7 @@
       steps: ['$u=xe^{x},;du=(1+x)e^{x}dx$', '$\\int\\dfrac{du}{1+u}=\\ln|1+xe^{x}|$']
     },
     {
-      id: 'h172', topic: '유리화',
+      id: 'h214', topic: '유리화',
       integrand: 'sqrt((1-x)/(1+x))', latex: '\\sqrt{\\frac{1 - x}{1 + x}}',
       answer: 'arcsin(x)+sqrt(1-x^2)', answerLatex: '\\arcsin x + \\sqrt{1 - x^{2}}+C',
       domain: [-0.72, 0.72],
@@ -3881,7 +4265,7 @@
       steps: ['$\\sqrt{\\dfrac{1-x}{1+x}}=\\dfrac{1-x}{\\sqrt{1-x^{2}}}$', '$=\\arcsin x+\\sqrt{1-x^{2}}$']
     },
     {
-      id: 'h173', topic: '유리화',
+      id: 'h215', topic: '유리화',
       integrand: 'x/(sqrt(1+x)+sqrt(1-x))', latex: '\\frac{x}{\\sqrt{1 + x} + \\sqrt{1 - x}}',
       answer: '((1+x)^(3/2)+(1-x)^(3/2))/3', answerLatex: '\\frac{\\left(1 + x\\right)^{\\frac{3}{2}} + \\left(1 - x\\right)^{\\frac{3}{2}}}{3}+C',
       domain: [-0.72, 0.72],
@@ -3889,7 +4273,7 @@
       steps: ['$\\dfrac{x}{\\sqrt{1+x}+\\sqrt{1-x}}=\\dfrac{x(\\sqrt{1+x}-\\sqrt{1-x})}{2x}$', '$=\\dfrac12\\int(\\sqrt{1+x}-\\sqrt{1-x})dx=\\dfrac{(1+x)^{3/2}+(1-x)^{3/2}}{3}$']
     },
     {
-      id: 'h174', topic: '부분분수',
+      id: 'h216', topic: '부분분수',
       integrand: '1/(x^4+x^2)', latex: '\\frac{1}{x^{4} + x^{2}}',
       answer: '-1/x-arctan(x)', answerLatex: '\\frac{-1}{x} - \\arctan x+C',
       domain: [0.3, 2.4],
@@ -3897,7 +4281,7 @@
       steps: ['$\\dfrac{1}{x^{2}(x^{2}+1)}=\\dfrac{1}{x^{2}}-\\dfrac{1}{x^{2}+1}$', '$=-\\dfrac1x-\\arctan x$']
     },
     {
-      id: 'h175', topic: '부분분수',
+      id: 'h217', topic: '부분분수',
       integrand: 'x/((x-1)*(x-2)*(x-3))', latex: '\\frac{x}{\\left(x - 1\\right) \\left(x - 2\\right) \\left(x - 3\\right)}',
       answer: 'ln(x-1)/2-2*ln(x-2)+3*ln(x-3)/2', answerLatex: '\\frac{\\ln\\left|x - 1\\right|}{2} - 2 \\ln\\left|x - 2\\right| + \\frac{3 \\ln\\left|x - 3\\right|}{2}+C',
       domain: [3.4, 6.2],
@@ -3905,7 +4289,7 @@
       steps: ['$\\dfrac{x}{(x-1)(x-2)(x-3)}=\\dfrac{1/2}{x-1}-\\dfrac{2}{x-2}+\\dfrac{3/2}{x-3}$', '각 항을 로그로 적분한다']
     },
     {
-      id: 'h176', topic: '부분분수',
+      id: 'h218', topic: '부분분수',
       integrand: '1/(1-x^4)', latex: '\\frac{1}{1 - x^{4}}',
       answer: 'ln((1+x)/(1-x))/4+arctan(x)/2', answerLatex: '\\frac{\\ln\\left(\\frac{1 + x}{1 - x}\\right)}{4} + \\frac{\\arctan x}{2}+C',
       domain: [-0.8, 0.8],
@@ -3913,7 +4297,7 @@
       steps: ['$\\dfrac{1}{1-x^{4}}=\\dfrac12\\left(\\dfrac{1}{1-x^{2}}+\\dfrac{1}{1+x^{2}}\\right)$', '$\\int\\dfrac{dx}{1-x^{2}}=\\dfrac12\\ln\\left|\\dfrac{1+x}{1-x}\\right|$']
     },
     {
-      id: 'h177', topic: '치환적분',
+      id: 'h219', topic: '치환적분',
       integrand: 'arctan(x)/(1+x^2)', latex: '\\frac{\\arctan x}{1 + x^{2}}',
       answer: 'arctan(x)^2/2', answerLatex: '\\frac{\\left(\\arctan x\\right)^{2}}{2}+C',
       domain: [-1.5, 1.7],
@@ -3921,7 +4305,7 @@
       steps: ['$u=\\arctan x$', '$\\int u\\,du=\\dfrac{\\arctan^{2}x}{2}$']
     },
     {
-      id: 'h178', topic: '치환적분',
+      id: 'h220', topic: '치환적분',
       integrand: 'arcsin(x)/sqrt(1-x^2)', latex: '\\frac{\\arcsin x}{\\sqrt{1 - x^{2}}}',
       answer: 'arcsin(x)^2/2', answerLatex: '\\frac{\\left(\\arcsin x\\right)^{2}}{2}+C',
       domain: [-0.72, 0.72],
@@ -3929,7 +4313,7 @@
       steps: ['$u=\\arcsin x$', '$\\int u\\,du=\\dfrac{\\arcsin^{2}x}{2}$']
     },
     {
-      id: 'h179', topic: '치환적분',
+      id: 'h221', topic: '치환적분',
       integrand: 'ln(tan(x))/(sin(x)*cos(x))', latex: '\\frac{\\ln\\left(\\tan x\\right)}{\\sin x \\cos x}',
       answer: 'ln(tan(x))^2/2', answerLatex: '\\frac{\\left(\\ln\\left(\\tan x\\right)\\right)^{2}}{2}+C',
       domain: [0.3, 1.2],
@@ -3937,7 +4321,7 @@
       steps: ['$u=\\ln\\tan x,;du=\\dfrac{dx}{\\sin x\\cos x}$', '$\\int u\\,du=\\dfrac{\\ln^{2}\\tan x}{2}$']
     },
     {
-      id: 'h180', topic: '치환적분',
+      id: 'h222', topic: '치환적분',
       integrand: 'x^2/(1+x^6)', latex: '\\frac{x^{2}}{1 + x^{6}}',
       answer: 'arctan(x^3)/3', answerLatex: '\\frac{\\arctan\\left(x^{3}\\right)}{3}+C',
       domain: [0.3, 2.4],
@@ -3945,7 +4329,7 @@
       steps: ['$u=x^{3}$', '$\\dfrac13\\int\\dfrac{du}{1+u^{2}}=\\dfrac{\\arctan(x^{3})}{3}$']
     },
     {
-      id: 'h181', topic: '지수 치환',
+      id: 'h223', topic: '지수 치환',
       integrand: '(2*x^2+1)*e^(x^2)', latex: '\\left(2 x^{2} + 1\\right) e^{x^{2}}',
       answer: 'x*e^(x^2)', answerLatex: 'x e^{x^{2}}+C',
       domain: [0.2, 1.6],
@@ -3953,7 +4337,7 @@
       steps: ['$\\left(xe^{x^{2}}\\right)\'=e^{x^{2}}+2x^{2}e^{x^{2}}=(2x^{2}+1)e^{x^{2}}$', '따라서 원시함수는 $xe^{x^{2}}$']
     },
     {
-      id: 'h182', topic: '지수 밑 변환',
+      id: 'h224', topic: '지수 밑 변환',
       integrand: 'x*2^x', latex: 'x \\cdot 2^{x}',
       answer: '2^x*(x/ln(2)-1/ln(2)^2)', answerLatex: '2^{x} \\left(\\frac{x}{\\ln 2} - \\frac{1}{\\left(\\ln 2\\right)^{2}}\\right)+C',
       domain: [0.3, 2.4],
@@ -3961,7 +4345,7 @@
       steps: ['$\\int x2^{x}dx=\\dfrac{x2^{x}}{\\ln 2}-\\dfrac{1}{\\ln 2}\\int 2^{x}dx$', '$=2^{x}\\left(\\dfrac{x}{\\ln 2}-\\dfrac{1}{\\ln^{2}2}\\right)$']
     },
     {
-      id: 'h183', topic: '지수 밑 변환',
+      id: 'h225', topic: '지수 밑 변환',
       integrand: '2^x*e^x', latex: '2^{x} e^{x}',
       answer: '2^x*e^x/(1+ln(2))', answerLatex: '\\frac{2^{x} e^{x}}{1 + \\ln 2}+C',
       domain: [-1, 1.6],
@@ -3969,7 +4353,7 @@
       steps: ['$2^{x}e^{x}=(2e)^{x}$', '$\\int(2e)^{x}dx=\\dfrac{(2e)^{x}}{\\ln(2e)}=\\dfrac{2^{x}e^{x}}{1+\\ln 2}$']
     },
     {
-      id: 'h184', topic: '로그 치환',
+      id: 'h226', topic: '로그 치환',
       integrand: '2*ln(x)*x^(ln(x))/x', latex: '\\frac{2 \\ln x x^{\\ln x}}{x}',
       answer: 'x^(ln(x))', answerLatex: 'x^{\\ln x}+C',
       domain: [0.4, 2.6],
@@ -3977,7 +4361,7 @@
       steps: ['$y=x^{\\ln x}=e^{\\ln^{2}x}$', '$y\'=e^{\\ln^{2}x}\\cdot\\dfrac{2\\ln x}{x}$', '따라서 원시함수는 $x^{\\ln x}$']
     },
     {
-      id: 'h185', topic: '로그 치환',
+      id: 'h227', topic: '로그 치환',
       integrand: 'ln(x)/(x*(1+ln(x))^2)', latex: '\\frac{\\ln x}{x \\left(1 + \\ln x\\right)^{2}}',
       answer: 'ln(1+ln(x))+1/(1+ln(x))', answerLatex: '\\ln\\left(1 + \\ln x\\right) + \\frac{1}{1 + \\ln x}+C',
       domain: [1.2, 4],
@@ -3985,7 +4369,7 @@
       steps: ['$u=\\ln x$', '$\\int\\left(\\dfrac{1}{1+u}-\\dfrac{1}{(1+u)^{2}}\\right)du=\\ln(1+u)+\\dfrac{1}{1+u}$']
     },
     {
-      id: 'h186', topic: '부분적분',
+      id: 'h228', topic: '부분적분',
       integrand: 'ln(1+x)/x^2', latex: '\\frac{\\ln\\left(1 + x\\right)}{x^{2}}',
       answer: 'ln(x)-ln(1+x)-ln(1+x)/x', answerLatex: '\\ln x - \\ln\\left(1 + x\\right) - \\frac{\\ln\\left(1 + x\\right)}{x}+C',
       domain: [0.35, 2.6],
@@ -3993,7 +4377,7 @@
       steps: ['$=-\\dfrac{\\ln(1+x)}{x}+\\int\\dfrac{dx}{x(1+x)}$', '$=\\ln\\dfrac{x}{1+x}-\\dfrac{\\ln(1+x)}{x}$']
     },
     {
-      id: 'h187', topic: '부분적분',
+      id: 'h229', topic: '부분적분',
       integrand: 'arctan(x)/x^2', latex: '\\frac{\\arctan x}{x^{2}}',
       answer: 'ln(x)-ln(1+x^2)/2-arctan(x)/x', answerLatex: '\\ln x - \\frac{\\ln\\left(1 + x^{2}\\right)}{2} - \\frac{\\arctan x}{x}+C',
       domain: [0.35, 2.6],
@@ -4001,7 +4385,7 @@
       steps: ['$=-\\dfrac{\\arctan x}{x}+\\int\\dfrac{dx}{x(1+x^{2})}$', '$\\dfrac{1}{x(1+x^{2})}=\\dfrac1x-\\dfrac{x}{1+x^{2}}$']
     },
     {
-      id: 'h188', topic: '부분적분',
+      id: 'h230', topic: '부분적분',
       integrand: 'ln(1+x^2)', latex: '\\ln\\left(1 + x^{2}\\right)',
       answer: 'x*ln(1+x^2)-2*x+2*arctan(x)', answerLatex: 'x \\ln\\left(1 + x^{2}\\right) - 2 x + 2 \\arctan x+C',
       domain: [0.3, 2.4],
@@ -4009,7 +4393,7 @@
       steps: ['$=x\\ln(1+x^{2})-\\int\\dfrac{2x^{2}}{1+x^{2}}dx$', '$=x\\ln(1+x^{2})-2x+2\\arctan x$']
     },
     {
-      id: 'h189', topic: '부분적분',
+      id: 'h231', topic: '부분적분',
       integrand: 'x*arcsin(x)', latex: 'x \\arcsin x',
       answer: '(2*x^2-1)*arcsin(x)/4+x*sqrt(1-x^2)/4', answerLatex: '\\frac{\\left(2 x^{2} - 1\\right) \\arcsin x}{4} + \\frac{x \\sqrt{1 - x^{2}}}{4}+C',
       domain: [-0.72, 0.72],
@@ -4017,7 +4401,7 @@
       steps: ['$v=\\dfrac{2x^{2}-1}{4}$ 로 부분적분', '$=\\dfrac{(2x^{2}-1)\\arcsin x}{4}+\\dfrac{x\\sqrt{1-x^{2}}}{4}$']
     },
     {
-      id: 'h190', topic: '부분적분',
+      id: 'h232', topic: '부분적분',
       integrand: 'arcsin(x)^2', latex: '\\left(\\arcsin x\\right)^{2}',
       answer: 'x*arcsin(x)^2+2*sqrt(1-x^2)*arcsin(x)-2*x', answerLatex: 'x \\left(\\arcsin x\\right)^{2} + 2 \\sqrt{1 - x^{2}} \\arcsin x - 2 x+C',
       domain: [-0.72, 0.72],
@@ -4025,7 +4409,7 @@
       steps: ['$=x\\arcsin^{2}x-\\int\\dfrac{2x\\arcsin x}{\\sqrt{1-x^{2}}}dx$', '$=x\\arcsin^{2}x+2\\sqrt{1-x^{2}}\\arcsin x-2x$']
     },
     {
-      id: 'h191', topic: '부분적분',
+      id: 'h233', topic: '부분적분',
       integrand: 'sqrt(x)*ln(x)', latex: '\\sqrt{x} \\ln x',
       answer: '2*x^(3/2)*(3*ln(x)-2)/9', answerLatex: '\\frac{2 x^{\\frac{3}{2}} \\left(3 \\ln x - 2\\right)}{9}+C',
       domain: [0.35, 2.6],
@@ -4033,7 +4417,7 @@
       steps: ['$=\\dfrac{2x^{3/2}\\ln x}{3}-\\dfrac23\\int x^{1/2}dx$', '$=\\dfrac{2x^{3/2}(3\\ln x-2)}{9}$']
     },
     {
-      id: 'h192', topic: '부분적분',
+      id: 'h234', topic: '부분적분',
       integrand: 'x^2*arctan(x)', latex: 'x^{2} \\arctan x',
       answer: 'x^3*arctan(x)/3-x^2/6+ln(1+x^2)/6', answerLatex: '\\frac{x^{3} \\arctan x}{3} - \\frac{x^{2}}{6} + \\frac{\\ln\\left(1 + x^{2}\\right)}{6}+C',
       domain: [0.3, 2.4],
@@ -4041,7 +4425,7 @@
       steps: ['$=\\dfrac{x^{3}\\arctan x}{3}-\\dfrac13\\int\\dfrac{x^{3}}{1+x^{2}}dx$', '$=\\dfrac{x^{3}\\arctan x}{3}-\\dfrac{x^{2}}{6}+\\dfrac{\\ln(1+x^{2})}{6}$']
     },
     {
-      id: 'h193', topic: '삼각·쌍곡 혼합',
+      id: 'h235', topic: '삼각·쌍곡 혼합',
       integrand: 'sin(x)*sinh(x)', latex: '\\sin x \\sinh x',
       answer: '(sin(x)*cosh(x)-cos(x)*sinh(x))/2', answerLatex: '\\frac{\\sin x \\cosh x - \\cos x \\sinh x}{2}+C',
       domain: [0.2, 2],
@@ -4049,7 +4433,7 @@
       steps: ['두 번 부분적분하면 $I=\\sin x\\cosh x-\\cos x\\sinh x-I$', '$I=\\dfrac{\\sin x\\cosh x-\\cos x\\sinh x}{2}$']
     },
     {
-      id: 'h194', topic: '삼각 항등식',
+      id: 'h236', topic: '삼각 항등식',
       integrand: 'cos(2*x)/(cos(x)+sin(x))', latex: '\\frac{\\cos\\left(2 x\\right)}{\\cos x + \\sin x}',
       answer: 'sin(x)+cos(x)', answerLatex: '\\sin x + \\cos x+C',
       domain: [0.25, 2.85],
@@ -4057,7 +4441,7 @@
       steps: ['$\\dfrac{\\cos 2x}{\\cos x+\\sin x}=\\cos x-\\sin x$', '$=\\sin x+\\cos x$']
     },
     {
-      id: 'h195', topic: '쌍곡선함수',
+      id: 'h237', topic: '쌍곡선함수',
       integrand: '1/cosh(x)', latex: '\\frac{1}{\\cosh x}',
       answer: 'arctan(sinh(x))', answerLatex: '\\arctan\\left(\\sinh x\\right)+C',
       domain: [-1.4, 1.6],
@@ -4065,7 +4449,7 @@
       steps: ['$\\dfrac{1}{\\cosh x}=\\dfrac{\\cosh x}{1+\\sinh^{2}x}$', '$u=\\sinh x:;\\arctan(\\sinh x)$']
     },
     {
-      id: 'h196', topic: '지수 삼각',
+      id: 'h238', topic: '지수 삼각',
       integrand: 'e^(2*x)*sin(3*x)', latex: 'e^{2 x} \\sin\\left(3 x\\right)',
       answer: 'e^(2*x)*(2*sin(3*x)-3*cos(3*x))/13', answerLatex: '\\frac{e^{2 x} \\left(2 \\sin\\left(3 x\\right) - 3 \\cos\\left(3 x\\right)\\right)}{13}+C',
       domain: [0.15, 1],
@@ -4073,7 +4457,7 @@
       steps: ['두 번 부분적분해 $I$ 를 정리하면', '$I=\\dfrac{e^{2x}(2\\sin 3x-3\\cos 3x)}{13}$']
     },
     {
-      id: 'h197', topic: '완전제곱',
+      id: 'h239', topic: '완전제곱',
       integrand: '(2*x+3)/sqrt(x^2+4*x+13)', latex: '\\frac{2 x + 3}{\\sqrt{x^{2} + 4 x + 13}}',
       answer: '2*sqrt(x^2+4*x+13)-asinh((x+2)/3)', answerLatex: '2 \\sqrt{x^{2} + 4 x + 13} - \\operatorname{arsinh}\\left(\\frac{x + 2}{3}\\right)+C',
       domain: [0.2, 3],
@@ -4081,7 +4465,7 @@
       steps: ['$\\int\\dfrac{2x+4}{\\sqrt{x^{2}+4x+13}}dx=2\\sqrt{x^{2}+4x+13}$', '$\\int\\dfrac{dx}{\\sqrt{(x+2)^{2}+9}}=\\operatorname{arsinh}\\dfrac{x+2}{3}$']
     },
     {
-      id: 'h198', topic: '완전제곱',
+      id: 'h240', topic: '완전제곱',
       integrand: 'x/sqrt(x^2+2*x+5)', latex: '\\frac{x}{\\sqrt{x^{2} + 2 x + 5}}',
       answer: 'sqrt(x^2+2*x+5)-asinh((x+1)/2)', answerLatex: '\\sqrt{x^{2} + 2 x + 5} - \\operatorname{arsinh}\\left(\\frac{x + 1}{2}\\right)+C',
       domain: [0.2, 3],
@@ -4089,7 +4473,7 @@
       steps: ['$\\dfrac12\\int\\dfrac{2x+2}{\\sqrt{\\cdot}}dx=\\sqrt{x^{2}+2x+5}$', '$-\\int\\dfrac{dx}{\\sqrt{(x+1)^{2}+4}}=-\\operatorname{arsinh}\\dfrac{x+1}{2}$']
     },
     {
-      id: 'h199', topic: '삼각 치환',
+      id: 'h241', topic: '삼각 치환',
       integrand: '1/(1+x^2)^(3/2)', latex: '\\frac{1}{\\left(1 + x^{2}\\right)^{\\frac{3}{2}}}',
       answer: 'x/sqrt(1+x^2)', answerLatex: '\\frac{x}{\\sqrt{1 + x^{2}}}+C',
       domain: [-1.5, 1.7],
@@ -4097,7 +4481,7 @@
       steps: ['$x=\\tan\\theta,;dx=\\sec^{2}\\theta\\,d\\theta$', '$\\int\\cos\\theta\\,d\\theta=\\dfrac{x}{\\sqrt{1+x^{2}}}$']
     },
     {
-      id: 'h200', topic: '삼각 치환',
+      id: 'h242', topic: '삼각 치환',
       integrand: '1/(1-x^2)^(3/2)', latex: '\\frac{1}{\\left(1 - x^{2}\\right)^{\\frac{3}{2}}}',
       answer: 'x/sqrt(1-x^2)', answerLatex: '\\frac{x}{\\sqrt{1 - x^{2}}}+C',
       domain: [-0.72, 0.72],
@@ -4105,7 +4489,7 @@
       steps: ['$x=\\sin\\theta$', '$\\int\\sec^{2}\\theta\\,d\\theta=\\tan\\theta=\\dfrac{x}{\\sqrt{1-x^{2}}}$']
     },
     {
-      id: 'h201', topic: '삼각 치환',
+      id: 'h243', topic: '삼각 치환',
       integrand: '1/(x^2*sqrt(x^2+1))', latex: '\\frac{1}{x^{2} \\sqrt{x^{2} + 1}}',
       answer: '-sqrt(x^2+1)/x', answerLatex: '\\frac{-\\sqrt{x^{2} + 1}}{x}+C',
       domain: [0.35, 2.6],
@@ -4113,7 +4497,7 @@
       steps: ['$x=\\tan\\theta$', '$\\int\\csc\\theta\\cot\\theta\\,d\\theta=-\\csc\\theta$', '$=-\\dfrac{\\sqrt{x^{2}+1}}{x}$']
     },
     {
-      id: 'h202', topic: '치환적분',
+      id: 'h244', topic: '치환적분',
       integrand: 'x^3/sqrt(1-x^2)', latex: '\\frac{x^{3}}{\\sqrt{1 - x^{2}}}',
       answer: '(1-x^2)^(3/2)/3-sqrt(1-x^2)', answerLatex: '\\frac{\\left(1 - x^{2}\\right)^{\\frac{3}{2}}}{3} - \\sqrt{1 - x^{2}}+C',
       domain: [-0.72, 0.72],
@@ -4121,7 +4505,7 @@
       steps: ['$u=1-x^{2}$', '$-\\dfrac12\\int(u^{-1/2}-u^{1/2})du=\\dfrac{u^{3/2}}{3}-u^{1/2}$']
     },
     {
-      id: 'h203', topic: '치환적분',
+      id: 'h245', topic: '치환적분',
       integrand: 'ln(x)/sqrt(x)', latex: '\\frac{\\ln x}{\\sqrt{x}}',
       answer: '2*sqrt(x)*(ln(x)-2)', answerLatex: '2 \\sqrt{x} \\left(\\ln x - 2\\right)+C',
       domain: [0.35, 2.6],
@@ -4129,7 +4513,7 @@
       steps: ['$=2\\sqrt x\\ln x-2\\int\\dfrac{dx}{\\sqrt x}$', '$=2\\sqrt x(\\ln x-2)$']
     },
     {
-      id: 'h204', topic: '치환적분',
+      id: 'h246', topic: '치환적분',
       integrand: 'cos(x)*ln(sin(x))', latex: '\\cos x \\ln\\left(\\sin x\\right)',
       answer: 'sin(x)*(ln(sin(x))-1)', answerLatex: '\\sin x \\left(\\ln\\left(\\sin x\\right) - 1\\right)+C',
       domain: [0.3, 2.2],
@@ -4137,7 +4521,7 @@
       steps: ['$u=\\sin x$', '$\\int\\ln u\\,du=u(\\ln u-1)=\\sin x(\\ln\\sin x-1)$']
     },
     {
-      id: 'h205', topic: '역삼각 부분적분',
+      id: 'h247', topic: '역삼각 부분적분',
       integrand: 'arctan(1/x)', latex: '\\arctan\\left(\\frac{1}{x}\\right)',
       answer: 'x*arctan(1/x)+ln(1+x^2)/2', answerLatex: 'x \\arctan\\left(\\frac{1}{x}\\right) + \\frac{\\ln\\left(1 + x^{2}\\right)}{2}+C',
       domain: [0.35, 2.6],
@@ -4145,7 +4529,7 @@
       steps: ['$=x\\arctan\\dfrac1x+\\int\\dfrac{x}{1+x^{2}}dx$', '$=x\\arctan\\dfrac1x+\\dfrac{\\ln(1+x^{2})}{2}$']
     },
     {
-      id: 'h206', topic: '부분분수',
+      id: 'h248', topic: '부분분수',
       integrand: '(x+1)/((x^2+1)*(x-1))', latex: '\\frac{x + 1}{\\left(x^{2} + 1\\right) \\left(x - 1\\right)}',
       answer: 'ln(x-1)-ln(x^2+1)/2', answerLatex: '\\ln\\left|x - 1\\right| - \\frac{\\ln\\left|x^{2} + 1\\right|}{2}+C',
       domain: [1.4, 3.4],
@@ -4153,7 +4537,7 @@
       steps: ['부분분수로 쪼갠다', '$=\\ln|x-1|-\\dfrac12\\ln(x^{2}+1)$']
     },
     {
-      id: 'h207', topic: '지수 치환',
+      id: 'h249', topic: '지수 치환',
       integrand: 'e^(e^x+x)', latex: 'e^{e^{x} + x}',
       answer: 'e^(e^x)', answerLatex: 'e^{e^{x}}+C',
       domain: [-1, 1],
@@ -4161,7 +4545,7 @@
       steps: ['$e^{e^{x}+x}=e^{x}e^{e^{x}}$', '$u=e^{x}:;\\int e^{u}du=e^{e^{x}}$']
     },
     {
-      id: 'h208', topic: '미분 꼴 알아보기',
+      id: 'h250', topic: '미분 꼴 알아보기',
       integrand: 'e^x*(x-1)/(x+1)^3', latex: '\\frac{e^{x} \\left(x - 1\\right)}{\\left(x + 1\\right)^{3}}',
       answer: 'e^x/(x+1)^2', answerLatex: '\\frac{e^{x}}{\\left(x + 1\\right)^{2}}+C',
       domain: [0.2, 2.4],
@@ -4169,7 +4553,7 @@
       steps: ['$f=\\dfrac{1}{(x+1)^{2}},;f\'=-\\dfrac{2}{(x+1)^{3}}$', '$f+f\'=\\dfrac{(x+1)-2}{(x+1)^{3}}=\\dfrac{x-1}{(x+1)^{3}}$', '$=\\dfrac{e^{x}}{(x+1)^{2}}$']
     },
     {
-      id: 'h209', topic: '미분 꼴 알아보기',
+      id: 'h251', topic: '미분 꼴 알아보기',
       integrand: 'e^x*sec(x)*(1+tan(x))', latex: 'e^{x} \\sec x \\left(1 + \\tan x\\right)',
       answer: 'e^x*sec(x)', answerLatex: 'e^{x} \\sec x+C',
       domain: [0.25, 1.15],
@@ -4177,7 +4561,7 @@
       steps: ['$f=\\sec x,;f\'=\\sec x\\tan x$', '$=e^{x}\\sec x$']
     },
     {
-      id: 'h210', topic: '로그 치환',
+      id: 'h252', topic: '로그 치환',
       integrand: 'ln(ln(x))/x', latex: '\\frac{\\ln\\left(\\ln x\\right)}{x}',
       answer: 'ln(x)*ln(ln(x))-ln(x)', answerLatex: '\\ln x \\ln\\left(\\ln x\\right) - \\ln x+C',
       domain: [1.4, 4.2],
@@ -4185,7 +4569,7 @@
       steps: ['$u=\\ln x,;du=\\dfrac{dx}{x}$', '$\\int\\ln u\\,du=u\\ln u-u=\\ln x\\,\\ln\\ln x-\\ln x$']
     },
     {
-      id: 'h211', topic: '로그 치환',
+      id: 'h253', topic: '로그 치환',
       integrand: 'ln(x)/(x*sqrt(1+ln(x)))', latex: '\\frac{\\ln x}{x \\sqrt{1 + \\ln x}}',
       answer: '2*(1+ln(x))^(3/2)/3-2*sqrt(1+ln(x))', answerLatex: '\\frac{2 \\left(1 + \\ln x\\right)^{\\frac{3}{2}}}{3} - 2 \\sqrt{1 + \\ln x}+C',
       domain: [1.2, 4],
@@ -4193,7 +4577,7 @@
       steps: ['$u=1+\\ln x$', '$\\int(u^{1/2}-u^{-1/2})du=\\dfrac{2u^{3/2}}{3}-2u^{1/2}$']
     },
     {
-      id: 'h212', topic: '치환적분',
+      id: 'h254', topic: '치환적분',
       integrand: 'sin(2*x)/(1+sin(x)^4)', latex: '\\frac{\\sin\\left(2 x\\right)}{1 + \\sin^{4} x}',
       answer: 'arctan(sin(x)^2)', answerLatex: '\\arctan\\left(\\sin^{2} x\\right)+C',
       domain: [0.25, 1.3],
@@ -4201,7 +4585,7 @@
       steps: ['$u=\\sin^{2}x,;du=\\sin 2x\\,dx$', '$\\arctan(\\sin^{2}x)$']
     },
     {
-      id: 'h213', topic: '치환적분',
+      id: 'h255', topic: '치환적분',
       integrand: '1/(x*sqrt(x^2+1))', latex: '\\frac{1}{x \\sqrt{x^{2} + 1}}',
       answer: 'ln((sqrt(x^2+1)-1)/(sqrt(x^2+1)+1))/2', answerLatex: '\\frac{\\ln\\left(\\frac{\\sqrt{x^{2} + 1} - 1}{\\sqrt{x^{2} + 1} + 1}\\right)}{2}+C',
       domain: [0.35, 2.6],
@@ -4209,7 +4593,7 @@
       steps: ['$s=\\sqrt{x^{2}+1}$', '$\\int\\dfrac{ds}{s^{2}-1}=\\dfrac12\\ln\\left|\\dfrac{s-1}{s+1}\\right|$']
     },
     {
-      id: 'h214', topic: '분수 지수 치환',
+      id: 'h256', topic: '분수 지수 치환',
       integrand: 'sqrt(1+sqrt(x))', latex: '\\sqrt{1 + \\sqrt{x}}',
       answer: '4*(1+sqrt(x))^(5/2)/5-4*(1+sqrt(x))^(3/2)/3', answerLatex: '\\frac{4 \\left(1 + \\sqrt{x}\\right)^{\\frac{5}{2}}}{5} - \\frac{4 \\left(1 + \\sqrt{x}\\right)^{\\frac{3}{2}}}{3}+C',
       domain: [0.3, 3],
@@ -4217,7 +4601,7 @@
       steps: ['$u=\\sqrt x:;2\\int u\\sqrt{1+u}\\,du$', '$w=\\sqrt{1+u}:;4\\int(w^{4}-w^{2})dw$', '$=\\dfrac{4w^{5}}{5}-\\dfrac{4w^{3}}{3}$']
     },
     {
-      id: 'h215', topic: '순환 부분적분',
+      id: 'h257', topic: '순환 부분적분',
       integrand: 'e^(-x)*sin(2*x)', latex: 'e^{-x} \\sin\\left(2 x\\right)',
       answer: 'e^(-x)*(-sin(2*x)-2*cos(2*x))/5', answerLatex: '\\frac{e^{-x} \\left(-\\sin\\left(2 x\\right) - 2 \\cos\\left(2 x\\right)\\right)}{5}+C',
       domain: [0.2, 1.4],
@@ -4225,7 +4609,7 @@
       steps: ['공식에 $a=-1,;b=2$ 를 대입', '$=\\dfrac{e^{-x}(-\\sin 2x-2\\cos 2x)}{5}$']
     },
     {
-      id: 'h216', topic: '부분적분',
+      id: 'h258', topic: '부분적분',
       integrand: 'arccos(x)', latex: '\\arccos x',
       answer: 'x*arccos(x)-sqrt(1-x^2)', answerLatex: 'x \\arccos x - \\sqrt{1 - x^{2}}+C',
       domain: [-0.72, 0.72],
@@ -4233,7 +4617,7 @@
       steps: ['$=x\\arccos x+\\int\\dfrac{x}{\\sqrt{1-x^{2}}}dx$', '$=x\\arccos x-\\sqrt{1-x^{2}}$']
     },
     {
-      id: 'h217', topic: '치환 후 부분적분',
+      id: 'h259', topic: '치환 후 부분적분',
       integrand: 'sin(sqrt(x))', latex: '\\sin\\left(\\sqrt{x}\\right)',
       answer: '2*sin(sqrt(x))-2*sqrt(x)*cos(sqrt(x))', answerLatex: '2 \\sin\\left(\\sqrt{x}\\right) - 2 \\sqrt{x} \\cos\\left(\\sqrt{x}\\right)+C',
       domain: [0.3, 3],
@@ -4241,7 +4625,7 @@
       steps: ['$u=\\sqrt x,;dx=2u\\,du$', '$2(\\sin u-u\\cos u)$']
     },
     {
-      id: 'h218', topic: '치환 후 부분적분',
+      id: 'h260', topic: '치환 후 부분적분',
       integrand: 'cos(sqrt(x))', latex: '\\cos\\left(\\sqrt{x}\\right)',
       answer: '2*cos(sqrt(x))+2*sqrt(x)*sin(sqrt(x))', answerLatex: '2 \\cos\\left(\\sqrt{x}\\right) + 2 \\sqrt{x} \\sin\\left(\\sqrt{x}\\right)+C',
       domain: [0.3, 3],
@@ -4249,7 +4633,7 @@
       steps: ['$u=\\sqrt x$', '$2(\\cos u+u\\sin u)$']
     },
     {
-      id: 'h219', topic: '삼각 곱의 합 변환',
+      id: 'h261', topic: '삼각 곱의 합 변환',
       integrand: 'sin(x)*cos(3*x)', latex: '\\sin x \\cos\\left(3 x\\right)',
       answer: '-cos(4*x)/8+cos(2*x)/4', answerLatex: '\\frac{-\\cos\\left(4 x\\right)}{8} + \\frac{\\cos\\left(2 x\\right)}{4}+C',
       domain: [0.25, 2.85],
@@ -4257,7 +4641,7 @@
       steps: ['$\\sin x\\cos 3x=\\dfrac{\\sin 4x-\\sin 2x}{2}$', '$=-\\dfrac{\\cos 4x}{8}+\\dfrac{\\cos 2x}{4}$']
     },
     {
-      id: 'h220', topic: '삼각 곱의 합 변환',
+      id: 'h262', topic: '삼각 곱의 합 변환',
       integrand: 'sin(3*x)*sin(5*x)', latex: '\\sin\\left(3 x\\right) \\sin\\left(5 x\\right)',
       answer: 'sin(2*x)/4-sin(8*x)/16', answerLatex: '\\frac{\\sin\\left(2 x\\right)}{4} - \\frac{\\sin\\left(8 x\\right)}{16}+C',
       domain: [0.25, 2.85],
@@ -4265,7 +4649,7 @@
       steps: ['$\\sin 3x\\sin 5x=\\dfrac{\\cos 2x-\\cos 8x}{2}$', '$=\\dfrac{\\sin 2x}{4}-\\dfrac{\\sin 8x}{16}$']
     },
     {
-      id: 'h221', topic: '삼각함수 고차',
+      id: 'h263', topic: '삼각함수 고차',
       integrand: 'sec(x)*tan(x)^3', latex: '\\sec x \\tan^{3} x',
       answer: 'sec(x)^3/3-sec(x)', answerLatex: '\\frac{\\sec^{3} x}{3} - \\sec x+C',
       domain: [0.25, 1.15],
@@ -4273,7 +4657,7 @@
       steps: ['$u=\\sec x,;du=\\sec x\\tan x\\,dx$', '$\\int(u^{2}-1)du=\\dfrac{\\sec^{3}x}{3}-\\sec x$']
     },
     {
-      id: 'h222', topic: '삼각함수 홀수차',
+      id: 'h264', topic: '삼각함수 홀수차',
       integrand: 'sin(x)^2*cos(x)^3', latex: '\\sin^{2} x \\cos^{3} x',
       answer: 'sin(x)^3/3-sin(x)^5/5', answerLatex: '\\frac{\\sin^{3} x}{3} - \\frac{\\sin^{5} x}{5}+C',
       domain: [0.25, 2.85],
@@ -4281,7 +4665,7 @@
       steps: ['$u=\\sin x$', '$\\int(u^{2}-u^{4})du=\\dfrac{\\sin^{3}x}{3}-\\dfrac{\\sin^{5}x}{5}$']
     },
     {
-      id: 'h223', topic: '삼각함수 홀수차',
+      id: 'h265', topic: '삼각함수 홀수차',
       integrand: 'sin(x)^3*cos(x)^3', latex: '\\sin^{3} x \\cos^{3} x',
       answer: 'sin(x)^4/4-sin(x)^6/6', answerLatex: '\\frac{\\sin^{4} x}{4} - \\frac{\\sin^{6} x}{6}+C',
       domain: [0.25, 2.85],
@@ -4289,7 +4673,7 @@
       steps: ['$u=\\sin x$', '$\\int(u^{3}-u^{5})du=\\dfrac{\\sin^{4}x}{4}-\\dfrac{\\sin^{6}x}{6}$']
     },
     {
-      id: 'h224', topic: '부분분수',
+      id: 'h266', topic: '부분분수',
       integrand: 'x/((x+1)*(x+2))', latex: '\\frac{x}{\\left(x + 1\\right) \\left(x + 2\\right)}',
       answer: '-ln(x+1)+2*ln(x+2)', answerLatex: '-\\ln\\left(x + 1\\right) + 2 \\ln\\left(x + 2\\right)+C',
       domain: [0.3, 2.6],
@@ -4297,7 +4681,7 @@
       steps: ['$\\dfrac{x}{(x+1)(x+2)}=-\\dfrac{1}{x+1}+\\dfrac{2}{x+2}$', '각 항을 로그로 적분']
     },
     {
-      id: 'h225', topic: '부분분수',
+      id: 'h267', topic: '부분분수',
       integrand: '(x^2+1)/(x*(x^2-1))', latex: '\\frac{x^{2} + 1}{x \\left(x^{2} - 1\\right)}',
       answer: 'ln(x^2-1)-ln(x)', answerLatex: '\\ln\\left|x^{2} - 1\\right| - \\ln\\left|x\\right|+C',
       domain: [1.4, 3.4],
@@ -4305,7 +4689,7 @@
       steps: ['$=-\\dfrac1x+\\dfrac{1}{x-1}+\\dfrac{1}{x+1}$', '$=\\ln\\left|\\dfrac{x^{2}-1}{x}\\right|$']
     },
     {
-      id: 'h226', topic: '완전제곱',
+      id: 'h268', topic: '완전제곱',
       integrand: '(3*x+2)/(x^2+4*x+8)', latex: '\\frac{3 x + 2}{x^{2} + 4 x + 8}',
       answer: '3*ln(x^2+4*x+8)/2-2*arctan((x+2)/2)', answerLatex: '\\frac{3 \\ln\\left(x^{2} + 4 x + 8\\right)}{2} - 2 \\arctan\\left(\\frac{x + 2}{2}\\right)+C',
       domain: [0.2, 2.8],
@@ -4313,7 +4697,7 @@
       steps: ['$\\dfrac32\\int\\dfrac{2x+4}{x^{2}+4x+8}dx=\\dfrac32\\ln(x^{2}+4x+8)$', '$-4\\int\\dfrac{dx}{(x+2)^{2}+4}=-2\\arctan\\dfrac{x+2}{2}$']
     },
     {
-      id: 'h227', topic: '치환적분',
+      id: 'h269', topic: '치환적분',
       integrand: 'x*sqrt(x-1)', latex: 'x \\sqrt{x - 1}',
       answer: '2*(x-1)^(5/2)/5+2*(x-1)^(3/2)/3', answerLatex: '\\frac{2 \\left(x - 1\\right)^{\\frac{5}{2}}}{5} + \\frac{2 \\left(x - 1\\right)^{\\frac{3}{2}}}{3}+C',
       domain: [1.3, 3.4],
@@ -4321,7 +4705,7 @@
       steps: ['$u=x-1$', '$\\int(u+1)\\sqrt u\\,du=\\dfrac{2u^{5/2}}{5}+\\dfrac{2u^{3/2}}{3}$']
     },
     {
-      id: 'h228', topic: '치환적분',
+      id: 'h270', topic: '치환적분',
       integrand: 'x/sqrt(x+1)', latex: '\\frac{x}{\\sqrt{x + 1}}',
       answer: '2*(x+1)^(3/2)/3-2*sqrt(x+1)', answerLatex: '\\frac{2 \\left(x + 1\\right)^{\\frac{3}{2}}}{3} - 2 \\sqrt{x + 1}+C',
       domain: [0.2, 3],
@@ -4329,7 +4713,7 @@
       steps: ['$u=x+1$', '$\\dfrac{2u^{3/2}}{3}-2u^{1/2}$']
     },
     {
-      id: 'h229', topic: '치환적분',
+      id: 'h271', topic: '치환적분',
       integrand: '1/(sqrt(x)+1)', latex: '\\frac{1}{\\sqrt{x} + 1}',
       answer: '2*sqrt(x)-2*ln(sqrt(x)+1)', answerLatex: '2 \\sqrt{x} - 2 \\ln\\left(\\sqrt{x} + 1\\right)+C',
       domain: [0.35, 2.6],
@@ -4337,7 +4721,7 @@
       steps: ['$u=\\sqrt x,;dx=2u\\,du$', '$2\\int\\left(1-\\dfrac{1}{u+1}\\right)du=2\\sqrt x-2\\ln(\\sqrt x+1)$']
     },
     {
-      id: 'h230', topic: '치환적분',
+      id: 'h272', topic: '치환적분',
       integrand: '1/(sqrt(x)*(1+sqrt(x))^2)', latex: '\\frac{1}{\\sqrt{x} \\left(1 + \\sqrt{x}\\right)^{2}}',
       answer: '-2/(1+sqrt(x))', answerLatex: '\\frac{-2}{1 + \\sqrt{x}}+C',
       domain: [0.35, 2.6],
@@ -4345,7 +4729,7 @@
       steps: ['$u=\\sqrt x$', '$-\\dfrac{2}{1+\\sqrt x}$']
     },
     {
-      id: 'h231', topic: '치환적분',
+      id: 'h273', topic: '치환적분',
       integrand: '1/(x*ln(x)^2)', latex: '\\frac{1}{x \\left(\\ln x\\right)^{2}}',
       answer: '-1/ln(x)', answerLatex: '\\frac{-1}{\\ln x}+C',
       domain: [1.4, 4.2],
@@ -4353,7 +4737,7 @@
       steps: ['$u=\\ln x$', '$-\\dfrac{1}{\\ln x}$']
     },
     {
-      id: 'h232', topic: '지수 부분분수',
+      id: 'h274', topic: '지수 부분분수',
       integrand: 'e^x/(e^(2*x)+3*e^x+2)', latex: '\\frac{e^{x}}{e^{2 x} + 3 e^{x} + 2}',
       answer: 'ln(e^x+1)-ln(e^x+2)', answerLatex: '\\ln\\left(e^{x} + 1\\right) - \\ln\\left(e^{x} + 2\\right)+C',
       domain: [-1.2, 1.6],
@@ -4361,12 +4745,108 @@
       steps: ['$u=e^{x}$', '$\\ln\\dfrac{u+1}{u+2}=\\ln\\dfrac{e^{x}+1}{e^{x}+2}$']
     },
     {
-      id: 'h233', topic: '치환적분',
+      id: 'h275', topic: '치환적분',
       integrand: 'sec(x)^4/sqrt(tan(x))', latex: '\\frac{\\sec^{4} x}{\\sqrt{\\tan x}}',
       answer: '2*sqrt(tan(x))+2*tan(x)^(5/2)/5', answerLatex: '2 \\sqrt{\\tan x} + \\frac{2 \\tan^{\\frac{5}{2}} x}{5}+C',
       domain: [0.3, 1.2],
       hints: ['$\\sec^{4}=\\sec^{2}(1+\\tan^{2})$ 로 쪼갠다.', '$u=\\tan x,;du=\\sec^{2}x\\,dx$'],
       steps: ['$u=\\tan x$', '$\\int\\dfrac{1+u^{2}}{\\sqrt u}du=2\\sqrt u+\\dfrac{2u^{5/2}}{5}$']
+    },
+    {
+      id: 'h276', topic: '역쌍곡선 부분적분',
+      integrand: 'x*acosh(x)', latex: 'x \\operatorname{arcosh} x',
+      answer: '(2*x^2-1)*acosh(x)/4-x*sqrt(x^2-1)/4', answerLatex: '\\frac{\\left(2 x^{2} - 1\\right) \\operatorname{arcosh} x}{4} - \\frac{x \\sqrt{x^{2} - 1}}{4}+C',
+      domain: [1.35, 3.4],
+      hints: ['$v=\\dfrac{2x^{2}-1}{4}$ 로 잡으면 남는 적분이 깔끔해진다.', '$\\int\\dfrac{2x^{2}-1}{4\\sqrt{x^{2}-1}}dx=\\dfrac{x\\sqrt{x^{2}-1}}{4}$'],
+      steps: ['$v=\\dfrac{2x^{2}-1}{4}$ 로 부분적분', '$=\\dfrac{(2x^{2}-1)\\operatorname{arcosh}x}{4}-\\dfrac{x\\sqrt{x^{2}-1}}{4}$']
+    },
+    {
+      id: 'h277', topic: '역쌍곡선 부분적분',
+      integrand: 'x*atanh(x)', latex: 'x \\operatorname{artanh} x',
+      answer: '(x^2-1)*atanh(x)/2+x/2', answerLatex: '\\frac{\\left(x^{2} - 1\\right) \\operatorname{artanh} x}{2} + \\frac{x}{2}+C',
+      domain: [-0.72, 0.72],
+      hints: ['$v=\\dfrac{x^{2}-1}{2}$ 로 잡으면 $\\dfrac{x^{2}-1}{1-x^{2}}=-1$ 로 약분된다.', '남는 적분이 $\\dfrac12\\int dx$ 가 된다.'],
+      steps: ['$v=\\dfrac{x^{2}-1}{2}$ 로 부분적분', '$=\\dfrac{(x^{2}-1)\\operatorname{artanh}x}{2}+\\dfrac x2$']
+    },
+    {
+      id: 'h278', topic: '역쌍곡선 부분적분',
+      integrand: 'x^2*asinh(x)', latex: 'x^{2} \\operatorname{arsinh} x',
+      answer: 'x^3*asinh(x)/3-(x^2+1)^(3/2)/9+sqrt(x^2+1)/3', answerLatex: '\\frac{x^{3} \\operatorname{arsinh} x}{3} - \\frac{\\left(x^{2} + 1\\right)^{\\frac{3}{2}}}{9} + \\frac{\\sqrt{x^{2} + 1}}{3}+C',
+      domain: [-1.5, 1.7],
+      hints: ['$v=\\dfrac{x^{3}}{3}$ 로 부분적분하면 $\\dfrac13\\int\\dfrac{x^{3}}{\\sqrt{1+x^{2}}}dx$ 가 남는다.', '$u=1+x^{2}$ 로 두면 $\\dfrac12\\int\\dfrac{u-1}{\\sqrt u}du$ 다.'],
+      steps: ['$=\\dfrac{x^{3}\\operatorname{arsinh}x}{3}-\\dfrac13\\int\\dfrac{x^{3}dx}{\\sqrt{1+x^{2}}}$', '$\\int\\dfrac{x^{3}dx}{\\sqrt{1+x^{2}}}=\\dfrac{(1+x^{2})^{3/2}}{3}-\\sqrt{1+x^{2}}$']
+    },
+    {
+      id: 'h279', topic: '역쌍곡선 부분적분',
+      integrand: 'asinh(x)^2', latex: '\\left(\\operatorname{arsinh} x\\right)^{2}',
+      answer: 'x*asinh(x)^2-2*sqrt(1+x^2)*asinh(x)+2*x', answerLatex: 'x \\left(\\operatorname{arsinh} x\\right)^{2} - 2 \\sqrt{1 + x^{2}} \\operatorname{arsinh} x + 2 x+C',
+      domain: [-1.5, 1.7],
+      hints: ['부분적분 후 $\\int\\dfrac{2x\\operatorname{arsinh}x}{\\sqrt{1+x^{2}}}dx$ 가 남는다.', '$\\left(2\\sqrt{1+x^{2}}\\right)\'=\\dfrac{2x}{\\sqrt{1+x^{2}}}$ 로 한 번 더 부분적분한다.'],
+      steps: ['$=x\\operatorname{arsinh}^{2}x-\\int\\dfrac{2x\\operatorname{arsinh}x}{\\sqrt{1+x^{2}}}dx$', '$=x\\operatorname{arsinh}^{2}x-2\\sqrt{1+x^{2}}\\operatorname{arsinh}x+2x$']
+    },
+    {
+      id: 'h280', topic: '역쌍곡선 부분적분',
+      integrand: 'x*asinh(x)/sqrt(1+x^2)', latex: '\\frac{x \\operatorname{arsinh} x}{\\sqrt{1 + x^{2}}}',
+      answer: 'sqrt(1+x^2)*asinh(x)-x', answerLatex: '\\sqrt{1 + x^{2}} \\operatorname{arsinh} x - x+C',
+      domain: [-1.5, 1.7],
+      hints: ['$dv=\\dfrac{x\\,dx}{\\sqrt{1+x^{2}}}\\Rightarrow v=\\sqrt{1+x^{2}}$', '남는 적분에서 $\\dfrac{\\sqrt{1+x^{2}}}{\\sqrt{1+x^{2}}}=1$ 로 약분된다.'],
+      steps: ['$=\\sqrt{1+x^{2}}\\operatorname{arsinh}x-\\int dx$', '$=\\sqrt{1+x^{2}}\\operatorname{arsinh}x-x$']
+    },
+    {
+      id: 'h281', topic: '역쌍곡선 부분적분',
+      integrand: 'x*acosh(x)/sqrt(x^2-1)', latex: '\\frac{x \\operatorname{arcosh} x}{\\sqrt{x^{2} - 1}}',
+      answer: 'sqrt(x^2-1)*acosh(x)-x', answerLatex: '\\sqrt{x^{2} - 1} \\operatorname{arcosh} x - x+C',
+      domain: [1.35, 3.4],
+      hints: ['$v=\\sqrt{x^{2}-1}$ 로 부분적분한다.', '남는 적분은 $\\int dx$ 다.'],
+      steps: ['$=\\sqrt{x^{2}-1}\\operatorname{arcosh}x-\\int dx$', '$=\\sqrt{x^{2}-1}\\operatorname{arcosh}x-x$']
+    },
+    {
+      id: 'h282', topic: '역쌍곡선 부분적분',
+      integrand: 'atanh(x)/x^2', latex: '\\frac{\\operatorname{artanh} x}{x^{2}}',
+      answer: 'ln(x)-ln(1-x^2)/2-atanh(x)/x', answerLatex: '\\ln x - \\frac{\\ln\\left(1 - x^{2}\\right)}{2} - \\frac{\\operatorname{artanh} x}{x}+C',
+      domain: [0.15, 0.8],
+      hints: ['$v=-\\dfrac1x$ 로 부분적분한다.', '남는 $\\int\\dfrac{dx}{x(1-x^{2})}=\\ln|x|-\\dfrac12\\ln|1-x^{2}|$'],
+      steps: ['$=-\\dfrac{\\operatorname{artanh}x}{x}+\\int\\dfrac{dx}{x(1-x^{2})}$', '$\\dfrac{1}{x(1-x^{2})}=\\dfrac1x+\\dfrac{x}{1-x^{2}}$']
+    },
+    {
+      id: 'h283', topic: '역쌍곡선 부분적분',
+      integrand: 'acosh(x)/x^2', latex: '\\frac{\\operatorname{arcosh} x}{x^{2}}',
+      answer: 'atan(sqrt(x^2-1))-acosh(x)/x', answerLatex: '\\arctan\\left(\\sqrt{x^{2} - 1}\\right) - \\frac{\\operatorname{arcosh} x}{x}+C',
+      domain: [1.35, 3.4],
+      hints: ['$v=-\\dfrac1x$ 로 부분적분한다.', '남는 $\\int\\dfrac{dx}{x\\sqrt{x^{2}-1}}=\\arctan\\sqrt{x^{2}-1}$'],
+      steps: ['$=-\\dfrac{\\operatorname{arcosh}x}{x}+\\int\\dfrac{dx}{x\\sqrt{x^{2}-1}}$', '$=\\arctan\\sqrt{x^{2}-1}-\\dfrac{\\operatorname{arcosh}x}{x}$']
+    },
+    {
+      id: 'h284', topic: '역쌍곡선 치환',
+      integrand: 'asinh(x)^2/sqrt(1+x^2)', latex: '\\frac{\\left(\\operatorname{arsinh} x\\right)^{2}}{\\sqrt{1 + x^{2}}}',
+      answer: 'asinh(x)^3/3', answerLatex: '\\frac{\\left(\\operatorname{arsinh} x\\right)^{3}}{3}+C',
+      domain: [-1.5, 1.7],
+      hints: ['$u=\\operatorname{arsinh}x$ 로 두면 $\\int u^{2}du$ 다.', '거듭제곱 법칙으로 끝난다.'],
+      steps: ['$u=\\operatorname{arsinh}x$', '$\\int u^{2}du=\\dfrac{\\operatorname{arsinh}^{3}x}{3}$']
+    },
+    {
+      id: 'h285', topic: '역쌍곡선 치환',
+      integrand: '1/(sqrt(1+x^2)*asinh(x))', latex: '\\frac{1}{\\sqrt{1 + x^{2}} \\operatorname{arsinh} x}',
+      answer: 'ln(asinh(x))', answerLatex: '\\ln\\left|\\operatorname{arsinh} x\\right|+C',
+      domain: [0.3, 2.6],
+      hints: ['$u=\\operatorname{arsinh}x$ 로 두면 $\\int\\dfrac{du}{u}$ 다.', '결과는 로그의 로그 꼴이다.'],
+      steps: ['$u=\\operatorname{arsinh}x,;du=\\dfrac{dx}{\\sqrt{1+x^{2}}}$', '$\\int\\dfrac{du}{u}=\\ln\\left|\\operatorname{arsinh}x\\right|$']
+    },
+    {
+      id: 'h286', topic: '역쌍곡선 치환',
+      integrand: '1/(sqrt(x^2+1)*(asinh(x)^2+1))', latex: '\\frac{1}{\\sqrt{x^{2} + 1} \\left(\\left(\\operatorname{arsinh} x\\right)^{2} + 1\\right)}',
+      answer: 'atan(asinh(x))', answerLatex: '\\arctan\\left(\\operatorname{arsinh} x\\right)+C',
+      domain: [-1.5, 1.7],
+      hints: ['$u=\\operatorname{arsinh}x$ 로 두면 $\\int\\dfrac{du}{u^{2}+1}$ 다.', '$\\arctan$ 이 남는다.'],
+      steps: ['$u=\\operatorname{arsinh}x$', '$\\arctan\\left(\\operatorname{arsinh}x\\right)$']
+    },
+    {
+      id: 'h287', topic: '역쌍곡선 부분적분',
+      integrand: 'x^3*asinh(x)', latex: 'x^{3} \\operatorname{arsinh} x',
+      answer: 'x^4*asinh(x)/4-x^3*sqrt(1+x^2)/16+3*x*sqrt(1+x^2)/32-3*asinh(x)/32', answerLatex: '\\frac{x^{4} \\operatorname{arsinh} x}{4} - \\frac{x^{3} \\sqrt{1 + x^{2}}}{16} + \\frac{3 x \\sqrt{1 + x^{2}}}{32} - \\frac{3 \\operatorname{arsinh} x}{32}+C',
+      domain: [-1.5, 1.7],
+      hints: ['$v=\\dfrac{x^{4}}{4}$ 로 부분적분하면 $\\dfrac14\\int\\dfrac{x^{4}}{\\sqrt{1+x^{2}}}dx$ 가 남는다.', '$I_{n}=\\dfrac{x^{n-1}\\sqrt{1+x^{2}}}{n}-\\dfrac{n-1}{n}I_{n-2}$ 점화식을 쓴다.'],
+      steps: ['$I_{2}=\\dfrac{x\\sqrt{1+x^{2}}}{2}-\\dfrac{\\operatorname{arsinh}x}{2}$', '$I_{4}=\\dfrac{x^{3}\\sqrt{1+x^{2}}}{4}-\\dfrac34I_{2}$', '$\\dfrac{x^{4}\\operatorname{arsinh}x}{4}-\\dfrac{I_{4}}{4}$ 를 정리한다']
     }
   ];
 
@@ -4420,31 +4900,7 @@
       steps: ['$\\int\\sec^{5}=\\dfrac{\\sec^{3}\\tan}{4}+\\dfrac{3}{4}\\int\\sec^{3}$', '$\\int\\sec^{3}=\\dfrac{\\sec\\tan+\\ln|\\sec+\\tan|}{2}$', '두 결과를 합친다']
     },
     {
-      id: 'x007', topic: '삼각함수 고차',
-      integrand: 'tan(x)^5', latex: '\\tan^{5} x',
-      answer: 'tan(x)^4/4 - tan(x)^2/2 - ln(cos(x))', answerLatex: '\\frac{\\tan^{4} x}{4} - \\frac{\\tan^{2} x}{2} - \\ln\\left|\\cos x\\right|+C',
-      domain: [0.25, 1.15],
-      hints: ['$\\tan^{5}=\\tan^{3}(\\sec^{2}-1)$ 로 두 단계 내린다.', '마지막에 $\\int\\tan x\\,dx$ 가 남는다.'],
-      steps: ['$\\int\\tan^{5}=\\dfrac{\\tan^{4}}{4}-\\int\\tan^{3}$', '$\\int\\tan^{3}=\\dfrac{\\tan^{2}}{2}+\\ln|\\cos x|$']
-    },
-    {
-      id: 'x008', topic: '삼각함수 짝수차',
-      integrand: 'sin(x)^4', latex: '\\sin^{4} x',
-      answer: '3x/8 - sin(2x)/4 + sin(4x)/32', answerLatex: '\\frac{3 x}{8} - \\frac{\\sin\\left(2 x\\right)}{4} + \\frac{\\sin\\left(4 x\\right)}{32}+C',
-      domain: [0.25, 2.85],
-      hints: ['반각공식을 두 번 적용한다.', '$\\sin^{4}=\\left(\\dfrac{1-\\cos 2x}{2}\\right)^{2}$ 에서 $\\cos^{2}2x$ 를 또 내린다.'],
-      steps: ['$\\sin^{4}x=\\dfrac{1-2\\cos 2x+\\cos^{2}2x}{4}$', '$\\cos^{2}2x=\\dfrac{1+\\cos 4x}{2}$', '$=\\dfrac{3}{8}-\\dfrac{\\cos 2x}{2}+\\dfrac{\\cos 4x}{8}$']
-    },
-    {
-      id: 'x009', topic: '삼각함수 짝수차',
-      integrand: 'cos(x)^4', latex: '\\cos^{4} x',
-      answer: '3x/8 + sin(2x)/4 + sin(4x)/32', answerLatex: '\\frac{3 x}{8} + \\frac{\\sin\\left(2 x\\right)}{4} + \\frac{\\sin\\left(4 x\\right)}{32}+C',
-      domain: [0.25, 2.85],
-      hints: ['$\\cos^{4}=\\left(\\dfrac{1+\\cos 2x}{2}\\right)^{2}$ 로 시작한다.', '$\\sin^{4}$ 와 가운데 항의 부호만 다르다.'],
-      steps: ['$\\cos^{4}x=\\dfrac{1+2\\cos 2x+\\cos^{2}2x}{4}$', '$=\\dfrac{3}{8}+\\dfrac{\\cos 2x}{2}+\\dfrac{\\cos 4x}{8}$']
-    },
-    {
-      id: 'x010', topic: '삼각 유리식',
+      id: 'x007', topic: '삼각 유리식',
       integrand: '1/(sin(x)^4+cos(x)^4)', latex: '\\frac{1}{\\sin^{4} x + \\cos^{4} x}',
       answer: 'atan((tan(x)-cot(x))/sqrt(2))/sqrt(2)', answerLatex: '\\frac{\\arctan\\left(\\frac{\\tan x - \\cot x}{\\sqrt{2}}\\right)}{\\sqrt{2}}+C',
       domain: [0.25, 1.3],
@@ -4452,7 +4908,7 @@
       steps: ['$\\sin^{4}+\\cos^{4}=1-\\dfrac{\\sin^{2}2x}{2}$', '$\\tan$ 로 정리한 뒤 $t=\\tan x-\\cot x$ 치환', '$\\int\\dfrac{dt}{t^{2}+2}$']
     },
     {
-      id: 'x011', topic: '삼각 유리식',
+      id: 'x008', topic: '삼각 유리식',
       integrand: 'sqrt(tan(x))', latex: '\\sqrt{\\tan x}',
       answer: '(atan((tan(x)-1)/sqrt(2tan(x))) + ln((tan(x)-sqrt(2tan(x))+1)/(tan(x)+sqrt(2tan(x))+1))/2)/sqrt(2)', answerLatex: '\\frac{\\arctan\\left(\\frac{\\tan x - 1}{\\sqrt{2 \\tan x}}\\right) + \\frac{\\ln\\left(\\frac{\\tan x - \\sqrt{2 \\tan x} + 1}{\\tan x + \\sqrt{2 \\tan x} + 1}\\right)}{2}}{\\sqrt{2}}+C',
       domain: [0.25, 1.2],
@@ -4460,7 +4916,7 @@
       steps: ['$t=\\sqrt{\\tan x},\\;x=\\arctan t^{2}$', '$\\int\\dfrac{2t^{2}}{1+t^{4}}dt$', '$u=t\\mp\\dfrac{1}{t}$ 치환으로 $\\arctan$ 항과 로그 항이 나온다']
     },
     {
-      id: 'x012', topic: '삼각 유리식',
+      id: 'x009', topic: '삼각 유리식',
       integrand: 'sin(x)/(sin(x)+cos(x))', latex: '\\frac{\\sin x}{\\sin x + \\cos x}',
       answer: 'x/2 - ln(sin(x)+cos(x))/2', answerLatex: '\\frac{x}{2} - \\frac{\\ln\\left|\\sin x + \\cos x\\right|}{2}+C',
       domain: [0.2, 1.2],
@@ -4468,7 +4924,7 @@
       steps: ['$\\dfrac{\\sin}{\\sin+\\cos}=\\dfrac{1}{2}-\\dfrac{1}{2}\\cdot\\dfrac{\\cos-\\sin}{\\sin+\\cos}$', '$\\int\\dfrac{\\cos-\\sin}{\\sin+\\cos}dx=\\ln|\\sin x+\\cos x|$']
     },
     {
-      id: 'x013', topic: '바이어슈트라스 치환',
+      id: 'x010', topic: '바이어슈트라스 치환',
       integrand: '1/(2+cos(x))', latex: '\\frac{1}{2 + \\cos x}',
       answer: '2*atan(sqrt(1/3)*tan(x/2))/sqrt(3)', answerLatex: '\\frac{2 \\arctan\\left(\\sqrt{\\frac{1}{3}} \\tan\\left(\\frac{x}{2}\\right)\\right)}{\\sqrt{3}}+C',
       domain: [0.2, 2.4],
@@ -4476,7 +4932,7 @@
       steps: ['$t=\\tan\\dfrac{x}{2}$', '$\\int\\dfrac{2\\,dt}{(2+1)+(2-1)t^{2}}$', '$= \\dfrac{2}{\\sqrt{3}}\\arctan\\left(\\sqrt{\\dfrac{1}{3}}\\,t\\right)$']
     },
     {
-      id: 'x014', topic: '바이어슈트라스 치환',
+      id: 'x011', topic: '바이어슈트라스 치환',
       integrand: '1/(3+2cos(x))', latex: '\\frac{1}{3 + 2 \\cos x}',
       answer: '2*atan(sqrt(1/5)*tan(x/2))/sqrt(5)', answerLatex: '\\frac{2 \\arctan\\left(\\sqrt{\\frac{1}{5}} \\tan\\left(\\frac{x}{2}\\right)\\right)}{\\sqrt{5}}+C',
       domain: [0.2, 2.4],
@@ -4484,7 +4940,7 @@
       steps: ['$t=\\tan\\dfrac{x}{2}$', '$\\int\\dfrac{2\\,dt}{(3+2)+(3-2)t^{2}}$', '$= \\dfrac{2}{\\sqrt{5}}\\arctan\\left(\\sqrt{\\dfrac{1}{5}}\\,t\\right)$']
     },
     {
-      id: 'x015', topic: '바이어슈트라스 치환',
+      id: 'x012', topic: '바이어슈트라스 치환',
       integrand: '1/(5+3cos(x))', latex: '\\frac{1}{5 + 3 \\cos x}',
       answer: '2*atan((1/2)*tan(x/2))/4', answerLatex: '\\frac{2 \\arctan\\left(\\frac{1}{2} \\tan\\left(\\frac{x}{2}\\right)\\right)}{4}+C',
       domain: [0.2, 2.4],
@@ -4492,7 +4948,7 @@
       steps: ['$t=\\tan\\dfrac{x}{2}$', '$\\int\\dfrac{2\\,dt}{(5+3)+(5-3)t^{2}}$', '$= \\dfrac{2}{\\sqrt{16}}\\arctan\\left(\\sqrt{\\dfrac{2}{8}}\\,t\\right)$']
     },
     {
-      id: 'x016', topic: '바이어슈트라스 치환',
+      id: 'x013', topic: '바이어슈트라스 치환',
       integrand: '1/(5+4cos(x))', latex: '\\frac{1}{5 + 4 \\cos x}',
       answer: '2*atan((1/3)*tan(x/2))/3', answerLatex: '\\frac{2 \\arctan\\left(\\frac{1}{3} \\tan\\left(\\frac{x}{2}\\right)\\right)}{3}+C',
       domain: [0.2, 2.4],
@@ -4500,63 +4956,7 @@
       steps: ['$t=\\tan\\dfrac{x}{2}$', '$\\int\\dfrac{2\\,dt}{(5+4)+(5-4)t^{2}}$', '$= \\dfrac{2}{\\sqrt{9}}\\arctan\\left(\\sqrt{\\dfrac{1}{9}}\\,t\\right)$']
     },
     {
-      id: 'x017', topic: '반복 부분적분',
-      integrand: 'x^3*e^x', latex: 'x^{3} e^{x}',
-      answer: '(x^3-3x^2+6x-6)*e^x', answerLatex: '\\left(x^{3} - 3 x^{2} + 6 x - 6\\right) e^{x}+C',
-      domain: [-1.5, 1.7],
-      hints: ['부분적분을 세 번 한다.', '계수가 $3!,\\;3\\cdot 2,\\;\\ldots$ 로 떨어지는 규칙을 본다.'],
-      steps: ['$\\int x^{3}e^{x}=x^{3}e^{x}-3\\int x^{2}e^{x}$', '$\\int x^{2}e^{x}=(x^{2}-2x+2)e^{x}$', '$=(x^{3}-3x^{2}+6x-6)e^{x}$']
-    },
-    {
-      id: 'x018', topic: '반복 부분적분',
-      integrand: 'x^4*e^x', latex: 'x^{4} e^{x}',
-      answer: '(x^4-4x^3+12x^2-24x+24)*e^x', answerLatex: '\\left(x^{4} - 4 x^{3} + 12 x^{2} - 24 x + 24\\right) e^{x}+C',
-      domain: [-1.5, 1.7],
-      hints: ['부분적분을 네 번 한다.', '표(tabular) 방식으로 정리하면 실수가 줄어든다.'],
-      steps: ['$\\int x^{4}e^{x}=x^{4}e^{x}-4\\int x^{3}e^{x}$', '$\\int x^{3}e^{x}=(x^{3}-3x^{2}+6x-6)e^{x}$', '$=(x^{4}-4x^{3}+12x^{2}-24x+24)e^{x}$']
-    },
-    {
-      id: 'x019', topic: '반복 부분적분',
-      integrand: 'x^3*sin(x)', latex: 'x^{3} \\sin x',
-      answer: '-x^3*cos(x)+3x^2*sin(x)+6x*cos(x)-6sin(x)', answerLatex: '-x^{3} \\cos x + 3 x^{2} \\sin x + 6 x \\cos x - 6 \\sin x+C',
-      domain: [0.25, 2.85],
-      hints: ['부분적분을 세 번 한다.', '$\\cos\\to\\sin\\to\\cos$ 순환과 부호를 함께 관리한다.'],
-      steps: ['$u=x^{3},\\;dv=\\sin x\\,dx$', '$-x^{3}\\cos x+3\\int x^{2}\\cos x\\,dx$', '$=-x^{3}\\cos x+3x^{2}\\sin x+6x\\cos x-6\\sin x$']
-    },
-    {
-      id: 'x020', topic: '반복 부분적분',
-      integrand: 'x^3*cos(x)', latex: 'x^{3} \\cos x',
-      answer: 'x^3*sin(x)+3x^2*cos(x)-6x*sin(x)-6cos(x)', answerLatex: 'x^{3} \\sin x + 3 x^{2} \\cos x - 6 x \\sin x - 6 \\cos x+C',
-      domain: [0.25, 2.85],
-      hints: ['$u=x^{3},\\;dv=\\cos x\\,dx$ 로 시작한다.', '$\\sin$ 문제와 부호 배치가 다르다.'],
-      steps: ['$x^{3}\\sin x-3\\int x^{2}\\sin x\\,dx$', '$=x^{3}\\sin x+3x^{2}\\cos x-6x\\sin x-6\\cos x$']
-    },
-    {
-      id: 'x021', topic: '반복 부분적분',
-      integrand: 'ln(x)^3', latex: '\\left(\\ln x\\right)^{3}',
-      answer: 'x*(ln(x)^3-3ln(x)^2+6ln(x)-6)', answerLatex: 'x \\left(\\left(\\ln x\\right)^{3} - 3 \\left(\\ln x\\right)^{2} + 6 \\ln x - 6\\right)+C',
-      domain: [0.35, 2.6],
-      hints: ['$dv=dx$ 로 두고 세 번 부분적분한다.', '$\\int(\\ln x)^{2}dx$ 결과가 중간에 필요하다.'],
-      steps: ['$x(\\ln x)^{3}-3\\int(\\ln x)^{2}dx$', '$\\int(\\ln x)^{2}=x(\\ln x)^{2}-2x\\ln x+2x$']
-    },
-    {
-      id: 'x022', topic: '반복 부분적분',
-      integrand: 'ln(x)^4', latex: '\\left(\\ln x\\right)^{4}',
-      answer: 'x*(ln(x)^4-4ln(x)^3+12ln(x)^2-24ln(x)+24)', answerLatex: 'x \\left(\\left(\\ln x\\right)^{4} - 4 \\left(\\ln x\\right)^{3} + 12 \\left(\\ln x\\right)^{2} - 24 \\ln x + 24\\right)+C',
-      domain: [0.35, 2.6],
-      hints: ['$t=\\ln x$ 로 치환하면 $\\int t^{4}e^{t}dt$ 가 된다.', '$x^{4}e^{x}$ 문제와 같은 계수가 나온다.'],
-      steps: ['$t=\\ln x,\\;dx=e^{t}dt$', '$\\int t^{4}e^{t}dt=(t^{4}-4t^{3}+12t^{2}-24t+24)e^{t}$']
-    },
-    {
-      id: 'x023', topic: '부분적분',
-      integrand: 'x^2*ln(x)^2', latex: 'x^{2} \\left(\\ln x\\right)^{2}',
-      answer: 'x^3*(ln(x)^2/3 - 2ln(x)/9 + 2/27)', answerLatex: 'x^{3} \\left(\\frac{\\left(\\ln x\\right)^{2}}{3} - \\frac{2 \\ln x}{9} + \\frac{2}{27}\\right)+C',
-      domain: [0.35, 2.6],
-      hints: ['$u=(\\ln x)^{2},\\;dv=x^{2}dx$ 로 둔다.', '두 번 부분적분해야 로그가 사라진다.'],
-      steps: ['$\\dfrac{x^{3}(\\ln x)^{2}}{3}-\\dfrac{2}{3}\\int x^{2}\\ln x\\,dx$', '$\\int x^{2}\\ln x\\,dx=\\dfrac{x^{3}\\ln x}{3}-\\dfrac{x^{3}}{9}$']
-    },
-    {
-      id: 'x024', topic: '삼중 부분적분',
+      id: 'x014', topic: '삼중 부분적분',
       integrand: 'x*e^x*sin(x)', latex: 'x e^{x} \\sin x',
       answer: 'e^x*(x*(sin(x)-cos(x))+cos(x))/2', answerLatex: '\\frac{e^{x} \\left(x \\left(\\sin x - \\cos x\\right) + \\cos x\\right)}{2}+C',
       domain: [0.05, 1.8],
@@ -4564,7 +4964,7 @@
       steps: ['$v=\\dfrac{e^{x}(\\sin x-\\cos x)}{2}$', '$xv-\\int v\\,dx$', '$=\\dfrac{e^{x}\\left(x(\\sin x-\\cos x)+\\cos x\\right)}{2}$']
     },
     {
-      id: 'x025', topic: '삼중 부분적분',
+      id: 'x015', topic: '삼중 부분적분',
       integrand: 'x*e^x*cos(x)', latex: 'x e^{x} \\cos x',
       answer: 'e^x*(x*(sin(x)+cos(x))-sin(x))/2', answerLatex: '\\frac{e^{x} \\left(x \\left(\\sin x + \\cos x\\right) - \\sin x\\right)}{2}+C',
       domain: [0.05, 1.8],
@@ -4572,183 +4972,7 @@
       steps: ['$v=\\dfrac{e^{x}(\\sin x+\\cos x)}{2}$', '$xv-\\int v\\,dx$']
     },
     {
-      id: 'x026', topic: '곱-합 + 순환',
-      integrand: 'e^(x)sin(x)cos(x)', latex: 'e^{x} \\sin x \\cos x',
-      answer: 'e^(x)*(sin(2x) - 2cos(2x))/10', answerLatex: '\\frac{e^{x} \\left(\\sin\\left(2 x\\right) - 2 \\cos\\left(2 x\\right)\\right)}{10}+C',
-      domain: [0.05, 1.5],
-      hints: ['먼저 $\\sin x\\cos x = \\dfrac{\\sin 2x}{2}$ 로 합친다.', '그다음은 표준 순환 부분적분이다.'],
-      steps: ['$\\sin x\\cos x = \\dfrac{\\sin 2x}{2}$', '$\\dfrac{1}{2}\\int e^{x}\\sin 2x\\,dx$', '$= \\frac{e^{x} \\left(\\sin\\left(2 x\\right) - 2 \\cos\\left(2 x\\right)\\right)}{10}$']
-    },
-    {
-      id: 'x027', topic: '곱-합 + 순환',
-      integrand: 'e^(2x)sin(x)cos(x)', latex: 'e^{2 x} \\sin x \\cos x',
-      answer: 'e^(2x)*(2sin(2x) - 2cos(2x))/16', answerLatex: '\\frac{e^{2 x} \\left(2 \\sin\\left(2 x\\right) - 2 \\cos\\left(2 x\\right)\\right)}{16}+C',
-      domain: [0.05, 1.5],
-      hints: ['먼저 $\\sin x\\cos x = \\dfrac{\\sin 2x}{2}$ 로 합친다.', '그다음은 표준 순환 부분적분이다.'],
-      steps: ['$\\sin x\\cos x = \\dfrac{\\sin 2x}{2}$', '$\\dfrac{1}{2}\\int e^{2x}\\sin 2x\\,dx$', '$= \\frac{e^{2 x} \\left(2 \\sin\\left(2 x\\right) - 2 \\cos\\left(2 x\\right)\\right)}{16}$']
-    },
-    {
-      id: 'x028', topic: '역삼각 고급',
-      integrand: 'asin(x)^2', latex: '\\left(\\arcsin x\\right)^{2}',
-      answer: 'x*asin(x)^2+2*sqrt(1-x^2)*asin(x)-2x', answerLatex: 'x \\left(\\arcsin x\\right)^{2} + 2 \\sqrt{1 - x^{2}} \\arcsin x - 2 x+C',
-      domain: [-0.72, 0.72],
-      hints: ['$dv=dx$ 로 부분적분하면 $\\int\\dfrac{x\\arcsin x}{\\sqrt{1-x^{2}}}dx$ 가 남는다.', '그 적분을 다시 부분적분한다.'],
-      steps: ['$x(\\arcsin x)^{2}-2\\int\\dfrac{x\\arcsin x}{\\sqrt{1-x^{2}}}dx$', '$\\int\\dfrac{x\\arcsin x}{\\sqrt{1-x^{2}}}dx=-\\sqrt{1-x^{2}}\\arcsin x+x$']
-    },
-    {
-      id: 'x029', topic: '역삼각 고급',
-      integrand: 'x^2*atan(x)', latex: 'x^{2} \\arctan x',
-      answer: 'x^3*atan(x)/3 - x^2/6 + ln(1+x^2)/6', answerLatex: '\\frac{x^{3} \\arctan x}{3} - \\frac{x^{2}}{6} + \\frac{\\ln\\left(1 + x^{2}\\right)}{6}+C',
-      domain: [0.1, 2.5],
-      hints: ['$u=\\arctan x,\\;dv=x^{2}dx$ 로 둔다.', '남는 $\\int\\dfrac{x^{3}}{1+x^{2}}dx$ 는 나눗셈으로 정리한다.'],
-      steps: ['$\\dfrac{x^{3}\\arctan x}{3}-\\dfrac{1}{3}\\int\\dfrac{x^{3}}{1+x^{2}}dx$', '$\\dfrac{x^{3}}{1+x^{2}}=x-\\dfrac{x}{1+x^{2}}$']
-    },
-    {
-      id: 'x030', topic: '역삼각 고급',
-      integrand: 'atan(sqrt(x))', latex: '\\arctan\\left(\\sqrt{x}\\right)',
-      answer: '(x+1)*atan(sqrt(x))-sqrt(x)', answerLatex: '\\left(x + 1\\right) \\arctan\\left(\\sqrt{x}\\right) - \\sqrt{x}+C',
-      domain: [0.2, 3],
-      hints: ['$t=\\sqrt{x}$ 로 치환한 뒤 부분적분한다.', '$v=x+1$ 처럼 적분상수를 잘 고르면 깔끔해진다.'],
-      steps: ['$u=\\arctan\\sqrt{x},\\;v=x+1$', '$(x+1)\\arctan\\sqrt{x}-\\int\\dfrac{x+1}{2\\sqrt{x}(1+x)}dx$']
-    },
-    {
-      id: 'x031', topic: '유리식 부분적분',
-      integrand: '1/(x^2+1)^2', latex: '\\frac{1}{\\left(x^{2} + 1\\right)^{2}}',
-      answer: 'x/(2*(x^2+1))+atan(x)/2', answerLatex: '\\frac{x}{2 \\left(x^{2} + 1\\right)} + \\frac{\\arctan x}{2}+C',
-      domain: [-1.5, 2.2],
-      hints: ['$x=\\tan\\theta$ 로 치환하면 $\\int\\cos^{2}\\theta\\,d\\theta$ 가 된다.', '점화식으로 풀어도 된다.'],
-      steps: ['$x=\\tan\\theta,\\;dx=\\sec^{2}\\theta\\,d\\theta$', '$\\int\\cos^{2}\\theta\\,d\\theta=\\dfrac{\\theta}{2}+\\dfrac{\\sin 2\\theta}{4}$']
-    },
-    {
-      id: 'x032', topic: '유리식 부분적분',
-      integrand: 'x^2/(x^2+1)^2', latex: '\\frac{x^{2}}{\\left(x^{2} + 1\\right)^{2}}',
-      answer: 'atan(x)/2 - x/(2*(x^2+1))', answerLatex: '\\frac{\\arctan x}{2} - \\frac{x}{2 \\left(x^{2} + 1\\right)}+C',
-      domain: [-1.5, 2.2],
-      hints: ['$\\dfrac{x^{2}}{(x^{2}+1)^{2}}=\\dfrac{1}{x^{2}+1}-\\dfrac{1}{(x^{2}+1)^{2}}$', '앞 문제 결과를 재활용한다.'],
-      steps: ['$\\dfrac{x^{2}}{(x^{2}+1)^{2}}=\\dfrac{1}{x^{2}+1}-\\dfrac{1}{(x^{2}+1)^{2}}$', '$\\arctan x-\\left(\\dfrac{x}{2(x^{2}+1)}+\\dfrac{\\arctan x}{2}\\right)$']
-    },
-    {
-      id: 'x033', topic: '치환+부분분수',
-      integrand: 'x^3/(x^2+1)^2', latex: '\\frac{x^{3}}{\\left(x^{2} + 1\\right)^{2}}',
-      answer: 'ln(x^2+1)/2 + 1/(2*(x^2+1))', answerLatex: '\\frac{\\ln\\left(x^{2} + 1\\right)}{2} + \\frac{1}{2 \\left(x^{2} + 1\\right)}+C',
-      domain: [0.1, 2.5],
-      hints: ['$u=x^{2}+1$ 로 두면 $x^{2}=u-1$ 다.', '$\\dfrac{1}{2}\\int\\dfrac{u-1}{u^{2}}du$ 로 정리된다.'],
-      steps: ['$u=x^{2}+1,\\;du=2x\\,dx$', '$\\dfrac{1}{2}\\int\\left(\\dfrac{1}{u}-\\dfrac{1}{u^{2}}\\right)du$']
-    },
-    {
-      id: 'x034', topic: '치환+부분분수',
-      integrand: 'x^3/(x^2+2)^2', latex: '\\frac{x^{3}}{\\left(x^{2} + 2\\right)^{2}}',
-      answer: 'ln(x^2+2)/2 + 2/(2*(x^2+2))', answerLatex: '\\frac{\\ln\\left(x^{2} + 2\\right)}{2} + \\frac{2}{2 \\left(x^{2} + 2\\right)}+C',
-      domain: [0.1, 2.5],
-      hints: ['$u=x^{2}+2$ 로 두면 $x^{2}=u-2$ 다.', '$\\dfrac{1}{2}\\int\\dfrac{u-2}{u^{2}}du$ 로 정리된다.'],
-      steps: ['$u=x^{2}+2,\\;du=2x\\,dx$', '$\\dfrac{1}{2}\\int\\left(\\dfrac{1}{u}-\\dfrac{2}{u^{2}}\\right)du$']
-    },
-    {
-      id: 'x035', topic: '치환+부분분수',
-      integrand: 'x^3/(x^2+4)^2', latex: '\\frac{x^{3}}{\\left(x^{2} + 4\\right)^{2}}',
-      answer: 'ln(x^2+4)/2 + 4/(2*(x^2+4))', answerLatex: '\\frac{\\ln\\left(x^{2} + 4\\right)}{2} + \\frac{4}{2 \\left(x^{2} + 4\\right)}+C',
-      domain: [0.1, 2.5],
-      hints: ['$u=x^{2}+4$ 로 두면 $x^{2}=u-4$ 다.', '$\\dfrac{1}{2}\\int\\dfrac{u-4}{u^{2}}du$ 로 정리된다.'],
-      steps: ['$u=x^{2}+4,\\;du=2x\\,dx$', '$\\dfrac{1}{2}\\int\\left(\\dfrac{1}{u}-\\dfrac{4}{u^{2}}\\right)du$']
-    },
-    {
-      id: 'x036', topic: '기교',
-      integrand: 'e^x*(x^2+1)/(x+1)^2', latex: '\\frac{e^{x} \\left(x^{2} + 1\\right)}{\\left(x + 1\\right)^{2}}',
-      answer: 'e^x*(x-1)/(x+1)', answerLatex: '\\frac{e^{x} \\left(x - 1\\right)}{x + 1}+C',
-      domain: [0.1, 2.2],
-      hints: ['$\\dfrac{x^{2}+1}{(x+1)^{2}}=f(x)+f\'(x)$ 꼴로 쪼갤 수 있는지 본다.', '$\\int e^{x}(f+f\')dx=e^{x}f$ 를 쓴다.'],
-      steps: ['$\\dfrac{x^{2}+1}{(x+1)^{2}}=\\dfrac{x-1}{x+1}+\\dfrac{2}{(x+1)^{2}}$', '$f=\\dfrac{x-1}{x+1},\\;f\'=\\dfrac{2}{(x+1)^{2}}$', '$\\int e^{x}(f+f\')dx=e^{x}f$']
-    },
-    {
-      id: 'x037', topic: '삼각치환 고급',
-      integrand: 'x^2*sqrt(1-x^2)', latex: 'x^{2} \\sqrt{1 - x^{2}}',
-      answer: '(1/8)*asin(x) - x*(1-2x^2)*sqrt(1-x^2)/8', answerLatex: '\\frac{1}{8} \\arcsin x - \\frac{x \\left(1 - 2 x^{2}\\right) \\sqrt{1 - x^{2}}}{8}+C',
-      domain: [-0.72, 0.72],
-      hints: ['$x=\\sin\\theta$ 로 치환하면 $\\int\\sin^{2}\\theta\\cos^{2}\\theta\\,d\\theta$ 가 된다.', '$\\sin^{2}\\theta\\cos^{2}\\theta=\\dfrac{\\sin^{2}2\\theta}{4}$ 로 차수를 내린다.'],
-      steps: ['$x=\\sin\\theta$', '$1\\int\\dfrac{\\sin^{2}2\\theta}{4}d\\theta$', '반각공식을 한 번 더 적용한 뒤 $x$ 로 되돌린다']
-    },
-    {
-      id: 'x038', topic: '삼각치환 고급',
-      integrand: 'x^2*sqrt(4-x^2)', latex: 'x^{2} \\sqrt{4 - x^{2}}',
-      answer: '2*asin(x/2) - x*(4-2x^2)*sqrt(4-x^2)/8', answerLatex: '2 \\arcsin\\left(\\frac{x}{2}\\right) - \\frac{x \\left(4 - 2 x^{2}\\right) \\sqrt{4 - x^{2}}}{8}+C',
-      domain: [-1.44, 1.44],
-      hints: ['$x=2\\sin\\theta$ 로 치환하면 $\\int\\sin^{2}\\theta\\cos^{2}\\theta\\,d\\theta$ 가 된다.', '$\\sin^{2}\\theta\\cos^{2}\\theta=\\dfrac{\\sin^{2}2\\theta}{4}$ 로 차수를 내린다.'],
-      steps: ['$x=2\\sin\\theta$', '$16\\int\\dfrac{\\sin^{2}2\\theta}{4}d\\theta$', '반각공식을 한 번 더 적용한 뒤 $x$ 로 되돌린다']
-    },
-    {
-      id: 'x039', topic: '역쌍곡선 고급',
-      integrand: 'x*asinh(x)', latex: 'x \\operatorname{arsinh} x',
-      answer: '(2x^2+1)*asinh(x)/4 - x*sqrt(x^2+1)/4', answerLatex: '\\frac{\\left(2 x^{2} + 1\\right) \\operatorname{arsinh} x}{4} - \\frac{x \\sqrt{x^{2} + 1}}{4}+C',
-      domain: [0.1, 2.2],
-      hints: ['$u=\\operatorname{arsinh}x,\\;dv=x\\,dx$ 로 둔다.', '$v=\\dfrac{x^{2}}{2}$ 대신 $\\dfrac{x^{2}+1}{2}$ 를 쓰면 남는 적분이 간단해진다.'],
-      steps: ['$u=\\operatorname{arsinh}x,\\;v=\\dfrac{2x^{2}+1}{4}$ 로 잡는다', '남는 적분 $\\int\\dfrac{x^{2}}{\\sqrt{x^{2}+1}}dx$ 를 정리한다']
-    },
-    {
-      id: 'x040', topic: '쌍곡선 고급',
-      integrand: 'x^2*sqrt(x^2+1)', latex: 'x^{2} \\sqrt{x^{2} + 1}',
-      answer: 'x*(x^2+1)^(3/2)/4 - x*sqrt(x^2+1)/8 - asinh(x)/8', answerLatex: '\\frac{x \\left(x^{2} + 1\\right)^{\\frac{3}{2}}}{4} - \\frac{x \\sqrt{x^{2} + 1}}{8} - \\frac{\\operatorname{arsinh} x}{8}+C',
-      domain: [-1.3, 2],
-      hints: ['$x=\\sinh\\theta$ 로 치환하면 $\\int\\sinh^{2}\\theta\\cosh^{2}\\theta\\,d\\theta$ 가 된다.', '$\\sinh^{2}\\cosh^{2}=\\dfrac{\\sinh^{2}2\\theta}{4}$ 로 내린다.'],
-      steps: ['$x=\\sinh\\theta$', '$\\dfrac{1}{4}\\int\\sinh^{2}2\\theta\\,d\\theta$', '$\\sinh^{2}u=\\dfrac{\\cosh 2u-1}{2}$ 를 한 번 더 적용한다']
-    },
-    {
-      id: 'x041', topic: '쌍곡선 고급',
-      integrand: 'sqrt(x^2+1)^3', latex: '\\sqrt{x^{2} + 1}^{3}',
-      answer: 'x*(x^2+1)^(3/2)/4 + 3*x*sqrt(x^2+1)/8 + 3*asinh(x)/8', answerLatex: '\\frac{x \\left(x^{2} + 1\\right)^{\\frac{3}{2}}}{4} + \\frac{3 x \\sqrt{x^{2} + 1}}{8} + \\frac{3 \\operatorname{arsinh} x}{8}+C',
-      domain: [-1.3, 2],
-      hints: ['$(x^{2}+1)^{3/2}$ 이므로 $x=\\sinh\\theta$ 로 두면 $\\int\\cosh^{4}\\theta\\,d\\theta$ 다.', '$\\cosh^{4}$ 는 반각공식을 두 번 쓴다.'],
-      steps: ['$x=\\sinh\\theta$', '$\\int\\cosh^{4}\\theta\\,d\\theta$', '$\\cosh^{2}u=\\dfrac{\\cosh 2u+1}{2}$ 를 두 번 적용']
-    },
-    {
-      id: 'x042', topic: '쌍곡선 순환',
-      integrand: 'e^(2x)cosh(x)', latex: 'e^{2 x} \\cosh x',
-      answer: 'e^(2x)*(2cosh(x) - sinh(x))/3', answerLatex: '\\frac{e^{2 x} \\left(2 \\cosh x - \\sinh x\\right)}{3}+C',
-      domain: [0.05, 1.3],
-      hints: ['$\\cosh$ 를 지수로 풀어 항별로 적분한다.', '분모는 $4-1=3$ 이다.'],
-      steps: ['$\\cosh x = \\dfrac{e^{x}+e^{-x}}{2}$', '$= \\frac{e^{2 x} \\left(2 \\cosh x - \\sinh x\\right)}{3}$']
-    },
-    {
-      id: 'x043', topic: '쌍곡선 순환',
-      integrand: 'e^(3x)cosh(2x)', latex: 'e^{3 x} \\cosh\\left(2 x\\right)',
-      answer: 'e^(3x)*(3cosh(2x) - 2sinh(2x))/5', answerLatex: '\\frac{e^{3 x} \\left(3 \\cosh\\left(2 x\\right) - 2 \\sinh\\left(2 x\\right)\\right)}{5}+C',
-      domain: [0.05, 1.3],
-      hints: ['$\\cosh$ 를 지수로 풀어 항별로 적분한다.', '분모는 $9-4=5$ 이다.'],
-      steps: ['$\\cosh 2x = \\dfrac{e^{2x}+e^{-2x}}{2}$', '$= \\frac{e^{3 x} \\left(3 \\cosh\\left(2 x\\right) - 2 \\sinh\\left(2 x\\right)\\right)}{5}$']
-    },
-    {
-      id: 'x044', topic: '반복 부분적분',
-      integrand: 'ln(x)^2/x^2', latex: '\\frac{\\left(\\ln x\\right)^{2}}{x^{2}}',
-      answer: '-(ln(x)^2+2ln(x)+2)/x', answerLatex: '\\frac{-\\left(\\left(\\ln x\\right)^{2} + 2 \\ln x + 2\\right)}{x}+C',
-      domain: [0.4, 3],
-      hints: ['$u=(\\ln x)^{2},\\;dv=x^{-2}dx$ 로 두고 두 번 부분적분한다.', '$\\int\\dfrac{\\ln x}{x^{2}}dx=-\\dfrac{\\ln x+1}{x}$ 를 중간에 쓴다.'],
-      steps: ['$-\\dfrac{(\\ln x)^{2}}{x}+2\\int\\dfrac{\\ln x}{x^{2}}dx$', '$\\int\\dfrac{\\ln x}{x^{2}}dx=-\\dfrac{\\ln x+1}{x}$', '$= -\\dfrac{(\\ln x)^{2}+2\\ln x+2}{x}$']
-    },
-    {
-      id: 'x045', topic: '부분적분',
-      integrand: 'atan(x)/x^2', latex: '\\frac{\\arctan x}{x^{2}}',
-      answer: '-atan(x)/x+ln(x)-ln(1+x^2)/2', answerLatex: '\\frac{-\\arctan x}{x} + \\ln\\left|x\\right| - \\frac{\\ln\\left|1 + x^{2}\\right|}{2}+C',
-      domain: [0.3, 2.5],
-      hints: ['$u=\\arctan x,\\;dv=x^{-2}dx$ 로 둔다.', '남는 $\\int\\dfrac{dx}{x(1+x^{2})}$ 는 부분분수로 나눈다.'],
-      steps: ['$-\\dfrac{\\arctan x}{x}+\\int\\dfrac{dx}{x(1+x^{2})}$', '$\\dfrac{1}{x(1+x^{2})}=\\dfrac{1}{x}-\\dfrac{x}{1+x^{2}}$']
-    },
-    {
-      id: 'x046', topic: '부분적분',
-      integrand: 'ln(x)/(1+x)^2', latex: '\\frac{\\ln x}{\\left(1 + x\\right)^{2}}',
-      answer: '-ln(x)/(1+x)+ln(x)-ln(1+x)', answerLatex: '\\frac{-\\ln\\left|x\\right|}{1 + x} + \\ln\\left|x\\right| - \\ln\\left|1 + x\\right|+C',
-      domain: [0.3, 3],
-      hints: ['$dv=(1+x)^{-2}dx$ 로 두면 $v=-\\dfrac{1}{1+x}$ 다.', '남는 $\\int\\dfrac{dx}{x(1+x)}$ 는 부분분수다.'],
-      steps: ['$-\\dfrac{\\ln x}{1+x}+\\int\\dfrac{dx}{x(1+x)}$', '$\\dfrac{1}{x(1+x)}=\\dfrac{1}{x}-\\dfrac{1}{1+x}$']
-    },
-    {
-      id: 'x047', topic: '기교',
-      integrand: 'x*e^x/(1+x)^2', latex: '\\frac{x e^{x}}{\\left(1 + x\\right)^{2}}',
-      answer: 'e^x/(1+x)', answerLatex: '\\frac{e^{x}}{1 + x}+C',
-      domain: [0.2, 2.5],
-      hints: ['$\\dfrac{x}{(1+x)^{2}}=\\dfrac{1}{1+x}-\\dfrac{1}{(1+x)^{2}}$ 로 쪼갠다.', '$f=\\dfrac{1}{1+x}$ 라 하면 $f\'=-\\dfrac{1}{(1+x)^{2}}$ 이고 $\\int e^{x}(f+f\')dx=e^{x}f$ 다.'],
-      steps: ['$\\dfrac{x}{(1+x)^{2}}=\\dfrac{1}{1+x}-\\dfrac{1}{(1+x)^{2}}$', '$f=\\dfrac{1}{1+x},\\; f\'=-\\dfrac{1}{(1+x)^{2}}$', '$\\int e^{x}(f+f\')dx=\\dfrac{e^{x}}{1+x}$']
-    },
-    {
-      id: 'x048', topic: '기교',
+      id: 'x016', topic: '기교',
       integrand: '(1+x)/(x*(1+x*e^x))', latex: '\\frac{1 + x}{x \\left(1 + x e^{x}\\right)}',
       answer: 'ln(x*e^x)-ln(1+x*e^x)', answerLatex: '\\ln\\left|x e^{x}\\right| - \\ln\\left|1 + x e^{x}\\right|+C',
       domain: [0.3, 2],
@@ -4756,23 +4980,7 @@
       steps: ['분자·분모에 $e^{x}$ 를 곱한다: $\\dfrac{(1+x)e^{x}}{xe^{x}(1+xe^{x})}$', '$u=xe^{x}$', '$\\int\\dfrac{du}{u(1+u)}=\\ln\\left|\\dfrac{u}{1+u}\\right|$']
     },
     {
-      id: 'x049', topic: '삼각 유리식',
-      integrand: 'sin(x)/(1+sin(x))', latex: '\\frac{\\sin x}{1 + \\sin x}',
-      answer: 'x-tan(x)+sec(x)', answerLatex: 'x - \\tan x + \\sec x+C',
-      domain: [0.2, 1.2],
-      hints: ['$\\dfrac{\\sin x}{1+\\sin x}=1-\\dfrac{1}{1+\\sin x}$ 로 쪼갠다.', '$\\int\\dfrac{dx}{1+\\sin x}=\\tan x-\\sec x$ 를 쓴다.'],
-      steps: ['$\\dfrac{\\sin x}{1+\\sin x}=1-\\dfrac{1}{1+\\sin x}$', '$\\int\\dfrac{dx}{1+\\sin x}=\\tan x-\\sec x$']
-    },
-    {
-      id: 'x050', topic: '삼각 유리식',
-      integrand: 'cos(x)/(1+cos(x))', latex: '\\frac{\\cos x}{1 + \\cos x}',
-      answer: 'x-tan(x/2)', answerLatex: 'x - \\tan\\left(\\frac{x}{2}\\right)+C',
-      domain: [0.2, 2.4],
-      hints: ['$\\dfrac{\\cos x}{1+\\cos x}=1-\\dfrac{1}{1+\\cos x}$', '$\\int\\dfrac{dx}{1+\\cos x}=\\tan\\dfrac{x}{2}$'],
-      steps: ['$\\dfrac{\\cos x}{1+\\cos x}=1-\\dfrac{1}{1+\\cos x}$', '$1+\\cos x=2\\cos^{2}\\dfrac{x}{2}$']
-    },
-    {
-      id: 'x051', topic: '바이어슈트라스 치환',
+      id: 'x017', topic: '바이어슈트라스 치환',
       integrand: '1/(2+sin(x))', latex: '\\frac{1}{2 + \\sin x}',
       answer: '2*atan((2tan(x/2)+1)/sqrt(3))/sqrt(3)', answerLatex: '\\frac{2 \\arctan\\left(\\frac{2 \\tan\\left(\\frac{x}{2}\\right) + 1}{\\sqrt{3}}\\right)}{\\sqrt{3}}+C',
       domain: [0.2, 2.4],
@@ -4780,7 +4988,7 @@
       steps: ['$t=\\tan\\dfrac{x}{2},\\;dx=\\dfrac{2dt}{1+t^{2}}$', '$\\int\\dfrac{2\\,dt}{2t^{2}+2t+2}$', '완전제곱 후 $\\arctan$ 형태로 정리한다']
     },
     {
-      id: 'x052', topic: '바이어슈트라스 치환',
+      id: 'x018', topic: '바이어슈트라스 치환',
       integrand: '1/(3+2sin(x))', latex: '\\frac{1}{3 + 2 \\sin x}',
       answer: '2*atan((3tan(x/2)+2)/sqrt(5))/sqrt(5)', answerLatex: '\\frac{2 \\arctan\\left(\\frac{3 \\tan\\left(\\frac{x}{2}\\right) + 2}{\\sqrt{5}}\\right)}{\\sqrt{5}}+C',
       domain: [0.2, 2.4],
@@ -4788,7 +4996,7 @@
       steps: ['$t=\\tan\\dfrac{x}{2},\\;dx=\\dfrac{2dt}{1+t^{2}}$', '$\\int\\dfrac{2\\,dt}{3t^{2}+4t+3}$', '완전제곱 후 $\\arctan$ 형태로 정리한다']
     },
     {
-      id: 'x053', topic: '바이어슈트라스 치환',
+      id: 'x019', topic: '바이어슈트라스 치환',
       integrand: '1/(5+3sin(x))', latex: '\\frac{1}{5 + 3 \\sin x}',
       answer: '2*atan((5tan(x/2)+3)/4)/4', answerLatex: '\\frac{2 \\arctan\\left(\\frac{5 \\tan\\left(\\frac{x}{2}\\right) + 3}{4}\\right)}{4}+C',
       domain: [0.2, 2.4],
@@ -4796,71 +5004,7 @@
       steps: ['$t=\\tan\\dfrac{x}{2},\\;dx=\\dfrac{2dt}{1+t^{2}}$', '$\\int\\dfrac{2\\,dt}{5t^{2}+6t+5}$', '완전제곱 후 $\\arctan$ 형태로 정리한다']
     },
     {
-      id: 'x054', topic: '삼각치환 고급',
-      integrand: 'sqrt(x^2+1)/x', latex: '\\frac{\\sqrt{x^{2} + 1}}{x}',
-      answer: 'sqrt(x^2+1)-ln((1+sqrt(x^2+1))/x)', answerLatex: '\\sqrt{x^{2} + 1} - \\ln\\left|\\frac{1 + \\sqrt{x^{2} + 1}}{x}\\right|+C',
-      domain: [0.35, 2.6],
-      hints: ['$x=\\sinh\\theta$ 로 두면 $\\int\\dfrac{\\cosh^{2}\\theta}{\\sinh\\theta}d\\theta$ 가 된다.', '$u=\\sqrt{x^{2}+1}$ 치환으로 유리식으로 바꿔도 된다.'],
-      steps: ['$u=\\sqrt{x^{2}+1},\\;u\\,du=x\\,dx$', '$\\int\\dfrac{u^{2}}{u^{2}-1}du$', '$= u+\\dfrac{1}{2}\\ln\\left|\\dfrac{u-1}{u+1}\\right|$ 를 정리한다']
-    },
-    {
-      id: 'x055', topic: '삼각치환 고급',
-      integrand: 'sqrt(x^2-1)/x', latex: '\\frac{\\sqrt{x^{2} - 1}}{x}',
-      answer: 'sqrt(x^2-1)-atan(sqrt(x^2-1))', answerLatex: '\\sqrt{x^{2} - 1} - \\arctan\\left(\\sqrt{x^{2} - 1}\\right)+C',
-      domain: [1.3, 3.2],
-      hints: ['$x=\\sec\\theta$ 로 두면 $\\int\\tan^{2}\\theta\\,d\\theta$ 가 된다.', '$\\tan^{2}=\\sec^{2}-1$ 로 내린다.'],
-      steps: ['$x=\\sec\\theta$', '$\\int\\tan^{2}\\theta\\,d\\theta=\\tan\\theta-\\theta$', '$\\tan\\theta=\\sqrt{x^{2}-1},\\;\\theta=\\operatorname{arcsec}x$']
-    },
-    {
-      id: 'x056', topic: '치환+부분적분',
-      integrand: 'x^3*e^(x^2)', latex: 'x^{3} e^{x^{2}}',
-      answer: 'e^(x^2)*(x^2-1)/2', answerLatex: '\\frac{e^{x^{2}} \\left(x^{2} - 1\\right)}{2}+C',
-      domain: [0.1, 1.3],
-      hints: ['$u=x^{2}$ 로 두면 $\\dfrac{1}{2}\\int ue^{u}du$ 가 된다.', '그다음은 부분적분이다.'],
-      steps: ['$u=x^{2},\\;du=2x\\,dx$', '$\\dfrac{1}{2}\\int ue^{u}du=\\dfrac{(u-1)e^{u}}{2}$']
-    },
-    {
-      id: 'x057', topic: '치환+부분적분',
-      integrand: 'x^5*e^(x^2)', latex: 'x^{5} e^{x^{2}}',
-      answer: 'e^(x^2)*(x^4-2x^2+2)/2', answerLatex: '\\frac{e^{x^{2}} \\left(x^{4} - 2 x^{2} + 2\\right)}{2}+C',
-      domain: [0.1, 1.2],
-      hints: ['$u=x^{2}$ 로 두면 $\\dfrac{1}{2}\\int u^{2}e^{u}du$ 다.', '부분적분을 두 번 한다.'],
-      steps: ['$u=x^{2}$', '$\\dfrac{1}{2}\\int u^{2}e^{u}du=\\dfrac{(u^{2}-2u+2)e^{u}}{2}$']
-    },
-    {
-      id: 'x058', topic: '치환+부분적분',
-      integrand: 'x^3*sin(x^2)', latex: 'x^{3} \\sin\\left(x^{2}\\right)',
-      answer: '(sin(x^2)-x^2*cos(x^2))/2', answerLatex: '\\frac{\\sin\\left(x^{2}\\right) - x^{2} \\cos\\left(x^{2}\\right)}{2}+C',
-      domain: [0.2, 1.6],
-      hints: ['$u=x^{2}$ 로 두면 $\\dfrac{1}{2}\\int u\\sin u\\,du$ 가 된다.', '부분적분으로 마무리한다.'],
-      steps: ['$u=x^{2},\\;du=2x\\,dx$', '$\\dfrac{1}{2}\\int u\\sin u\\,du=\\dfrac{\\sin u-u\\cos u}{2}$']
-    },
-    {
-      id: 'x059', topic: '부분적분',
-      integrand: 'x*csc(x)^2', latex: 'x \\csc^{2} x',
-      answer: '-x*cot(x)+ln(sin(x))', answerLatex: '-x \\cot x + \\ln\\left|\\sin x\\right|+C',
-      domain: [0.45, 2.3],
-      hints: ['$u=x,\\;dv=\\csc^{2}x\\,dx$ 로 둔다.', '남는 $\\int\\cot x\\,dx$ 를 처리한다.'],
-      steps: ['$u=x,\\;v=-\\cot x$', '$-x\\cot x+\\int\\cot x\\,dx=-x\\cot x+\\ln|\\sin x|$']
-    },
-    {
-      id: 'x060', topic: '쌍곡선 짝수차',
-      integrand: 'sinh(x)^4', latex: '\\sinh^{4} x',
-      answer: '3x/8 - sinh(2x)/4 + sinh(4x)/32', answerLatex: '\\frac{3 x}{8} - \\frac{\\sinh\\left(2 x\\right)}{4} + \\frac{\\sinh\\left(4 x\\right)}{32}+C',
-      domain: [0.2, 1.4],
-      hints: ['$\\sinh^{2}u=\\dfrac{\\cosh 2u-1}{2}$ 를 두 번 적용한다.', '$\\sin^{4}$ 과 형태가 비슷하지만 부호가 다르다.'],
-      steps: ['$\\sinh^{4}x=\\dfrac{(\\cosh 2x-1)^{2}}{4}$', '$\\cosh^{2}2x=\\dfrac{\\cosh 4x+1}{2}$', '$=\\dfrac{3}{8}-\\dfrac{\\cosh 2x}{2}+\\dfrac{\\cosh 4x}{8}$']
-    },
-    {
-      id: 'x061', topic: '쌍곡선 짝수차',
-      integrand: 'cosh(x)^4', latex: '\\cosh^{4} x',
-      answer: '3x/8 + sinh(2x)/4 + sinh(4x)/32', answerLatex: '\\frac{3 x}{8} + \\frac{\\sinh\\left(2 x\\right)}{4} + \\frac{\\sinh\\left(4 x\\right)}{32}+C',
-      domain: [0.2, 1.4],
-      hints: ['$\\cosh^{2}u=\\dfrac{\\cosh 2u+1}{2}$ 를 두 번 적용한다.', '$\\sinh^{4}$ 과 가운데 항의 부호만 다르다.'],
-      steps: ['$\\cosh^{4}x=\\dfrac{(\\cosh 2x+1)^{2}}{4}$', '$=\\dfrac{3}{8}+\\dfrac{\\cosh 2x}{2}+\\dfrac{\\cosh 4x}{8}$']
-    },
-    {
-      id: 'x062', topic: '함정 문제',
+      id: 'x020', topic: '함정 문제',
       integrand: '((x-1)^(ln(x+1)))/((x+1)^(ln(x-1)))', latex: '\\frac{\\left(x - 1\\right)^{\\ln\\left(x + 1\\right)}}{\\left(x + 1\\right)^{\\ln\\left(x - 1\\right)}}',
       answer: 'x', answerLatex: 'x+C',
       domain: [1.4, 3.4],
@@ -4868,7 +5012,7 @@
       steps: ['$(x-1)^{\\ln(x+1)}=e^{\\ln(x-1)\\ln(x+1)}=(x+1)^{\\ln(x-1)}$', '피적분함수는 $1$', '$\\int 1\\,dx=x$']
     },
     {
-      id: 'x063', topic: '로그 중첩 치환',
+      id: 'x021', topic: '로그 중첩 치환',
       integrand: '1/(x*ln(x)+2*x)', latex: '\\frac{1}{x \\ln x + 2 x}',
       answer: 'ln(ln(x)+2)', answerLatex: '\\ln\\left(\\ln x + 2\\right)+C',
       domain: [1.2, 4],
@@ -4876,7 +5020,7 @@
       steps: ['$\\dfrac{1}{x(\\ln x+2)}$', '$u=\\ln x+2$', '$\\int\\dfrac{du}{u}=\\ln|\\ln x+2|$']
     },
     {
-      id: 'x064', topic: '로그 중첩 치환',
+      id: 'x022', topic: '로그 중첩 치환',
       integrand: '1/(x*ln(x)*ln(ln(x)))', latex: '\\frac{1}{x \\ln x \\ln\\left(\\ln x\\right)}',
       answer: 'ln(ln(ln(x)))', answerLatex: '\\ln\\left(\\ln\\left(\\ln x\\right)\\right)+C',
       domain: [17, 60],
@@ -4884,7 +5028,7 @@
       steps: ['$u=\\ln x:;\\int\\dfrac{du}{u\\ln u}$', '$v=\\ln u:;\\int\\dfrac{dv}{v}=\\ln v$', '$=\\ln\\ln\\ln x$']
     },
     {
-      id: 'x065', topic: '지수탑 미분',
+      id: 'x023', topic: '지수탑 미분',
       integrand: 'x^x*(1+ln(x))', latex: 'x^{x} \\left(1 + \\ln x\\right)',
       answer: 'x^x', answerLatex: 'x^{x}+C',
       domain: [0.4, 2.2],
@@ -4892,7 +5036,7 @@
       steps: ['$y=x^{x}=e^{x\\ln x}$', '$y\'=e^{x\\ln x}(\\ln x+1)=x^{x}(1+\\ln x)$', '따라서 원시함수는 $x^{x}$']
     },
     {
-      id: 'x066', topic: '역수 치환',
+      id: 'x024', topic: '역수 치환',
       integrand: '(x^2-1)*e^(x+1/x)/x^2', latex: '\\frac{\\left(x^{2} - 1\\right) e^{x + \\frac{1}{x}}}{x^{2}}',
       answer: 'e^(x+1/x)', answerLatex: 'e^{x + \\frac{1}{x}}+C',
       domain: [0.4, 2.4],
@@ -4900,7 +5044,7 @@
       steps: ['$u=x+\\dfrac1x,;du=\\left(1-\\dfrac{1}{x^{2}}\\right)dx$', '$\\int e^{u}du=e^{x+1/x}$']
     },
     {
-      id: 'x067', topic: '반각 치환',
+      id: 'x025', topic: '반각 치환',
       integrand: 'e^x*(1+sin(x))/(1+cos(x))', latex: '\\frac{e^{x} \\left(1 + \\sin x\\right)}{1 + \\cos x}',
       answer: 'e^x*tan(x/2)', answerLatex: 'e^{x} \\tan\\left(\\frac{x}{2}\\right)+C',
       domain: [0.2, 2.2],
@@ -4908,7 +5052,7 @@
       steps: ['$\\dfrac{1+\\sin x}{1+\\cos x}=\\tan\\dfrac x2+\\dfrac12\\sec^{2}\\dfrac x2$', '$f=\\tan\\dfrac x2,;f\'=\\dfrac12\\sec^{2}\\dfrac x2$', '$=e^{x}\\tan\\dfrac x2$']
     },
     {
-      id: 'x068', topic: '삼각 유리식',
+      id: 'x026', topic: '삼각 유리식',
       integrand: '1/(1+tan(x))', latex: '\\frac{1}{1 + \\tan x}',
       answer: 'x/2+ln(sin(x)+cos(x))/2', answerLatex: '\\frac{x}{2} + \\frac{\\ln\\left|\\sin x + \\cos x\\right|}{2}+C',
       domain: [0.25, 1.15],
@@ -4916,7 +5060,7 @@
       steps: ['$\\dfrac{\\cos x}{\\sin x+\\cos x}=\\dfrac12+\\dfrac12\\cdot\\dfrac{\\cos x-\\sin x}{\\sin x+\\cos x}$', '$=\\dfrac x2+\\dfrac12\\ln|\\sin x+\\cos x|$']
     },
     {
-      id: 'x069', topic: '삼각 유리식',
+      id: 'x027', topic: '삼각 유리식',
       integrand: '1/(sin(x)+cos(x))', latex: '\\frac{1}{\\sin x + \\cos x}',
       answer: 'ln(tan(x/2+pi/8))/sqrt(2)', answerLatex: '\\frac{\\ln\\left|\\tan\\left(\\frac{x}{2} + \\frac{\\pi}{8}\\right)\\right|}{\\sqrt{2}}+C',
       domain: [0.3, 1.6],
@@ -4924,7 +5068,7 @@
       steps: ['$\\dfrac{1}{\\sqrt2}\\int\\csc\\left(x+\\dfrac\\pi4\\right)dx$', '$=\\dfrac{1}{\\sqrt2}\\ln\\left|\\tan\\left(\\dfrac x2+\\dfrac\\pi8\\right)\\right|$']
     },
     {
-      id: 'x070', topic: '적분대회 고전',
+      id: 'x028', topic: '적분대회 고전',
       integrand: 'sqrt(tan(x))+sqrt(cot(x))', latex: '\\sqrt{\\tan x} + \\sqrt{\\cot x}',
       answer: 'sqrt(2)*arcsin(sin(x)-cos(x))', answerLatex: '\\sqrt{2} \\arcsin\\left(\\sin x - \\cos x\\right)+C',
       domain: [0.3, 1.2],
@@ -4932,7 +5076,7 @@
       steps: ['$\\sqrt{\\tan x}+\\sqrt{\\cot x}=\\dfrac{\\sin x+\\cos x}{\\sqrt{\\sin x\\cos x}}$', '$u=\\sin x-\\cos x,;\\sin x\\cos x=\\dfrac{1-u^{2}}{2}$', '$\\sqrt2\\int\\dfrac{du}{\\sqrt{1-u^{2}}}=\\sqrt2\\arcsin(\\sin x-\\cos x)$']
     },
     {
-      id: 'x071', topic: '4차 유리식',
+      id: 'x029', topic: '4차 유리식',
       integrand: '(x^2+1)/(x^4+x^2+1)', latex: '\\frac{x^{2} + 1}{x^{4} + x^{2} + 1}',
       answer: 'arctan((x^2-1)/(sqrt(3)*x))/sqrt(3)', answerLatex: '\\frac{\\arctan\\left(\\frac{x^{2} - 1}{\\sqrt{3} x}\\right)}{\\sqrt{3}}+C',
       domain: [0.25, 2.6],
@@ -4940,7 +5084,7 @@
       steps: ['$\\dfrac{1+x^{-2}}{x^{2}+1+x^{-2}}$', '$u=x-\\dfrac1x,;x^{2}+x^{-2}=u^{2}+2$', '$\\int\\dfrac{du}{u^{2}+3}=\\dfrac{1}{\\sqrt3}\\arctan\\dfrac{u}{\\sqrt3}$']
     },
     {
-      id: 'x072', topic: '4차 유리식',
+      id: 'x030', topic: '4차 유리식',
       integrand: '(x^2-1)/(x^4+x^2+1)', latex: '\\frac{x^{2} - 1}{x^{4} + x^{2} + 1}',
       answer: 'ln((x^2-x+1)/(x^2+x+1))/2', answerLatex: '\\frac{\\ln\\left(\\frac{x^{2} - x + 1}{x^{2} + x + 1}\\right)}{2}+C',
       domain: [0.25, 2.6],
@@ -4948,7 +5092,7 @@
       steps: ['$\\dfrac{1-x^{-2}}{x^{2}+1+x^{-2}}$', '$u=x+\\dfrac1x$', '$\\dfrac12\\ln\\left|\\dfrac{x^{2}-x+1}{x^{2}+x+1}\\right|$']
     },
     {
-      id: 'x073', topic: '4차 유리식',
+      id: 'x031', topic: '4차 유리식',
       integrand: '1/(x^4+x^2+1)', latex: '\\frac{1}{x^{4} + x^{2} + 1}',
       answer: 'arctan((x^2-1)/(sqrt(3)*x))/(2*sqrt(3))-ln((x^2-x+1)/(x^2+x+1))/4', answerLatex: '\\frac{\\arctan\\left(\\frac{x^{2} - 1}{\\sqrt{3} x}\\right)}{2 \\sqrt{3}} - \\frac{\\ln\\left(\\frac{x^{2} - x + 1}{x^{2} + x + 1}\\right)}{4}+C',
       domain: [0.25, 2.6],
@@ -4956,7 +5100,7 @@
       steps: ['$\\dfrac{1}{x^{4}+x^{2}+1}=\\dfrac12\\cdot\\dfrac{x^{2}+1}{x^{4}+x^{2}+1}-\\dfrac12\\cdot\\dfrac{x^{2}-1}{x^{4}+x^{2}+1}$', '두 결과를 대입한다']
     },
     {
-      id: 'x074', topic: '4차 유리식',
+      id: 'x032', topic: '4차 유리식',
       integrand: 'x^2/(x^4+x^2+1)', latex: '\\frac{x^{2}}{x^{4} + x^{2} + 1}',
       answer: 'arctan((x^2-1)/(sqrt(3)*x))/(2*sqrt(3))+ln((x^2-x+1)/(x^2+x+1))/4', answerLatex: '\\frac{\\arctan\\left(\\frac{x^{2} - 1}{\\sqrt{3} x}\\right)}{2 \\sqrt{3}} + \\frac{\\ln\\left(\\frac{x^{2} - x + 1}{x^{2} + x + 1}\\right)}{4}+C',
       domain: [0.25, 2.6],
@@ -4964,7 +5108,7 @@
       steps: ['$\\dfrac{x^{2}}{x^{4}+x^{2}+1}=\\dfrac12\\left(\\dfrac{x^{2}+1}{x^{4}+x^{2}+1}+\\dfrac{x^{2}-1}{x^{4}+x^{2}+1}\\right)$', '두 결과를 더한다']
     },
     {
-      id: 'x075', topic: '4차 유리식',
+      id: 'x033', topic: '4차 유리식',
       integrand: '1/(x^4+4)', latex: '\\frac{1}{x^{4} + 4}',
       answer: 'ln((x^2+2*x+2)/(x^2-2*x+2))/16+(arctan(x-1)+arctan(x+1))/8', answerLatex: '\\frac{\\ln\\left(\\frac{x^{2} + 2 x + 2}{x^{2} - 2 x + 2}\\right)}{16} + \\frac{\\arctan\\left(x - 1\\right) + \\arctan\\left(x + 1\\right)}{8}+C',
       domain: [0.2, 2.6],
@@ -4972,7 +5116,7 @@
       steps: ['$x^{4}+4=(x^{2}-2x+2)(x^{2}+2x+2)$', '부분분수로 쪼개면 로그 항과 $\\arctan$ 항이 나온다', '$=\\dfrac{1}{16}\\ln\\dfrac{x^{2}+2x+2}{x^{2}-2x+2}+\\dfrac{\\arctan(x-1)+\\arctan(x+1)}{8}$']
     },
     {
-      id: 'x076', topic: '6차 유리식',
+      id: 'x034', topic: '6차 유리식',
       integrand: '1/(x^6+1)', latex: '\\frac{1}{x^{6} + 1}',
       answer: 'arctan(x)/3+arctan((x^2-1)/x)/6-sqrt(3)*ln((x^2-sqrt(3)*x+1)/(x^2+sqrt(3)*x+1))/12', answerLatex: '\\frac{\\arctan x}{3} + \\frac{\\arctan\\left(\\frac{x^{2} - 1}{x}\\right)}{6} - \\frac{\\sqrt{3} \\ln\\left(\\frac{x^{2} - \\sqrt{3} x + 1}{x^{2} + \\sqrt{3} x + 1}\\right)}{12}+C',
       domain: [0.25, 2.6],
@@ -4980,7 +5124,7 @@
       steps: ['$2-x^{2}=\\dfrac{(x^{2}+1)}{2}-\\dfrac{3(x^{2}-1)}{2}$ 로 다시 쪼갠다', '$u=x-\\dfrac1x$ 와 $u=x+\\dfrac1x$ 치환을 각각 쓴다', '$\\arctan$ 두 항과 로그 한 항이 남는다']
     },
     {
-      id: 'x077', topic: '역수 치환',
+      id: 'x035', topic: '역수 치환',
       integrand: '(x^2-1)/((x^2+1)*sqrt(x^4+1))', latex: '\\frac{x^{2} - 1}{\\left(x^{2} + 1\\right) \\sqrt{x^{4} + 1}}',
       answer: 'arctan(sqrt(x^4+1)/(sqrt(2)*x))/sqrt(2)', answerLatex: '\\frac{\\arctan\\left(\\frac{\\sqrt{x^{4} + 1}}{\\sqrt{2} x}\\right)}{\\sqrt{2}}+C',
       domain: [0.3, 2.6],
@@ -4988,7 +5132,7 @@
       steps: ['$u=x+\\dfrac1x,;du=\\left(1-\\dfrac{1}{x^{2}}\\right)dx$', '$\\int\\dfrac{du}{u\\sqrt{u^{2}-2}}=\\dfrac{1}{\\sqrt2}\\arctan\\dfrac{\\sqrt{u^{2}-2}}{\\sqrt2}$', '$\\sqrt{u^{2}-2}=\\dfrac{\\sqrt{x^{4}+1}}{x}$']
     },
     {
-      id: 'x078', topic: '3차 유리식',
+      id: 'x036', topic: '3차 유리식',
       integrand: '1/(1+x^3)', latex: '\\frac{1}{1 + x^{3}}',
       answer: 'ln(x+1)/3-ln(x^2-x+1)/6+arctan((2*x-1)/sqrt(3))/sqrt(3)', answerLatex: '\\frac{\\ln\\left|x + 1\\right|}{3} - \\frac{\\ln\\left|x^{2} - x + 1\\right|}{6} + \\frac{\\arctan\\left(\\frac{2 x - 1}{\\sqrt{3}}\\right)}{\\sqrt{3}}+C',
       domain: [0.2, 2.4],
@@ -4996,7 +5140,7 @@
       steps: ['부분분수로 쪼갠다', '$x^{2}-x+1=\\left(x-\\dfrac12\\right)^{2}+\\dfrac34$ 로 완전제곱', '로그 항과 $\\arctan$ 항이 나온다']
     },
     {
-      id: 'x079', topic: '분수 지수 치환',
+      id: 'x037', topic: '분수 지수 치환',
       integrand: '1/(sqrt(x)+x^(1/3))', latex: '\\frac{1}{\\sqrt{x} + x^{\\frac{1}{3}}}',
       answer: '2*sqrt(x)-3*x^(1/3)+6*x^(1/6)-6*ln(x^(1/6)+1)', answerLatex: '2 \\sqrt{x} - 3 x^{\\frac{1}{3}} + 6 x^{\\frac{1}{6}} - 6 \\ln\\left(x^{\\frac{1}{6}} + 1\\right)+C',
       domain: [0.3, 3],
@@ -5004,7 +5148,7 @@
       steps: ['$u=x^{1/6},;dx=6u^{5}du$', '$\\int\\dfrac{6u^{5}}{u^{3}+u^{2}}du=6\\int\\dfrac{u^{3}}{u+1}du$', '$=2u^{3}-3u^{2}+6u-6\\ln(u+1)$']
     },
     {
-      id: 'x080', topic: '4차 유리식',
+      id: 'x038', topic: '4차 유리식',
       integrand: '(x^2+1)/(x^4-x^2+1)', latex: '\\frac{x^{2} + 1}{x^{4} - x^{2} + 1}',
       answer: 'arctan((x^2-1)/x)', answerLatex: '\\arctan\\left(\\frac{x^{2} - 1}{x}\\right)+C',
       domain: [0.3, 2.6],
@@ -5012,7 +5156,7 @@
       steps: ['$\\dfrac{1+x^{-2}}{x^{2}-1+x^{-2}}$', '$u=x-\\dfrac1x,;x^{2}+x^{-2}=u^{2}+2$', '$\\int\\dfrac{du}{u^{2}+1}=\\arctan\\dfrac{x^{2}-1}{x}$']
     },
     {
-      id: 'x081', topic: '4차 유리식',
+      id: 'x039', topic: '4차 유리식',
       integrand: '(x^2-1)/(x^4-x^2+1)', latex: '\\frac{x^{2} - 1}{x^{4} - x^{2} + 1}',
       answer: 'ln((x^2-sqrt(3)*x+1)/(x^2+sqrt(3)*x+1))/(2*sqrt(3))', answerLatex: '\\frac{\\ln\\left(\\frac{x^{2} - \\sqrt{3} x + 1}{x^{2} + \\sqrt{3} x + 1}\\right)}{2 \\sqrt{3}}+C',
       domain: [0.3, 2.6],
@@ -5020,7 +5164,7 @@
       steps: ['$\\dfrac{1-x^{-2}}{x^{2}-1+x^{-2}}$', '$u=x+\\dfrac1x$', '$=\\dfrac{1}{2\\sqrt3}\\ln\\left|\\dfrac{x^{2}-\\sqrt3x+1}{x^{2}+\\sqrt3x+1}\\right|$']
     },
     {
-      id: 'x082', topic: '4차 유리식',
+      id: 'x040', topic: '4차 유리식',
       integrand: '1/(x^4-x^2+1)', latex: '\\frac{1}{x^{4} - x^{2} + 1}',
       answer: 'arctan((x^2-1)/x)/2-ln((x^2-sqrt(3)*x+1)/(x^2+sqrt(3)*x+1))/(4*sqrt(3))', answerLatex: '\\frac{\\arctan\\left(\\frac{x^{2} - 1}{x}\\right)}{2} - \\frac{\\ln\\left(\\frac{x^{2} - \\sqrt{3} x + 1}{x^{2} + \\sqrt{3} x + 1}\\right)}{4 \\sqrt{3}}+C',
       domain: [0.3, 2.6],
@@ -5028,7 +5172,7 @@
       steps: ['$\\dfrac{1}{x^{4}-x^{2}+1}=\\dfrac12\\cdot\\dfrac{x^{2}+1}{x^{4}-x^{2}+1}-\\dfrac12\\cdot\\dfrac{x^{2}-1}{x^{4}-x^{2}+1}$', '두 결과를 대입한다']
     },
     {
-      id: 'x083', topic: '4차 유리식',
+      id: 'x041', topic: '4차 유리식',
       integrand: 'x^2/(x^4-x^2+1)', latex: '\\frac{x^{2}}{x^{4} - x^{2} + 1}',
       answer: 'arctan((x^2-1)/x)/2+ln((x^2-sqrt(3)*x+1)/(x^2+sqrt(3)*x+1))/(4*sqrt(3))', answerLatex: '\\frac{\\arctan\\left(\\frac{x^{2} - 1}{x}\\right)}{2} + \\frac{\\ln\\left(\\frac{x^{2} - \\sqrt{3} x + 1}{x^{2} + \\sqrt{3} x + 1}\\right)}{4 \\sqrt{3}}+C',
       domain: [0.3, 2.6],
@@ -5036,7 +5180,7 @@
       steps: ['두 기본 결과를 더한다', '$\\arctan$ 항과 로그 항이 같은 부호로 남는다']
     },
     {
-      id: 'x084', topic: '3차 유리식',
+      id: 'x042', topic: '3차 유리식',
       integrand: 'x/(1+x^3)', latex: '\\frac{x}{1 + x^{3}}',
       answer: '-ln(x+1)/3+ln(x^2-x+1)/6+arctan((2*x-1)/sqrt(3))/sqrt(3)', answerLatex: '\\frac{-\\ln\\left|x + 1\\right|}{3} + \\frac{\\ln\\left|x^{2} - x + 1\\right|}{6} + \\frac{\\arctan\\left(\\frac{2 x - 1}{\\sqrt{3}}\\right)}{\\sqrt{3}}+C',
       domain: [0.2, 2.4],
@@ -5044,7 +5188,7 @@
       steps: ['부분분수로 쪼갠다', '$\\int\\dfrac{x+1}{x^{2}-x+1}dx=\\dfrac12\\ln(x^{2}-x+1)+\\sqrt3\\arctan\\dfrac{2x-1}{\\sqrt3}$']
     },
     {
-      id: 'x085', topic: '3차 유리식',
+      id: 'x043', topic: '3차 유리식',
       integrand: '1/(x^3-1)', latex: '\\frac{1}{x^{3} - 1}',
       answer: 'ln(x-1)/3-ln(x^2+x+1)/6-arctan((2*x+1)/sqrt(3))/sqrt(3)', answerLatex: '\\frac{\\ln\\left|x - 1\\right|}{3} - \\frac{\\ln\\left|x^{2} + x + 1\\right|}{6} - \\frac{\\arctan\\left(\\frac{2 x + 1}{\\sqrt{3}}\\right)}{\\sqrt{3}}+C',
       domain: [1.4, 3.4],
@@ -5052,7 +5196,7 @@
       steps: ['부분분수로 쪼갠다', '$x^{2}+x+1=\\left(x+\\dfrac12\\right)^{2}+\\dfrac34$', '로그 항과 $\\arctan$ 항이 나온다']
     },
     {
-      id: 'x086', topic: '적분대회 고전',
+      id: 'x044', topic: '적분대회 고전',
       integrand: 'sqrt(cot(x))', latex: '\\sqrt{\\cot x}',
       answer: '-ln((cot(x)-sqrt(2)*sqrt(cot(x))+1)/(cot(x)+sqrt(2)*sqrt(cot(x))+1))/(2*sqrt(2))-(arctan(sqrt(2)*sqrt(cot(x))+1)+arctan(sqrt(2)*sqrt(cot(x))-1))/sqrt(2)', answerLatex: '\\frac{-\\ln\\left(\\frac{\\cot x - \\sqrt{2} \\sqrt{\\cot x} + 1}{\\cot x + \\sqrt{2} \\sqrt{\\cot x} + 1}\\right)}{2 \\sqrt{2}} - \\frac{\\arctan\\left(\\sqrt{2} \\sqrt{\\cot x} + 1\\right) + \\arctan\\left(\\sqrt{2} \\sqrt{\\cot x} - 1\\right)}{\\sqrt{2}}+C',
       domain: [0.35, 1.2],
@@ -5060,7 +5204,7 @@
       steps: ['$t=\\sqrt{\\cot x}$', '$-\\int\\dfrac{2t^{2}}{1+t^{4}}dt$', '$\\sqrt{\\tan x}$ 의 결과에 $-$ 를 붙이고 $\\tan\\to\\cot$ 로 바꾼다']
     },
     {
-      id: 'x087', topic: '삼각 유리식',
+      id: 'x045', topic: '삼각 유리식',
       integrand: '(sin(x)+cos(x))/sqrt(sin(2*x))', latex: '\\frac{\\sin x + \\cos x}{\\sqrt{\\sin\\left(2 x\\right)}}',
       answer: 'arcsin(sin(x)-cos(x))', answerLatex: '\\arcsin\\left(\\sin x - \\cos x\\right)+C',
       domain: [0.3, 1.25],
@@ -5068,7 +5212,7 @@
       steps: ['$u=\\sin x-\\cos x,;\\sin 2x=1-u^{2}$', '$\\int\\dfrac{du}{\\sqrt{1-u^{2}}}=\\arcsin(\\sin x-\\cos x)$']
     },
     {
-      id: 'x088', topic: '삼각 유리식',
+      id: 'x046', topic: '삼각 유리식',
       integrand: '(sin(x)-cos(x))/sqrt(sin(2*x))', latex: '\\frac{\\sin x - \\cos x}{\\sqrt{\\sin\\left(2 x\\right)}}',
       answer: '-ln(sin(x)+cos(x)+sqrt(sin(2*x)))', answerLatex: '-\\ln\\left(\\sin x + \\cos x + \\sqrt{\\sin\\left(2 x\\right)}\\right)+C',
       domain: [0.45, 1.12],
@@ -5076,7 +5220,7 @@
       steps: ['$u=\\sin x+\\cos x,;du=(\\cos x-\\sin x)dx$', '$-\\int\\dfrac{du}{\\sqrt{u^{2}-1}}=-\\ln\\left(u+\\sqrt{u^{2}-1}\\right)$']
     },
     {
-      id: 'x089', topic: '삼각 유리식',
+      id: 'x047', topic: '삼각 유리식',
       integrand: 'sin(2*x)/(sin(x)^4+cos(x)^4)', latex: '\\frac{\\sin\\left(2 x\\right)}{\\sin^{4} x + \\cos^{4} x}',
       answer: '-arctan(cos(2*x))', answerLatex: '-\\arctan\\left(\\cos\\left(2 x\\right)\\right)+C',
       domain: [0.25, 1.3],
@@ -5084,7 +5228,7 @@
       steps: ['$u=\\sin^{2}x,;du=\\sin 2x\\,dx$', '$\\int\\dfrac{du}{2u^{2}-2u+1}=\\arctan(2u-1)$', '$2\\sin^{2}x-1=-\\cos 2x$']
     },
     {
-      id: 'x090', topic: '유리식 치환',
+      id: 'x048', topic: '유리식 치환',
       integrand: '1/(x*sqrt(x^3+1))', latex: '\\frac{1}{x \\sqrt{x^{3} + 1}}',
       answer: 'ln((sqrt(x^3+1)-1)/(sqrt(x^3+1)+1))/3', answerLatex: '\\frac{\\ln\\left(\\frac{\\sqrt{x^{3} + 1} - 1}{\\sqrt{x^{3} + 1} + 1}\\right)}{3}+C',
       domain: [0.35, 2.4],
@@ -5092,7 +5236,7 @@
       steps: ['$u=x^{3}:;\\dfrac13\\int\\dfrac{du}{u\\sqrt{u+1}}$', '$s=\\sqrt{u+1}:;\\dfrac23\\int\\dfrac{ds}{s^{2}-1}$', '$=\\dfrac13\\ln\\left|\\dfrac{\\sqrt{x^{3}+1}-1}{\\sqrt{x^{3}+1}+1}\\right|$']
     },
     {
-      id: 'x091', topic: '몫의 미분 되짚기',
+      id: 'x049', topic: '몫의 미분 되짚기',
       integrand: '(x^2+20)/(x*sin(x)+5*cos(x))^2', latex: '\\frac{x^{2} + 20}{\\left(x \\sin x + 5 \\cos x\\right)^{2}}',
       answer: '(5*sin(x)-x*cos(x))/(x*sin(x)+5*cos(x))', answerLatex: '\\frac{5 \\sin x - x \\cos x}{x \\sin x + 5 \\cos x}+C',
       domain: [0.25, 1.3],
@@ -5100,7 +5244,7 @@
       steps: ['$N=5\\sin x-x\\cos x,;D=x\\sin x+5\\cos x$ 로 두고 $\\left(\\dfrac ND\\right)\'$ 를 계산한다', '$N\'D-ND\'=x^{2}+20$', '따라서 원시함수는 $\\dfrac ND$']
     },
     {
-      id: 'x092', topic: '삼각 치환',
+      id: 'x050', topic: '삼각 치환',
       integrand: '1/((1+x^2)*sqrt(1-x^2))', latex: '\\frac{1}{\\left(1 + x^{2}\\right) \\sqrt{1 - x^{2}}}',
       answer: 'arctan(sqrt(2)*x/sqrt(1-x^2))/sqrt(2)', answerLatex: '\\frac{\\arctan\\left(\\frac{\\sqrt{2} x}{\\sqrt{1 - x^{2}}}\\right)}{\\sqrt{2}}+C',
       domain: [-0.72, 0.72],
@@ -5108,7 +5252,7 @@
       steps: ['$x=\\sin\\theta$', '$\\int\\dfrac{\\sec^{2}\\theta\\,d\\theta}{1+2\\tan^{2}\\theta}=\\dfrac{1}{\\sqrt2}\\arctan(\\sqrt2\\tan\\theta)$', '$\\tan\\theta=\\dfrac{x}{\\sqrt{1-x^{2}}}$']
     },
     {
-      id: 'x093', topic: '삼각 치환',
+      id: 'x051', topic: '삼각 치환',
       integrand: '1/((1-x^2)*sqrt(1+x^2))', latex: '\\frac{1}{\\left(1 - x^{2}\\right) \\sqrt{1 + x^{2}}}',
       answer: 'atanh(sqrt(2)*x/sqrt(1+x^2))/sqrt(2)', answerLatex: '\\frac{\\operatorname{artanh}\\left(\\frac{\\sqrt{2} x}{\\sqrt{1 + x^{2}}}\\right)}{\\sqrt{2}}+C',
       domain: [-0.8, 0.8],
@@ -5116,7 +5260,7 @@
       steps: ['$g=\\dfrac{x}{\\sqrt{1+x^{2}}}$', '$\\dfrac{d}{dx}\\operatorname{artanh}(\\sqrt2 g)=\\dfrac{\\sqrt2}{(1-x^{2})\\sqrt{1+x^{2}}}$', '$\\dfrac{1}{\\sqrt2}$ 를 곱해 맞춘다']
     },
     {
-      id: 'x094', topic: '역수 치환',
+      id: 'x052', topic: '역수 치환',
       integrand: '(x^2+1)/(x*sqrt(x^4+3*x^2+1))', latex: '\\frac{x^{2} + 1}{x \\sqrt{x^{4} + 3 x^{2} + 1}}',
       answer: 'asinh((x^2-1)/(sqrt(5)*x))', answerLatex: '\\operatorname{arsinh}\\left(\\frac{x^{2} - 1}{\\sqrt{5} x}\\right)+C',
       domain: [0.35, 2.6],
@@ -5124,7 +5268,7 @@
       steps: ['$u=x-\\dfrac1x,;x^{2}+x^{-2}=u^{2}+2$', '$\\int\\dfrac{du}{\\sqrt{u^{2}+5}}=\\operatorname{arsinh}\\dfrac{u}{\\sqrt5}$']
     },
     {
-      id: 'x095', topic: '역수 치환',
+      id: 'x053', topic: '역수 치환',
       integrand: '(x^2-1)/(x*sqrt(x^4+x^2+1))', latex: '\\frac{x^{2} - 1}{x \\sqrt{x^{4} + x^{2} + 1}}',
       answer: 'acosh((x^2+1)/x)', answerLatex: '\\operatorname{arcosh}\\left(\\frac{x^{2} + 1}{x}\\right)+C',
       domain: [0.35, 2.6],
@@ -5132,7 +5276,7 @@
       steps: ['$u=x+\\dfrac1x,;x^{2}+1+x^{-2}=u^{2}-1$', '$\\int\\dfrac{du}{\\sqrt{u^{2}-1}}=\\operatorname{arcosh}\\left(x+\\dfrac1x\\right)$']
     },
     {
-      id: 'x096', topic: '삼각 유리식',
+      id: 'x054', topic: '삼각 유리식',
       integrand: '1/(sin(x)^3*cos(x))', latex: '\\frac{1}{\\sin^{3} x \\cos x}',
       answer: 'ln(tan(x))-1/(2*sin(x)^2)', answerLatex: '\\ln\\left|\\tan x\\right| - \\frac{1}{2 \\sin^{2} x}+C',
       domain: [0.35, 1.2],
@@ -5140,12 +5284,284 @@
       steps: ['$\\int\\dfrac{dx}{\\sin x\\cos x}=\\ln|\\tan x|$', '$\\int\\dfrac{\\cos x}{\\sin^{3}x}dx=-\\dfrac{1}{2\\sin^{2}x}$']
     },
     {
-      id: 'x097', topic: '반각 치환',
+      id: 'x055', topic: '반각 치환',
       integrand: '1/(3+5*cos(x))', latex: '\\frac{1}{3 + 5 \\cos x}',
       answer: 'ln((2+tan(x/2))/(2-tan(x/2)))/4', answerLatex: '\\frac{\\ln\\left|\\frac{2 + \\tan\\left(\\frac{x}{2}\\right)}{2 - \\tan\\left(\\frac{x}{2}\\right)}\\right|}{4}+C',
       domain: [0.3, 2],
       hints: ['$t=\\tan\\dfrac x2$ 치환에서 $\\cos x=\\dfrac{1-t^{2}}{1+t^{2}},;dx=\\dfrac{2dt}{1+t^{2}}$', '정리하면 $\\int\\dfrac{dt}{4-t^{2}}$ 가 된다.'],
       steps: ['$t=\\tan\\dfrac x2$', '$\\int\\dfrac{2dt}{8-2t^{2}}=\\int\\dfrac{dt}{4-t^{2}}$', '$=\\dfrac14\\ln\\left|\\dfrac{2+t}{2-t}\\right|$']
+    },
+    {
+      id: 'x056', topic: '위장된 미분',
+      integrand: 'x^2/sqrt(4*e^(2*x)+(x^2+2*x+2)^2)', latex: '\\frac{x^{2}}{\\sqrt{4 e^{2 x} + \\left(x^{2} + 2 x + 2\\right)^{2}}}',
+      answer: '-asinh((x^2+2*x+2)/(2*e^x))', answerLatex: '-\\operatorname{arsinh}\\left(\\frac{x^{2} + 2 x + 2}{2 e^{x}}\\right)+C',
+      domain: [0.2, 2.4],
+      hints: ['$g=\\dfrac{x^{2}+2x+2}{2e^{x}}$ 로 두고 $g\'$ 를 계산해 본다.', '$g\'=-\\dfrac{x^{2}}{2e^{x}}$ 이고, 근호 안은 정확히 $4e^{2x}(1+g^{2})$ 다.'],
+      steps: ['$g=\\dfrac{x^{2}+2x+2}{2e^{x}},;g\'=-\\dfrac{x^{2}}{2e^{x}}$', '$\\sqrt{4e^{2x}+(x^{2}+2x+2)^{2}}=2e^{x}\\sqrt{1+g^{2}}$', '$-\\dfrac{d}{dx}\\operatorname{arsinh}g=-\\dfrac{g\'}{\\sqrt{1+g^{2}}}=$ 피적분함수']
+    },
+    {
+      id: 'x057', topic: '삼각 곱 항등식',
+      integrand: '1/(cos(x)*cos(x+2*pi/3)*cos(x-2*pi/3))^2', latex: '\\frac{1}{\\left(\\cos x \\cos\\left(x + \\frac{2 \\pi}{3}\\right) \\cos\\left(x - \\frac{2 \\pi}{3}\\right)\\right)^{2}}',
+      answer: '16*tan(3*x)/3', answerLatex: '\\frac{16 \\tan\\left(3 x\\right)}{3}+C',
+      domain: [0.05, 0.48],
+      hints: ['$\\cos\\theta\\cos\\left(\\theta+\\dfrac{2\\pi}{3}\\right)\\cos\\left(\\theta-\\dfrac{2\\pi}{3}\\right)=\\dfrac{\\cos 3\\theta}{4}$', '정리하면 $16\\sec^{2}3x$ 만 남는다.'],
+      steps: ['세 코사인의 곱은 $\\dfrac{\\cos 3x}{4}$', '$\\int\\dfrac{16}{\\cos^{2}3x}dx=\\dfrac{16\\tan 3x}{3}$']
+    },
+    {
+      id: 'x058', topic: '미분 꼴 알아보기',
+      integrand: '(x+1)*e^x*ln(x)', latex: '\\left(x + 1\\right) e^{x} \\ln x',
+      answer: 'e^x*(x*ln(x)-1)', answerLatex: 'e^{x} \\left(x \\ln x - 1\\right)+C',
+      domain: [0.35, 2.6],
+      hints: ['$\\int e^{x}(f+f\')dx=e^{x}f$ 를 노리고 $f=x\\ln x-1$ 을 시험한다.', '$f\'=\\ln x+1$ 이므로 $f+f\'=x\\ln x+\\ln x=(x+1)\\ln x$'],
+      steps: ['$f=x\\ln x-1,;f\'=\\ln x+1$', '$f+f\'=(x+1)\\ln x$', '$=e^{x}(x\\ln x-1)$']
+    },
+    {
+      id: 'x059', topic: '세제곱근 인수분해',
+      integrand: 'x/(x^3-3*x-2)^(1/3)', latex: '\\frac{x}{\\left(x^{3} - 3 x - 2\\right)^{\\frac{1}{3}}}',
+      answer: '((x+1)*(x-2)^2)^(1/3)', answerLatex: '\\left(\\left(x + 1\\right) \\left(x - 2\\right)^{2}\\right)^{\\frac{1}{3}}+C',
+      domain: [2.3, 4.5],
+      hints: ['$x^{3}-3x-2=(x+1)^{2}(x-2)$ 로 인수분해된다.', '$F=\\sqrt[3]{(x+1)(x-2)^{2}}$ 를 세제곱해서 음함수 미분해 본다.'],
+      steps: ['$F^{3}=(x+1)(x-2)^{2}$', '$3F^{2}F\'=3x(x-2)$', '$F\'=\\dfrac{x(x-2)}{(x+1)^{2/3}(x-2)^{4/3}}=\\dfrac{x}{\\sqrt[3]{(x+1)^{2}(x-2)}}$']
+    },
+    {
+      id: 'x060', topic: '고차 부분분수',
+      integrand: '1/(x^8-x^6)', latex: '\\frac{1}{x^{8} - x^{6}}',
+      answer: 'ln((x-1)/(x+1))/2+1/x+1/(3*x^3)+1/(5*x^5)', answerLatex: '\\frac{\\ln\\left|\\frac{x - 1}{x + 1}\\right|}{2} + \\frac{1}{x} + \\frac{1}{3 x^{3}} + \\frac{1}{5 x^{5}}+C',
+      domain: [1.4, 3.4],
+      hints: ['$t=x^{2}$ 로 보면 $\\dfrac{1}{t^{3}(t-1)}=\\dfrac{1}{t-1}-\\dfrac1t-\\dfrac{1}{t^{2}}-\\dfrac{1}{t^{3}}$ 다.', '되돌리면 $\\dfrac{1}{x^{2}-1}-\\dfrac{1}{x^{2}}-\\dfrac{1}{x^{4}}-\\dfrac{1}{x^{6}}$'],
+      steps: ['$\\dfrac{1}{x^{6}(x^{2}-1)}=\\dfrac{1}{x^{2}-1}-\\dfrac{1}{x^{2}}-\\dfrac{1}{x^{4}}-\\dfrac{1}{x^{6}}$', '$=\\dfrac12\\ln\\left|\\dfrac{x-1}{x+1}\\right|+\\dfrac1x+\\dfrac{1}{3x^{3}}+\\dfrac{1}{5x^{5}}$']
+    },
+    {
+      id: 'x061', topic: '역수 치환',
+      integrand: '(3*x^2+7*x-5)*(x+1/x)*e^(x+1/x)', latex: '\\left(3 x^{2} + 7 x - 5\\right) \\left(x + \\frac{1}{x}\\right) e^{x + \\frac{1}{x}}',
+      answer: '(3*x^3-2*x^2+5*x)*e^(x+1/x)', answerLatex: '\\left(3 x^{3} - 2 x^{2} + 5 x\\right) e^{x + \\frac{1}{x}}+C',
+      domain: [0.5, 2],
+      hints: ['답을 $P(x)e^{x+1/x}$ 꼴로 놓고 $P$ 를 미정계수로 찾는다.', '$\\left(Pe^{u}\\right)\'=\\left(P\'+P\\left(1-\\dfrac{1}{x^{2}}\\right)\\right)e^{u}$'],
+      steps: ['$P=3x^{3}-2x^{2}+5x$ 로 두면', '$P\'+P\\left(1-\\dfrac{1}{x^{2}}\\right)=3x^{3}+7x^{2}-2x+7-\\dfrac5x$', '이는 $(3x^{2}+7x-5)\\left(x+\\dfrac1x\\right)$ 와 같다']
+    },
+    {
+      id: 'x062', topic: '부분분수',
+      integrand: '(x+24)/(x^3+25*x^2+144*x)', latex: '\\frac{x + 24}{x^{3} + 25 x^{2} + 144 x}',
+      answer: 'ln(x)/6-5*ln(x+9)/21+ln(x+16)/14', answerLatex: '\\frac{\\ln\\left|x\\right|}{6} - \\frac{5 \\ln\\left|x + 9\\right|}{21} + \\frac{\\ln\\left|x + 16\\right|}{14}+C',
+      domain: [0.35, 2.6],
+      hints: ['$x^{3}+25x^{2}+144x=x(x+9)(x+16)$ 로 인수분해된다.', '가리기(cover-up)로 $x=0,\\,-9,\\,-16$ 을 차례로 대입한다.'],
+      steps: ['$\\dfrac{x+24}{x(x+9)(x+16)}=\\dfrac{1/6}{x}-\\dfrac{5/21}{x+9}+\\dfrac{1/14}{x+16}$', '각 항을 로그로 적분한다']
+    },
+    {
+      id: 'x063', topic: '역수 치환',
+      integrand: 'sqrt((x^6+1)*(x^2+1))/x^3', latex: '\\frac{\\sqrt{\\left(x^{6} + 1\\right) \\left(x^{2} + 1\\right)}}{x^{3}}',
+      answer: '((1-1/x^2)*sqrt(x^4-x^2+1)+asinh((x^2-1)/x))/2', answerLatex: '\\frac{\\left(1 - \\frac{1}{x^{2}}\\right) \\sqrt{x^{4} - x^{2} + 1} + \\operatorname{arsinh}\\left(\\frac{x^{2} - 1}{x}\\right)}{2}+C',
+      domain: [0.4, 2.6],
+      hints: ['$(x^{6}+1)(x^{2}+1)=(x^{2}+1)^{2}(x^{4}-x^{2}+1)$ 로 묶인다.', '$u=x-\\dfrac1x$ 로 두면 $x^{4}-x^{2}+1=x^{2}(u^{2}+1)$ 이고 $du=\\left(1+\\dfrac{1}{x^{2}}\\right)dx$ 다.'],
+      steps: ['피적분함수 $=\\left(1+\\dfrac{1}{x^{2}}\\right)\\sqrt{u^{2}+1}$', '$\\int\\sqrt{u^{2}+1}\\,du=\\dfrac{u\\sqrt{u^{2}+1}+\\operatorname{arsinh}u}{2}$']
+    },
+    {
+      id: 'x064', topic: '위장된 치환',
+      integrand: '(arctan(x)-x*arctan(x))/(1-x+x^2-x^3)', latex: '\\frac{\\arctan x - x \\arctan x}{1 - x + x^{2} - x^{3}}',
+      answer: 'arctan(x)^2/2', answerLatex: '\\frac{\\left(\\arctan x\\right)^{2}}{2}+C',
+      domain: [0.15, 0.9],
+      hints: ['분모를 $(1-x)(1+x^{2})$ 로 인수분해한다.', '분자는 $(1-x)\\arctan x$ 이므로 통째로 약분된다.'],
+      steps: ['$\\dfrac{(1-x)\\arctan x}{(1-x)(1+x^{2})}=\\dfrac{\\arctan x}{1+x^{2}}$', '$u=\\arctan x:;\\dfrac{\\arctan^{2}x}{2}$']
+    },
+    {
+      id: 'x065', topic: '적분대회 결승',
+      integrand: 'e^(x/2)*cos(x)/(3*cos(x)+4*sin(x))^(1/3)', latex: '\\frac{e^{\\frac{x}{2}} \\cos x}{\\left(3 \\cos x + 4 \\sin x\\right)^{\\frac{1}{3}}}',
+      answer: '6*(3*cos(x)+4*sin(x))^(2/3)*e^(x/2)/25', answerLatex: '\\frac{6 \\left(3 \\cos x + 4 \\sin x\\right)^{\\frac{2}{3}} e^{\\frac{x}{2}}}{25}+C',
+      domain: [0.2, 2],
+      hints: ['답을 $c\\,(3\\cos x+4\\sin x)^{2/3}e^{x/2}$ 로 놓고 미분해 계수를 맞춘다.', '$\\sin$ 항이 저절로 사라지고 $\\cos$ 항만 남는 것이 핵심이다.'],
+      steps: ['$F=c(3\\cos x+4\\sin x)^{2/3}e^{x/2}$', '$F\'=c\\,e^{x/2}(3\\cos x+4\\sin x)^{-1/3}\\left[\\dfrac23(4\\cos x-3\\sin x)+\\dfrac12(3\\cos x+4\\sin x)\\right]$', '대괄호 $=\\dfrac{25}{6}\\cos x$ 이므로 $c=\\dfrac{6}{25}$']
+    },
+    {
+      id: 'x066', topic: '적분대회 결승',
+      integrand: '1/(x^4+1)^(1/4)', latex: '\\frac{1}{\\left(x^{4} + 1\\right)^{\\frac{1}{4}}}',
+      answer: 'arctan(x/(1+x^4)^(1/4))/2+ln(((1+x^4)^(1/4)+x)/((1+x^4)^(1/4)-x))/4', answerLatex: '\\frac{\\arctan\\left(\\frac{x}{\\left(1 + x^{4}\\right)^{\\frac{1}{4}}}\\right)}{2} + \\frac{\\ln\\left|\\frac{\\left(1 + x^{4}\\right)^{\\frac{1}{4}} + x}{\\left(1 + x^{4}\\right)^{\\frac{1}{4}} - x}\\right|}{4}+C',
+      domain: [0.3, 2.6],
+      hints: ['$t=\\dfrac{x}{\\sqrt[4]{1+x^{4}}}$ 로 두면 $dt=\\dfrac{dx}{(1+x^{4})^{5/4}}$ 이고 $1-t^{4}=\\dfrac{1}{1+x^{4}}$ 다.', '$\\int\\dfrac{dt}{1-t^{4}}$ 로 바뀐다.'],
+      steps: ['$t=\\dfrac{x}{\\sqrt[4]{1+x^{4}}}$ 치환', '$\\int\\dfrac{dt}{1-t^{4}}=\\dfrac{\\arctan t}{2}+\\dfrac14\\ln\\left|\\dfrac{1+t}{1-t}\\right|$', '$t$ 를 되돌린다']
+    },
+    {
+      id: 'x067', topic: '숨은 완전제곱',
+      integrand: 'sqrt(x^4-4*x+3)', latex: '\\sqrt{x^{4} - 4 x + 3}',
+      answer: '(x^2+2*x+3)^(3/2)/3-(x+1)*sqrt(x^2+2*x+3)-2*ln(sqrt(x^2+2*x+3)+x+1)', answerLatex: '\\frac{\\left(x^{2} + 2 x + 3\\right)^{\\frac{3}{2}}}{3} - \\left(x + 1\\right) \\sqrt{x^{2} + 2 x + 3} - 2 \\ln\\left(\\sqrt{x^{2} + 2 x + 3} + x + 1\\right)+C',
+      domain: [1.3, 3.4],
+      hints: ['$x^{4}-4x+3=(x-1)^{2}(x^{2}+2x+3)$ 으로 인수분해된다.', '$x>1$ 에서는 $\\sqrt{x^{4}-4x+3}=(x-1)\\sqrt{x^{2}+2x+3}$ 다.'],
+      steps: ['$(x-1)\\sqrt{x^{2}+2x+3}=\\left((x+1)-2\\right)\\sqrt{u}$, $u=x^{2}+2x+3$', '$\\int(x+1)\\sqrt u\\,dx=\\dfrac{u^{3/2}}{3}$', '$\\int\\dfrac{2u\\,dx}{\\sqrt u}$ 를 $\\sqrt{(x+1)^{2}+2}$ 로 보고 정리한다']
+    },
+    {
+      id: 'x068', topic: '이항 전개',
+      integrand: '(x/(x-1))^4', latex: '\\left(\\frac{x}{x - 1}\\right)^{4}',
+      answer: 'x+4*ln(x-1)-6/(x-1)-2/(x-1)^2-1/(3*(x-1)^3)', answerLatex: 'x + 4 \\ln\\left|x - 1\\right| - \\frac{6}{x - 1} - \\frac{2}{\\left(x - 1\\right)^{2}} - \\frac{1}{3 \\left(x - 1\\right)^{3}}+C',
+      domain: [1.6, 4],
+      hints: ['$\\dfrac{x}{x-1}=1+\\dfrac{1}{x-1}$ 로 쓰고 네제곱을 이항전개한다.', '$1+\\dfrac{4}{x-1}+\\dfrac{6}{(x-1)^{2}}+\\dfrac{4}{(x-1)^{3}}+\\dfrac{1}{(x-1)^{4}}$'],
+      steps: ['이항전개 후 항별로 적분한다', '$=x+4\\ln|x-1|-\\dfrac{6}{x-1}-\\dfrac{2}{(x-1)^{2}}-\\dfrac{1}{3(x-1)^{3}}$']
+    },
+    {
+      id: 'x069', topic: '탄젠트 덧셈정리',
+      integrand: '(tan(3*x)+tan(4*x))*cos(3*x)*cos(4*x)/cos(7*x)', latex: '\\frac{\\left(\\tan\\left(3 x\\right) + \\tan\\left(4 x\\right)\\right) \\cos\\left(3 x\\right) \\cos\\left(4 x\\right)}{\\cos\\left(7 x\\right)}',
+      answer: '-ln(cos(7*x))/7', answerLatex: '\\frac{-\\ln\\left|\\cos\\left(7 x\\right)\\right|}{7}+C',
+      domain: [0.02, 0.2],
+      hints: ['분자를 통분하면 $\\sin 3x\\cos 4x+\\cos 3x\\sin 4x$ 다.', '덧셈정리로 $\\sin 7x$ 가 되어 $\\tan 7x$ 만 남는다.'],
+      steps: ['$(\\tan 3x+\\tan 4x)\\cos 3x\\cos 4x=\\sin(3x+4x)=\\sin 7x$', '$\\int\\tan 7x\\,dx=-\\dfrac{\\ln|\\cos 7x|}{7}$']
+    },
+    {
+      id: 'x070', topic: '지수탑 미분',
+      integrand: 'ln(x)*((x/e)^x+(e/x)^x)', latex: '\\ln x \\left(\\left(\\frac{x}{e}\\right)^{x} + \\left(\\frac{e}{x}\\right)^{x}\\right)',
+      answer: '(x/e)^x-(e/x)^x', answerLatex: '\\left(\\frac{x}{e}\\right)^{x} - \\left(\\frac{e}{x}\\right)^{x}+C',
+      domain: [0.4, 2.6],
+      hints: ['$\\left(\\dfrac xe\\right)^{x}=e^{x(\\ln x-1)}$, $\\left(\\dfrac ex\\right)^{x}=e^{x(1-\\ln x)}$ 로 쓴다.', '두 함수의 도함수가 각각 $+\\ln x$ 배, $-\\ln x$ 배다.'],
+      steps: ['$\\dfrac{d}{dx}\\left(\\dfrac xe\\right)^{x}=\\left(\\dfrac xe\\right)^{x}\\ln x$', '$\\dfrac{d}{dx}\\left(\\dfrac ex\\right)^{x}=-\\left(\\dfrac ex\\right)^{x}\\ln x$', '차를 취하면 합이 나온다']
+    },
+    {
+      id: 'x071', topic: '삼각 곱의 합 변환',
+      integrand: 'cos(3*x)*cos(5*x)*cos(6*x)*cos(7*x)-cos(x)*cos(2*x)*cos(4*x)*cos(8*x)', latex: '\\cos\\left(3 x\\right) \\cos\\left(5 x\\right) \\cos\\left(6 x\\right) \\cos\\left(7 x\\right) - \\cos x \\cos\\left(2 x\\right) \\cos\\left(4 x\\right) \\cos\\left(8 x\\right)',
+      answer: 'sin(21*x)/168-sin(13*x)/104', answerLatex: '\\frac{\\sin\\left(21 x\\right)}{168} - \\frac{\\sin\\left(13 x\\right)}{104}+C',
+      domain: [0.2, 1.2],
+      hints: ['네 코사인의 곱을 두 번씩 묶어 합으로 바꾸면 각각 8개 항이 된다.', '두 전개는 $\\cos 21x$ 와 $\\cos 13x$ 만 빼고 전부 같다.'],
+      steps: ['첫 곱 $=\\dfrac18(\\cos 21x+\\cos 15x+\\cos 11x+\\cos 9x+\\cos 7x+\\cos 5x+\\cos 3x+\\cos x)$', '둘째 곱은 $\\cos 21x$ 자리에 $\\cos 13x$ 가 온다', '차 $=\\dfrac{\\cos 21x-\\cos 13x}{8}$']
+    },
+    {
+      id: 'x072', topic: '분수 지수',
+      integrand: '(1-2*x)/((1+x)^2*x^(2/3))', latex: '\\frac{1 - 2 x}{\\left(1 + x\\right)^{2} x^{\\frac{2}{3}}}',
+      answer: '3*x^(1/3)/(1+x)', answerLatex: '\\frac{3 x^{\\frac{1}{3}}}{1 + x}+C',
+      domain: [0.35, 2.6],
+      hints: ['답을 $\\dfrac{3x^{1/3}}{1+x}$ 로 놓고 몫의 미분법을 확인해 본다.', '$x^{-2/3}\\left[(1+x)-3x\\right]=(1-2x)x^{-2/3}$'],
+      steps: ['$\\left(\\dfrac{3x^{1/3}}{1+x}\\right)\'=\\dfrac{x^{-2/3}(1+x)-3x^{1/3}}{(1+x)^{2}}$', '$=\\dfrac{1-2x}{(1+x)^{2}x^{2/3}}$']
+    },
+    {
+      id: 'x073', topic: '위장된 미분',
+      integrand: 'e^(cos(x))*cos(2*x+sin(x))', latex: 'e^{\\cos x} \\cos\\left(2 x + \\sin x\\right)',
+      answer: 'e^(cos(x))*(sin(x+sin(x))-sin(sin(x)))', answerLatex: 'e^{\\cos x} \\left(\\sin\\left(x + \\sin x\\right) - \\sin\\left(\\sin x\\right)\\right)+C',
+      domain: [0.25, 2.85],
+      hints: ['$2x+\\sin x=(x+\\sin x)+x$ 로 쪼개 덧셈정리를 쓴다.', '$\\left(e^{\\cos x}\\sin(x+\\sin x)\\right)\'$ 와 $\\left(e^{\\cos x}\\sin(\\sin x)\\right)\'$ 를 비교한다.'],
+      steps: ['$\\left(e^{\\cos x}\\sin(x+\\sin x)\\right)\'=e^{\\cos x}\\left[(1+\\cos x)\\cos(x+\\sin x)-\\sin x\\sin(x+\\sin x)\\right]$', '$\\left(e^{\\cos x}\\sin(\\sin x)\\right)\'=e^{\\cos x}\\left[\\cos x\\cos(\\sin x)-\\sin x\\sin(\\sin x)\\right]$', '두 식을 빼면 $e^{\\cos x}\\cos(2x+\\sin x)$ 가 남는다']
+    },
+    {
+      id: 'x074', topic: '로그 치환',
+      integrand: '(3*ln(x)-1+2*x)/(x*ln(x)+x^2+2*x^4)', latex: '\\frac{3 \\ln x - 1 + 2 x}{x \\ln x + x^{2} + 2 x^{4}}',
+      answer: '3*ln(x)-ln(ln(x)+x+2*x^3)', answerLatex: '3 \\ln\\left|x\\right| - \\ln\\left|\\ln\\left|x\\right| + x + 2 x^{3}\\right|+C',
+      domain: [1.2, 3],
+      hints: ['분모를 $x\\left(\\ln x+x+2x^{3}\\right)$ 로 묶는다.', '$w=\\ln x+x+2x^{3}$ 라 하면 $\\dfrac3x-\\dfrac{w\'}{w}$ 가 피적분함수와 같은지 확인한다.'],
+      steps: ['$w=\\ln x+x+2x^{3},;w\'=\\dfrac1x+1+6x^{2}$', '$\\dfrac3x-\\dfrac{w\'}{w}=\\dfrac{3w-xw\'}{xw}=\\dfrac{3\\ln x+2x-1}{xw}$', '$=3\\ln x-\\ln|w|$']
+    },
+    {
+      id: 'x075', topic: '무리 지수',
+      integrand: '(sqrt(x+1)-sqrt(x))^pi', latex: '\\left(\\sqrt{x + 1} - \\sqrt{x}\\right)^{\\pi}',
+      answer: '((sqrt(x+1)-sqrt(x))^(pi+2)/(pi+2)-(sqrt(x+1)-sqrt(x))^(pi-2)/(pi-2))/2', answerLatex: '\\frac{\\frac{\\left(\\sqrt{x + 1} - \\sqrt{x}\\right)^{\\pi + 2}}{\\pi + 2} - \\frac{\\left(\\sqrt{x + 1} - \\sqrt{x}\\right)^{\\pi - 2}}{\\pi - 2}}{2}+C',
+      domain: [0.3, 3],
+      hints: ['$t=\\sqrt{x+1}-\\sqrt x$ 로 두면 $\\dfrac1t=\\sqrt{x+1}+\\sqrt x$ 다.', '$\\sqrt x=\\dfrac{1}{2}\\left(\\dfrac1t-t\\right)$ 에서 $dx$ 를 $t$ 로 표현한다.'],
+      steps: ['$t=\\sqrt{x+1}-\\sqrt x,;dx=-\\dfrac{1}{2}\\left(\\dfrac{1}{t^{3}}-\\dfrac1t\\right)dt$', '$\\int t^{\\pi}dx=\\dfrac12\\int\\left(t^{\\pi+1}-t^{\\pi-3}\\right)\\dfrac{dt}{t}\\cdot(-1)$ 를 정리', '$=\\dfrac12\\left(\\dfrac{t^{\\pi+2}}{\\pi+2}-\\dfrac{t^{\\pi-2}}{\\pi-2}\\right)$']
+    },
+    {
+      id: 'x076', topic: '역삼각 배각',
+      integrand: 'sin(4*arctan(x))', latex: '\\sin\\left(4 \\arctan x\\right)',
+      answer: '-4/(1+x^2)-2*ln(1+x^2)', answerLatex: '\\frac{-4}{1 + x^{2}} - 2 \\ln\\left(1 + x^{2}\\right)+C',
+      domain: [-1.5, 1.7],
+      hints: ['$\\theta=\\arctan x$ 이면 $\\sin 2\\theta=\\dfrac{2x}{1+x^{2}},;\\cos 2\\theta=\\dfrac{1-x^{2}}{1+x^{2}}$ 다.', '$\\sin 4\\theta=2\\sin 2\\theta\\cos 2\\theta=\\dfrac{4x(1-x^{2})}{(1+x^{2})^{2}}$'],
+      steps: ['$\\sin(4\\arctan x)=\\dfrac{4x(1-x^{2})}{(1+x^{2})^{2}}$', '$u=1+x^{2}$ 로 두면 $\\int\\dfrac{2(2-u)}{u^{2}}du$', '$=-\\dfrac{4}{1+x^{2}}-2\\ln(1+x^{2})$']
+    },
+    {
+      id: 'x077', topic: '삼각 치환',
+      integrand: '(sin(x)+cos(x))/sqrt(25*sin(x)^2+16*cos(x)^2)', latex: '\\frac{\\sin x + \\cos x}{\\sqrt{25 \\sin^{2} x + 16 \\cos^{2} x}}',
+      answer: 'asinh(3*sin(x)/4)/3-asin(3*cos(x)/5)/3', answerLatex: '\\frac{\\operatorname{arsinh}\\left(\\frac{3 \\sin x}{4}\\right)}{3} - \\frac{\\arcsin\\left(\\frac{3 \\cos x}{5}\\right)}{3}+C',
+      domain: [0.25, 2.85],
+      hints: ['$25\\sin^{2}+16\\cos^{2}$ 는 $16+9\\sin^{2}$ 이자 $25-9\\cos^{2}$ 다.', '$\\cos x\\,dx$ 항에는 앞의 표현을, $\\sin x\\,dx$ 항에는 뒤의 표현을 쓴다.'],
+      steps: ['$\\int\\dfrac{\\cos x\\,dx}{\\sqrt{16+9\\sin^{2}x}}=\\dfrac13\\operatorname{arsinh}\\dfrac{3\\sin x}{4}$', '$\\int\\dfrac{\\sin x\\,dx}{\\sqrt{25-9\\cos^{2}x}}=-\\dfrac13\\arcsin\\dfrac{3\\cos x}{5}$']
+    },
+    {
+      id: 'x078', topic: '역수 치환',
+      integrand: 'sqrt(x)/(1+x^2)', latex: '\\frac{\\sqrt{x}}{1 + x^{2}}',
+      answer: '(arctan((x-1)/sqrt(2*x))-atanh(sqrt(2*x)/(x+1)))/sqrt(2)', answerLatex: '\\frac{\\arctan\\left(\\frac{x - 1}{\\sqrt{2 x}}\\right) - \\operatorname{artanh}\\left(\\frac{\\sqrt{2 x}}{x + 1}\\right)}{\\sqrt{2}}+C',
+      domain: [1.35, 3.4],
+      hints: ['$t=\\sqrt x$ 로 두면 $\\int\\dfrac{2t^{2}}{1+t^{4}}dt$ 로 $\\sqrt{\\tan x}$ 문제와 같은 꼴이 된다.', '$t^{2}\\pm1$ 로 쪼갠 뒤 $u=t\\mp\\dfrac1t$ 치환을 각각 쓴다.'],
+      steps: ['$t=\\sqrt x:;\\int\\dfrac{2t^{2}}{1+t^{4}}dt$', '$=\\int\\dfrac{t^{2}+1}{t^{4}+1}dt+\\int\\dfrac{t^{2}-1}{t^{4}+1}dt$', '$\\arctan$ 항과 $\\operatorname{artanh}$ 항이 남는다']
+    },
+    {
+      id: 'x079', topic: '역쌍곡선 배각',
+      integrand: 'asinh(2*x*sqrt(1+x^2))', latex: '\\operatorname{arsinh}\\left(2 x \\sqrt{1 + x^{2}}\\right)',
+      answer: '2*x*asinh(x)-2*sqrt(1+x^2)', answerLatex: '2 x \\operatorname{arsinh} x - 2 \\sqrt{1 + x^{2}}+C',
+      domain: [0.2, 1.6],
+      hints: ['$\\sinh 2t=2\\sinh t\\cosh t$ 를 거꾸로 읽는다.', '$x=\\sinh t$ 로 두면 피적분함수는 그냥 $2t=2\\operatorname{arsinh}x$ 다.'],
+      steps: ['$\\operatorname{arsinh}\\left(2x\\sqrt{1+x^{2}}\\right)=2\\operatorname{arsinh}x$', '$2\\int\\operatorname{arsinh}x\\,dx=2x\\operatorname{arsinh}x-2\\sqrt{1+x^{2}}$']
+    },
+    {
+      id: 'x080', topic: '역쌍곡선 배각',
+      integrand: 'acosh(2*x^2-1)', latex: '\\operatorname{arcosh}\\left(2 x^{2} - 1\\right)',
+      answer: '2*x*acosh(x)-2*sqrt(x^2-1)', answerLatex: '2 x \\operatorname{arcosh} x - 2 \\sqrt{x^{2} - 1}+C',
+      domain: [1.35, 3.4],
+      hints: ['$\\cosh 2t=2\\cosh^{2}t-1$ 을 거꾸로 읽는다.', '$x=\\cosh t;(t\\ge 0)$ 이면 피적분함수는 $2t=2\\operatorname{arcosh}x$ 다.'],
+      steps: ['$\\operatorname{arcosh}(2x^{2}-1)=2\\operatorname{arcosh}x$', '$2\\int\\operatorname{arcosh}x\\,dx=2x\\operatorname{arcosh}x-2\\sqrt{x^{2}-1}$']
+    },
+    {
+      id: 'x081', topic: '역쌍곡선 배각',
+      integrand: 'atanh(2*x/(1+x^2))', latex: '\\operatorname{artanh}\\left(\\frac{2 x}{1 + x^{2}}\\right)',
+      answer: '2*x*atanh(x)+ln(1-x^2)', answerLatex: '2 x \\operatorname{artanh} x + \\ln\\left(1 - x^{2}\\right)+C',
+      domain: [-0.72, 0.72],
+      hints: ['쌍곡선 배각공식 $\\tanh 2t=\\dfrac{2\\tanh t}{1+\\tanh^{2}t}$ 를 거꾸로 읽는다.', '$x=\\tanh t$ 로 두면 피적분함수가 그냥 $2t=2\\operatorname{artanh}x$ 가 된다.'],
+      steps: ['$\\operatorname{artanh}\\dfrac{2x}{1+x^{2}}=2\\operatorname{artanh}x$', '$2\\int\\operatorname{artanh}x\\,dx=2x\\operatorname{artanh}x+\\ln(1-x^{2})$']
+    },
+    {
+      id: 'x082', topic: '역쌍곡선 치환',
+      integrand: 'asinh(x)/(1+x^2)^(3/2)', latex: '\\frac{\\operatorname{arsinh} x}{\\left(1 + x^{2}\\right)^{\\frac{3}{2}}}',
+      answer: 'x*asinh(x)/sqrt(1+x^2)-ln(1+x^2)/2', answerLatex: '\\frac{x \\operatorname{arsinh} x}{\\sqrt{1 + x^{2}}} - \\frac{\\ln\\left(1 + x^{2}\\right)}{2}+C',
+      domain: [0.2, 2.4],
+      hints: ['$x=\\sinh t$ 로 두면 $\\int\\dfrac{t}{\\cosh^{2}t}dt$ 로 바뀐다.', '$\\int t\\operatorname{sech}^{2}t\\,dt=t\\tanh t-\\ln\\cosh t$'],
+      steps: ['$x=\\sinh t,;dx=\\cosh t\\,dt$', '$\\int t\\operatorname{sech}^{2}t\\,dt=t\\tanh t-\\ln\\cosh t$', '$\\tanh t=\\dfrac{x}{\\sqrt{1+x^{2}}},;\\cosh t=\\sqrt{1+x^{2}}$']
+    },
+    {
+      id: 'x083', topic: '역쌍곡선 치환',
+      integrand: 'atanh(x)/(1-x^2)^(3/2)', latex: '\\frac{\\operatorname{artanh} x}{\\left(1 - x^{2}\\right)^{\\frac{3}{2}}}',
+      answer: 'x*atanh(x)/sqrt(1-x^2)-1/sqrt(1-x^2)', answerLatex: '\\frac{x \\operatorname{artanh} x}{\\sqrt{1 - x^{2}}} - \\frac{1}{\\sqrt{1 - x^{2}}}+C',
+      domain: [-0.72, 0.72],
+      hints: ['$x=\\tanh t$ 로 두면 $\\int t\\cosh t\\,dt$ 로 바뀐다.', '$\\int t\\cosh t\\,dt=t\\sinh t-\\cosh t$'],
+      steps: ['$x=\\tanh t,;dx=\\operatorname{sech}^{2}t\\,dt,;(1-x^{2})^{3/2}=\\operatorname{sech}^{3}t$', '$\\int t\\cosh t\\,dt=t\\sinh t-\\cosh t$', '$\\sinh t=\\dfrac{x}{\\sqrt{1-x^{2}}},;\\cosh t=\\dfrac{1}{\\sqrt{1-x^{2}}}$']
+    },
+    {
+      id: 'x084', topic: '역쌍곡선 치환',
+      integrand: 'acosh(x)/(x^2-1)^(3/2)', latex: '\\frac{\\operatorname{arcosh} x}{\\left(x^{2} - 1\\right)^{\\frac{3}{2}}}',
+      answer: 'ln(x^2-1)/2-x*acosh(x)/sqrt(x^2-1)', answerLatex: '\\frac{\\ln\\left(x^{2} - 1\\right)}{2} - \\frac{x \\operatorname{arcosh} x}{\\sqrt{x^{2} - 1}}+C',
+      domain: [1.35, 3.4],
+      hints: ['$x=\\cosh t$ 로 두면 $\\int\\dfrac{t}{\\sinh^{2}t}dt$ 로 바뀐다.', '$\\int t\\operatorname{csch}^{2}t\\,dt=-t\\coth t+\\ln|\\sinh t|$'],
+      steps: ['$x=\\cosh t$', '$-t\\coth t+\\ln\\sinh t$', '$\\coth t=\\dfrac{x}{\\sqrt{x^{2}-1}},;\\sinh t=\\sqrt{x^{2}-1}$']
+    },
+    {
+      id: 'x085', topic: '역쌍곡선 부분적분',
+      integrand: 'asinh(sqrt(x))', latex: '\\operatorname{arsinh}\\left(\\sqrt{x}\\right)',
+      answer: '(2*x+1)*asinh(sqrt(x))/2-sqrt(x^2+x)/2', answerLatex: '\\frac{\\left(2 x + 1\\right) \\operatorname{arsinh}\\left(\\sqrt{x}\\right)}{2} - \\frac{\\sqrt{x^{2} + x}}{2}+C',
+      domain: [0.3, 3],
+      hints: ['$dv=dx$ 로 부분적분하면 $\\dfrac12\\int\\sqrt{\\dfrac{x}{1+x}}dx$ 가 남는다.', '$u=\\sqrt x$ 로 다시 치환하면 $2\\int\\dfrac{u^{2}}{\\sqrt{1+u^{2}}}du$ 다.'],
+      steps: ['$=x\\operatorname{arsinh}\\sqrt x-\\dfrac12\\int\\dfrac{\\sqrt x}{\\sqrt{1+x}}dx$', '$\\int\\sqrt{\\dfrac{x}{1+x}}dx=\\sqrt{x(1+x)}-\\operatorname{arsinh}\\sqrt x$', '정리하면 $\\dfrac{(2x+1)\\operatorname{arsinh}\\sqrt x}{2}-\\dfrac{\\sqrt{x^{2}+x}}{2}$']
+    },
+    {
+      id: 'x086', topic: '역쌍곡선 부분적분',
+      integrand: 'atanh(sqrt(x))', latex: '\\operatorname{artanh}\\left(\\sqrt{x}\\right)',
+      answer: '(x-1)*atanh(sqrt(x))+sqrt(x)', answerLatex: '\\left(x - 1\\right) \\operatorname{artanh}\\left(\\sqrt{x}\\right) + \\sqrt{x}+C',
+      domain: [0.05, 0.82],
+      hints: ['$v=x-1$ 로 잡으면 남는 적분이 크게 줄어든다.', '$\\left(\\operatorname{artanh}\\sqrt x\\right)\'=\\dfrac{1}{2\\sqrt x(1-x)}$'],
+      steps: ['$v=x-1$ 로 부분적분: $(x-1)\\operatorname{artanh}\\sqrt x+\\int\\dfrac{dx}{2\\sqrt x}$', '$=(x-1)\\operatorname{artanh}\\sqrt x+\\sqrt x$']
+    },
+    {
+      id: 'x087', topic: '역쌍곡선 위장',
+      integrand: 'atanh(1/x)', latex: '\\operatorname{artanh}\\left(\\frac{1}{x}\\right)',
+      answer: 'x*atanh(1/x)+ln(x^2-1)/2', answerLatex: 'x \\operatorname{artanh}\\left(\\frac{1}{x}\\right) + \\frac{\\ln\\left|x^{2} - 1\\right|}{2}+C',
+      domain: [1.35, 3.4],
+      hints: ['$\\operatorname{artanh}\\dfrac1x=\\dfrac12\\ln\\dfrac{x+1}{x-1}$ 이므로 $|x|>1$ 에서 정의된다.', '$\\left(\\operatorname{artanh}\\dfrac1x\\right)\'=-\\dfrac{1}{x^{2}-1}$'],
+      steps: ['$dv=dx$ 로 부분적분: $x\\operatorname{artanh}\\dfrac1x+\\int\\dfrac{x\\,dx}{x^{2}-1}$', '$=x\\operatorname{artanh}\\dfrac1x+\\dfrac{\\ln|x^{2}-1|}{2}$']
+    },
+    {
+      id: 'x088', topic: '역쌍곡선 지수',
+      integrand: 'e^x*atanh(e^x)', latex: 'e^{x} \\operatorname{artanh}\\left(e^{x}\\right)',
+      answer: 'e^x*atanh(e^x)+ln(1-e^(2*x))/2', answerLatex: 'e^{x} \\operatorname{artanh}\\left(e^{x}\\right) + \\frac{\\ln\\left(1 - e^{2 x}\\right)}{2}+C',
+      domain: [-2.2, -0.3],
+      hints: ['$u=e^{x}$ 로 두면 $\\int\\operatorname{artanh}u\\,du$ 다.', '$\\int\\operatorname{artanh}u\\,du=u\\operatorname{artanh}u+\\dfrac{\\ln(1-u^{2})}{2}$'],
+      steps: ['$u=e^{x},;du=e^{x}dx$', '$\\int\\operatorname{artanh}u\\,du=u\\operatorname{artanh}u+\\dfrac{\\ln(1-u^{2})}{2}$', '$u$ 를 되돌린다']
+    },
+    {
+      id: 'x089', topic: '역쌍곡선 부분적분',
+      integrand: 'asinh(x)*sqrt(1+x^2)', latex: '\\operatorname{arsinh} x \\sqrt{1 + x^{2}}',
+      answer: 'x*sqrt(1+x^2)*asinh(x)/2+asinh(x)^2/4-x^2/4', answerLatex: '\\frac{x \\sqrt{1 + x^{2}} \\operatorname{arsinh} x}{2} + \\frac{\\left(\\operatorname{arsinh} x\\right)^{2}}{4} - \\frac{x^{2}}{4}+C',
+      domain: [0.2, 2],
+      hints: ['$v=\\dfrac{x\\sqrt{1+x^{2}}+\\operatorname{arsinh}x}{2}$ 로 부분적분한다.', '남는 적분은 $\\int\\left(\\dfrac x2+\\dfrac{\\operatorname{arsinh}x}{2\\sqrt{1+x^{2}}}\\right)dx$ 다.'],
+      steps: ['$v=\\int\\sqrt{1+x^{2}}dx=\\dfrac{x\\sqrt{1+x^{2}}+\\operatorname{arsinh}x}{2}$', '$\\int\\dfrac{v}{\\sqrt{1+x^{2}}}dx=\\dfrac{x^{2}}{4}+\\dfrac{\\operatorname{arsinh}^{2}x}{4}$', '두 결과를 뺀다']
     }
   ];
 

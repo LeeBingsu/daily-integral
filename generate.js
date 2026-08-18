@@ -2788,6 +2788,205 @@ add('monster', '역수 치환', 'sqrt(x)/(1+x^2)',
           '$\\arctan$ 항과 $\\operatorname{artanh}$ 항이 남는다']
 });
 
+// ================================================================== 역쌍곡선함수 보강
+
+// --- 보통: 1차식 대입과 기본 치환
+add('medium', '역쌍곡선함수', 'asinh(2*x)', 'x*asinh(2*x)-sqrt(4*x^2+1)/2', {
+  domain: [-1.5, 1.7],
+  hints: ['$dv=dx$ 로 부분적분한다.', '$\\left(\\operatorname{arsinh}2x\\right)\'=\\dfrac{2}{\\sqrt{1+4x^{2}}}$'],
+  steps: ['$=x\\operatorname{arsinh}2x-\\int\\dfrac{2x}{\\sqrt{1+4x^{2}}}dx$',
+          '$=x\\operatorname{arsinh}2x-\\dfrac{\\sqrt{4x^{2}+1}}{2}$']
+});
+add('medium', '역쌍곡선함수', 'acosh(2*x)', 'x*acosh(2*x)-sqrt(4*x^2-1)/2', {
+  domain: [0.7, 1.7],
+  hints: ['$dv=dx$ 로 부분적분한다.', '$\\left(\\operatorname{arcosh}2x\\right)\'=\\dfrac{2}{\\sqrt{4x^{2}-1}}$'],
+  steps: ['$=x\\operatorname{arcosh}2x-\\int\\dfrac{2x}{\\sqrt{4x^{2}-1}}dx$',
+          '$=x\\operatorname{arcosh}2x-\\dfrac{\\sqrt{4x^{2}-1}}{2}$']
+});
+add('medium', '역쌍곡선함수', 'atanh(2*x)', 'x*atanh(2*x)+ln(1-4*x^2)/4', {
+  domain: [-0.36, 0.36],
+  hints: ['$dv=dx$ 로 부분적분한다.', '$\\left(\\operatorname{artanh}2x\\right)\'=\\dfrac{2}{1-4x^{2}}$'],
+  steps: ['$=x\\operatorname{artanh}2x-\\int\\dfrac{2x}{1-4x^{2}}dx$',
+          '$=x\\operatorname{artanh}2x+\\dfrac{\\ln(1-4x^{2})}{4}$']
+});
+add('medium', '역쌍곡선 치환', 'asinh(x)/sqrt(1+x^2)', 'asinh(x)^2/2', {
+  domain: [-1.5, 1.7],
+  hints: ['$u=\\operatorname{arsinh}x$ 로 두면 $du=\\dfrac{dx}{\\sqrt{1+x^{2}}}$ 다.', '$\\int u\\,du$ 만 남는다.'],
+  steps: ['$u=\\operatorname{arsinh}x$', '$\\int u\\,du=\\dfrac{\\operatorname{arsinh}^{2}x}{2}$']
+});
+add('medium', '역쌍곡선 치환', 'acosh(x)/sqrt(x^2-1)', 'acosh(x)^2/2', {
+  domain: D.gt1,
+  hints: ['$u=\\operatorname{arcosh}x$ 로 두면 $du=\\dfrac{dx}{\\sqrt{x^{2}-1}}$ 다.', '$\\int u\\,du$ 꼴이다.'],
+  steps: ['$u=\\operatorname{arcosh}x$', '$\\int u\\,du=\\dfrac{\\operatorname{arcosh}^{2}x}{2}$']
+});
+add('medium', '역쌍곡선 치환', 'atanh(x)/(1-x^2)', 'atanh(x)^2/2', {
+  domain: D.unit,
+  hints: ['$u=\\operatorname{artanh}x$ 로 두면 $du=\\dfrac{dx}{1-x^{2}}$ 다.', '$\\int u\\,du$ 꼴이다.'],
+  steps: ['$u=\\operatorname{artanh}x$', '$\\int u\\,du=\\dfrac{\\operatorname{artanh}^{2}x}{2}$']
+});
+
+// --- 어려움: 부분적분 조합
+add('hard', '역쌍곡선 부분적분', 'x*acosh(x)', '(2*x^2-1)*acosh(x)/4-x*sqrt(x^2-1)/4', {
+  domain: D.gt1,
+  hints: ['$v=\\dfrac{2x^{2}-1}{4}$ 로 잡으면 남는 적분이 깔끔해진다.',
+          '$\\int\\dfrac{2x^{2}-1}{4\\sqrt{x^{2}-1}}dx=\\dfrac{x\\sqrt{x^{2}-1}}{4}$'],
+  steps: ['$v=\\dfrac{2x^{2}-1}{4}$ 로 부분적분',
+          '$=\\dfrac{(2x^{2}-1)\\operatorname{arcosh}x}{4}-\\dfrac{x\\sqrt{x^{2}-1}}{4}$']
+});
+add('hard', '역쌍곡선 부분적분', 'x*atanh(x)', '(x^2-1)*atanh(x)/2+x/2', {
+  domain: D.unit,
+  hints: ['$v=\\dfrac{x^{2}-1}{2}$ 로 잡으면 $\\dfrac{x^{2}-1}{1-x^{2}}=-1$ 로 약분된다.',
+          '남는 적분이 $\\dfrac12\\int dx$ 가 된다.'],
+  steps: ['$v=\\dfrac{x^{2}-1}{2}$ 로 부분적분',
+          '$=\\dfrac{(x^{2}-1)\\operatorname{artanh}x}{2}+\\dfrac x2$']
+});
+add('hard', '역쌍곡선 부분적분', 'x^2*asinh(x)', 'x^3*asinh(x)/3-(x^2+1)^(3/2)/9+sqrt(x^2+1)/3', {
+  domain: [-1.5, 1.7],
+  hints: ['$v=\\dfrac{x^{3}}{3}$ 로 부분적분하면 $\\dfrac13\\int\\dfrac{x^{3}}{\\sqrt{1+x^{2}}}dx$ 가 남는다.',
+          '$u=1+x^{2}$ 로 두면 $\\dfrac12\\int\\dfrac{u-1}{\\sqrt u}du$ 다.'],
+  steps: ['$=\\dfrac{x^{3}\\operatorname{arsinh}x}{3}-\\dfrac13\\int\\dfrac{x^{3}dx}{\\sqrt{1+x^{2}}}$',
+          '$\\int\\dfrac{x^{3}dx}{\\sqrt{1+x^{2}}}=\\dfrac{(1+x^{2})^{3/2}}{3}-\\sqrt{1+x^{2}}$']
+});
+add('hard', '역쌍곡선 부분적분', 'asinh(x)^2', 'x*asinh(x)^2-2*sqrt(1+x^2)*asinh(x)+2*x', {
+  domain: [-1.5, 1.7],
+  hints: ['부분적분 후 $\\int\\dfrac{2x\\operatorname{arsinh}x}{\\sqrt{1+x^{2}}}dx$ 가 남는다.',
+          '$\\left(2\\sqrt{1+x^{2}}\\right)\'=\\dfrac{2x}{\\sqrt{1+x^{2}}}$ 로 한 번 더 부분적분한다.'],
+  steps: ['$=x\\operatorname{arsinh}^{2}x-\\int\\dfrac{2x\\operatorname{arsinh}x}{\\sqrt{1+x^{2}}}dx$',
+          '$=x\\operatorname{arsinh}^{2}x-2\\sqrt{1+x^{2}}\\operatorname{arsinh}x+2x$']
+});
+add('hard', '역쌍곡선 부분적분', 'x*asinh(x)/sqrt(1+x^2)', 'sqrt(1+x^2)*asinh(x)-x', {
+  domain: [-1.5, 1.7],
+  hints: ['$dv=\\dfrac{x\\,dx}{\\sqrt{1+x^{2}}}\\Rightarrow v=\\sqrt{1+x^{2}}$',
+          '남는 적분에서 $\\dfrac{\\sqrt{1+x^{2}}}{\\sqrt{1+x^{2}}}=1$ 로 약분된다.'],
+  steps: ['$=\\sqrt{1+x^{2}}\\operatorname{arsinh}x-\\int dx$',
+          '$=\\sqrt{1+x^{2}}\\operatorname{arsinh}x-x$']
+});
+add('hard', '역쌍곡선 부분적분', 'x*acosh(x)/sqrt(x^2-1)', 'sqrt(x^2-1)*acosh(x)-x', {
+  domain: D.gt1,
+  hints: ['$v=\\sqrt{x^{2}-1}$ 로 부분적분한다.', '남는 적분은 $\\int dx$ 다.'],
+  steps: ['$=\\sqrt{x^{2}-1}\\operatorname{arcosh}x-\\int dx$', '$=\\sqrt{x^{2}-1}\\operatorname{arcosh}x-x$']
+});
+add('hard', '역쌍곡선 부분적분', 'atanh(x)/x^2', 'ln(x)-ln(1-x^2)/2-atanh(x)/x', {
+  domain: [0.15, 0.8],
+  hints: ['$v=-\\dfrac1x$ 로 부분적분한다.', '남는 $\\int\\dfrac{dx}{x(1-x^{2})}=\\ln|x|-\\dfrac12\\ln|1-x^{2}|$'],
+  steps: ['$=-\\dfrac{\\operatorname{artanh}x}{x}+\\int\\dfrac{dx}{x(1-x^{2})}$',
+          '$\\dfrac{1}{x(1-x^{2})}=\\dfrac1x+\\dfrac{x}{1-x^{2}}$']
+});
+add('hard', '역쌍곡선 부분적분', 'acosh(x)/x^2', 'atan(sqrt(x^2-1))-acosh(x)/x', {
+  domain: D.gt1,
+  hints: ['$v=-\\dfrac1x$ 로 부분적분한다.', '남는 $\\int\\dfrac{dx}{x\\sqrt{x^{2}-1}}=\\arctan\\sqrt{x^{2}-1}$'],
+  steps: ['$=-\\dfrac{\\operatorname{arcosh}x}{x}+\\int\\dfrac{dx}{x\\sqrt{x^{2}-1}}$',
+          '$=\\arctan\\sqrt{x^{2}-1}-\\dfrac{\\operatorname{arcosh}x}{x}$']
+});
+add('hard', '역쌍곡선 치환', 'asinh(x)^2/sqrt(1+x^2)', 'asinh(x)^3/3', {
+  domain: [-1.5, 1.7],
+  hints: ['$u=\\operatorname{arsinh}x$ 로 두면 $\\int u^{2}du$ 다.', '거듭제곱 법칙으로 끝난다.'],
+  steps: ['$u=\\operatorname{arsinh}x$', '$\\int u^{2}du=\\dfrac{\\operatorname{arsinh}^{3}x}{3}$']
+});
+add('hard', '역쌍곡선 치환', '1/(sqrt(1+x^2)*asinh(x))', 'ln(asinh(x))', {
+  domain: [0.3, 2.6], lnAbs: true,
+  hints: ['$u=\\operatorname{arsinh}x$ 로 두면 $\\int\\dfrac{du}{u}$ 다.', '결과는 로그의 로그 꼴이다.'],
+  steps: ['$u=\\operatorname{arsinh}x,\;du=\\dfrac{dx}{\\sqrt{1+x^{2}}}$',
+          '$\\int\\dfrac{du}{u}=\\ln\\left|\\operatorname{arsinh}x\\right|$']
+});
+add('hard', '역쌍곡선 치환', '1/(sqrt(x^2+1)*(asinh(x)^2+1))', 'atan(asinh(x))', {
+  domain: [-1.5, 1.7],
+  hints: ['$u=\\operatorname{arsinh}x$ 로 두면 $\\int\\dfrac{du}{u^{2}+1}$ 다.', '$\\arctan$ 이 남는다.'],
+  steps: ['$u=\\operatorname{arsinh}x$', '$\\arctan\\left(\\operatorname{arsinh}x\\right)$']
+});
+add('hard', '역쌍곡선 부분적분', 'x^3*asinh(x)',
+    'x^4*asinh(x)/4-x^3*sqrt(1+x^2)/16+3*x*sqrt(1+x^2)/32-3*asinh(x)/32', {
+  domain: [-1.5, 1.7],
+  hints: ['$v=\\dfrac{x^{4}}{4}$ 로 부분적분하면 $\\dfrac14\\int\\dfrac{x^{4}}{\\sqrt{1+x^{2}}}dx$ 가 남는다.',
+          '$I_{n}=\\dfrac{x^{n-1}\\sqrt{1+x^{2}}}{n}-\\dfrac{n-1}{n}I_{n-2}$ 점화식을 쓴다.'],
+  steps: ['$I_{2}=\\dfrac{x\\sqrt{1+x^{2}}}{2}-\\dfrac{\\operatorname{arsinh}x}{2}$',
+          '$I_{4}=\\dfrac{x^{3}\\sqrt{1+x^{2}}}{4}-\\dfrac34I_{2}$',
+          '$\\dfrac{x^{4}\\operatorname{arsinh}x}{4}-\\dfrac{I_{4}}{4}$ 를 정리한다']
+});
+
+// --- 몬스터: 역쌍곡선 항등식과 위장
+add('monster', '역쌍곡선 배각', 'asinh(2*x*sqrt(1+x^2))', '2*x*asinh(x)-2*sqrt(1+x^2)', {
+  domain: [0.2, 1.6],
+  hints: ['$\\sinh 2t=2\\sinh t\\cosh t$ 를 거꾸로 읽는다.',
+          '$x=\\sinh t$ 로 두면 피적분함수는 그냥 $2t=2\\operatorname{arsinh}x$ 다.'],
+  steps: ['$\\operatorname{arsinh}\\left(2x\\sqrt{1+x^{2}}\\right)=2\\operatorname{arsinh}x$',
+          '$2\\int\\operatorname{arsinh}x\\,dx=2x\\operatorname{arsinh}x-2\\sqrt{1+x^{2}}$']
+});
+add('monster', '역쌍곡선 배각', 'acosh(2*x^2-1)', '2*x*acosh(x)-2*sqrt(x^2-1)', {
+  domain: D.gt1,
+  hints: ['$\\cosh 2t=2\\cosh^{2}t-1$ 을 거꾸로 읽는다.',
+          '$x=\\cosh t\;(t\\ge 0)$ 이면 피적분함수는 $2t=2\\operatorname{arcosh}x$ 다.'],
+  steps: ['$\\operatorname{arcosh}(2x^{2}-1)=2\\operatorname{arcosh}x$',
+          '$2\\int\\operatorname{arcosh}x\\,dx=2x\\operatorname{arcosh}x-2\\sqrt{x^{2}-1}$']
+});
+add('monster', '역쌍곡선 배각', 'atanh(2*x/(1+x^2))', '2*x*atanh(x)+ln(1-x^2)', {
+  domain: D.unit,
+  hints: ['쌍곡선 배각공식 $\\tanh 2t=\\dfrac{2\\tanh t}{1+\\tanh^{2}t}$ 를 거꾸로 읽는다.',
+          '$x=\\tanh t$ 로 두면 피적분함수가 그냥 $2t=2\\operatorname{artanh}x$ 가 된다.'],
+  steps: ['$\\operatorname{artanh}\\dfrac{2x}{1+x^{2}}=2\\operatorname{artanh}x$',
+          '$2\\int\\operatorname{artanh}x\\,dx=2x\\operatorname{artanh}x+\\ln(1-x^{2})$']
+});
+add('monster', '역쌍곡선 치환', 'asinh(x)/(1+x^2)^(3/2)', 'x*asinh(x)/sqrt(1+x^2)-ln(1+x^2)/2', {
+  domain: [0.2, 2.4],
+  hints: ['$x=\\sinh t$ 로 두면 $\\int\\dfrac{t}{\\cosh^{2}t}dt$ 로 바뀐다.',
+          '$\\int t\\operatorname{sech}^{2}t\\,dt=t\\tanh t-\\ln\\cosh t$'],
+  steps: ['$x=\\sinh t,\;dx=\\cosh t\\,dt$', '$\\int t\\operatorname{sech}^{2}t\\,dt=t\\tanh t-\\ln\\cosh t$',
+          '$\\tanh t=\\dfrac{x}{\\sqrt{1+x^{2}}},\;\\cosh t=\\sqrt{1+x^{2}}$']
+});
+add('monster', '역쌍곡선 치환', 'atanh(x)/(1-x^2)^(3/2)', 'x*atanh(x)/sqrt(1-x^2)-1/sqrt(1-x^2)', {
+  domain: D.unit,
+  hints: ['$x=\\tanh t$ 로 두면 $\\int t\\cosh t\\,dt$ 로 바뀐다.',
+          '$\\int t\\cosh t\\,dt=t\\sinh t-\\cosh t$'],
+  steps: ['$x=\\tanh t,\;dx=\\operatorname{sech}^{2}t\\,dt,\;(1-x^{2})^{3/2}=\\operatorname{sech}^{3}t$',
+          '$\\int t\\cosh t\\,dt=t\\sinh t-\\cosh t$',
+          '$\\sinh t=\\dfrac{x}{\\sqrt{1-x^{2}}},\;\\cosh t=\\dfrac{1}{\\sqrt{1-x^{2}}}$']
+});
+add('monster', '역쌍곡선 치환', 'acosh(x)/(x^2-1)^(3/2)', 'ln(x^2-1)/2-x*acosh(x)/sqrt(x^2-1)', {
+  domain: D.gt1,
+  hints: ['$x=\\cosh t$ 로 두면 $\\int\\dfrac{t}{\\sinh^{2}t}dt$ 로 바뀐다.',
+          '$\\int t\\operatorname{csch}^{2}t\\,dt=-t\\coth t+\\ln|\\sinh t|$'],
+  steps: ['$x=\\cosh t$', '$-t\\coth t+\\ln\\sinh t$',
+          '$\\coth t=\\dfrac{x}{\\sqrt{x^{2}-1}},\;\\sinh t=\\sqrt{x^{2}-1}$']
+});
+add('monster', '역쌍곡선 부분적분', 'asinh(sqrt(x))', '(2*x+1)*asinh(sqrt(x))/2-sqrt(x^2+x)/2', {
+  domain: [0.3, 3.0],
+  hints: ['$dv=dx$ 로 부분적분하면 $\\dfrac12\\int\\sqrt{\\dfrac{x}{1+x}}dx$ 가 남는다.',
+          '$u=\\sqrt x$ 로 다시 치환하면 $2\\int\\dfrac{u^{2}}{\\sqrt{1+u^{2}}}du$ 다.'],
+  steps: ['$=x\\operatorname{arsinh}\\sqrt x-\\dfrac12\\int\\dfrac{\\sqrt x}{\\sqrt{1+x}}dx$',
+          '$\\int\\sqrt{\\dfrac{x}{1+x}}dx=\\sqrt{x(1+x)}-\\operatorname{arsinh}\\sqrt x$',
+          '정리하면 $\\dfrac{(2x+1)\\operatorname{arsinh}\\sqrt x}{2}-\\dfrac{\\sqrt{x^{2}+x}}{2}$']
+});
+add('monster', '역쌍곡선 부분적분', 'atanh(sqrt(x))', '(x-1)*atanh(sqrt(x))+sqrt(x)', {
+  domain: [0.05, 0.82],
+  hints: ['$v=x-1$ 로 잡으면 남는 적분이 크게 줄어든다.',
+          '$\\left(\\operatorname{artanh}\\sqrt x\\right)\'=\\dfrac{1}{2\\sqrt x(1-x)}$'],
+  steps: ['$v=x-1$ 로 부분적분: $(x-1)\\operatorname{artanh}\\sqrt x+\\int\\dfrac{dx}{2\\sqrt x}$',
+          '$=(x-1)\\operatorname{artanh}\\sqrt x+\\sqrt x$']
+});
+add('monster', '역쌍곡선 위장', 'atanh(1/x)', 'x*atanh(1/x)+ln(x^2-1)/2', {
+  domain: D.gt1, lnAbs: true,
+  hints: ['$\\operatorname{artanh}\\dfrac1x=\\dfrac12\\ln\\dfrac{x+1}{x-1}$ 이므로 $|x|>1$ 에서 정의된다.',
+          '$\\left(\\operatorname{artanh}\\dfrac1x\\right)\'=-\\dfrac{1}{x^{2}-1}$'],
+  steps: ['$dv=dx$ 로 부분적분: $x\\operatorname{artanh}\\dfrac1x+\\int\\dfrac{x\\,dx}{x^{2}-1}$',
+          '$=x\\operatorname{artanh}\\dfrac1x+\\dfrac{\\ln|x^{2}-1|}{2}$']
+});
+add('monster', '역쌍곡선 지수', 'e^x*atanh(e^x)', 'e^x*atanh(e^x)+ln(1-e^(2*x))/2', {
+  domain: [-2.2, -0.3],
+  hints: ['$u=e^{x}$ 로 두면 $\\int\\operatorname{artanh}u\\,du$ 다.',
+          '$\\int\\operatorname{artanh}u\\,du=u\\operatorname{artanh}u+\\dfrac{\\ln(1-u^{2})}{2}$'],
+  steps: ['$u=e^{x},\;du=e^{x}dx$', '$\\int\\operatorname{artanh}u\\,du=u\\operatorname{artanh}u+\\dfrac{\\ln(1-u^{2})}{2}$',
+          '$u$ 를 되돌린다']
+});
+add('monster', '역쌍곡선 부분적분', 'asinh(x)*sqrt(1+x^2)',
+    'x*sqrt(1+x^2)*asinh(x)/2+asinh(x)^2/4-x^2/4', {
+  domain: [0.2, 2.0],
+  hints: ['$v=\\dfrac{x\\sqrt{1+x^{2}}+\\operatorname{arsinh}x}{2}$ 로 부분적분한다.',
+          '남는 적분은 $\\int\\left(\\dfrac x2+\\dfrac{\\operatorname{arsinh}x}{2\\sqrt{1+x^{2}}}\\right)dx$ 다.'],
+  steps: ['$v=\\int\\sqrt{1+x^{2}}dx=\\dfrac{x\\sqrt{1+x^{2}}+\\operatorname{arsinh}x}{2}$',
+          '$\\int\\dfrac{v}{\\sqrt{1+x^{2}}}dx=\\dfrac{x^{2}}{4}+\\dfrac{\\operatorname{arsinh}^{2}x}{4}$',
+          '두 결과를 뺀다']
+});
+
 // ================================================================== 검증 + 출력
 
 var LEVELS = ['easy', 'medium', 'hard', 'monster'];

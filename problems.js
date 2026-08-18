@@ -8,7 +8,7 @@
  *   answer    : 기준 부정적분(ASCII, +C 생략)
  *   domain    : 수치 비교에 쓰는 안전한 구간 (특이점 회피)
  *
- *   전체 663문항 - 쉬움 163 / 보통 147 / 어려움 275 / 몬스터 78
+ *   전체 692문항 - 쉬움 163 / 보통 153 / 어려움 287 / 몬스터 89
  */
 (function (root, factory) {
   var api = factory();
@@ -2500,6 +2500,54 @@
       domain: [0.25, 1.6],
       hints: ['$u=x,\\;dv=\\cosh 2x\\,dx$ 로 둔다.', '남는 적분은 $\\int\\sinh$ 다.'],
       steps: ['$u=x,\\;v=\\frac{1}{2} \\sinh\\left(2 x\\right)$', '$= \\frac{1}{2} x \\sinh\\left(2 x\\right) + \\frac{-1}{4} \\cosh\\left(2 x\\right)$']
+    },
+    {
+      id: 'm148', topic: '역쌍곡선함수',
+      integrand: 'asinh(2*x)', latex: '\\operatorname{arsinh}\\left(2 x\\right)',
+      answer: 'x*asinh(2*x)-sqrt(4*x^2+1)/2', answerLatex: 'x \\operatorname{arsinh}\\left(2 x\\right) - \\frac{\\sqrt{4 x^{2} + 1}}{2}+C',
+      domain: [-1.5, 1.7],
+      hints: ['$dv=dx$ 로 부분적분한다.', '$\\left(\\operatorname{arsinh}2x\\right)\'=\\dfrac{2}{\\sqrt{1+4x^{2}}}$'],
+      steps: ['$=x\\operatorname{arsinh}2x-\\int\\dfrac{2x}{\\sqrt{1+4x^{2}}}dx$', '$=x\\operatorname{arsinh}2x-\\dfrac{\\sqrt{4x^{2}+1}}{2}$']
+    },
+    {
+      id: 'm149', topic: '역쌍곡선함수',
+      integrand: 'acosh(2*x)', latex: '\\operatorname{arcosh}\\left(2 x\\right)',
+      answer: 'x*acosh(2*x)-sqrt(4*x^2-1)/2', answerLatex: 'x \\operatorname{arcosh}\\left(2 x\\right) - \\frac{\\sqrt{4 x^{2} - 1}}{2}+C',
+      domain: [0.7, 1.7],
+      hints: ['$dv=dx$ 로 부분적분한다.', '$\\left(\\operatorname{arcosh}2x\\right)\'=\\dfrac{2}{\\sqrt{4x^{2}-1}}$'],
+      steps: ['$=x\\operatorname{arcosh}2x-\\int\\dfrac{2x}{\\sqrt{4x^{2}-1}}dx$', '$=x\\operatorname{arcosh}2x-\\dfrac{\\sqrt{4x^{2}-1}}{2}$']
+    },
+    {
+      id: 'm150', topic: '역쌍곡선함수',
+      integrand: 'atanh(2*x)', latex: '\\operatorname{artanh}\\left(2 x\\right)',
+      answer: 'x*atanh(2*x)+ln(1-4*x^2)/4', answerLatex: 'x \\operatorname{artanh}\\left(2 x\\right) + \\frac{\\ln\\left(1 - 4 x^{2}\\right)}{4}+C',
+      domain: [-0.36, 0.36],
+      hints: ['$dv=dx$ 로 부분적분한다.', '$\\left(\\operatorname{artanh}2x\\right)\'=\\dfrac{2}{1-4x^{2}}$'],
+      steps: ['$=x\\operatorname{artanh}2x-\\int\\dfrac{2x}{1-4x^{2}}dx$', '$=x\\operatorname{artanh}2x+\\dfrac{\\ln(1-4x^{2})}{4}$']
+    },
+    {
+      id: 'm151', topic: '역쌍곡선 치환',
+      integrand: 'asinh(x)/sqrt(1+x^2)', latex: '\\frac{\\operatorname{arsinh} x}{\\sqrt{1 + x^{2}}}',
+      answer: 'asinh(x)^2/2', answerLatex: '\\frac{\\left(\\operatorname{arsinh} x\\right)^{2}}{2}+C',
+      domain: [-1.5, 1.7],
+      hints: ['$u=\\operatorname{arsinh}x$ 로 두면 $du=\\dfrac{dx}{\\sqrt{1+x^{2}}}$ 다.', '$\\int u\\,du$ 만 남는다.'],
+      steps: ['$u=\\operatorname{arsinh}x$', '$\\int u\\,du=\\dfrac{\\operatorname{arsinh}^{2}x}{2}$']
+    },
+    {
+      id: 'm152', topic: '역쌍곡선 치환',
+      integrand: 'acosh(x)/sqrt(x^2-1)', latex: '\\frac{\\operatorname{arcosh} x}{\\sqrt{x^{2} - 1}}',
+      answer: 'acosh(x)^2/2', answerLatex: '\\frac{\\left(\\operatorname{arcosh} x\\right)^{2}}{2}+C',
+      domain: [1.35, 3.4],
+      hints: ['$u=\\operatorname{arcosh}x$ 로 두면 $du=\\dfrac{dx}{\\sqrt{x^{2}-1}}$ 다.', '$\\int u\\,du$ 꼴이다.'],
+      steps: ['$u=\\operatorname{arcosh}x$', '$\\int u\\,du=\\dfrac{\\operatorname{arcosh}^{2}x}{2}$']
+    },
+    {
+      id: 'm153', topic: '역쌍곡선 치환',
+      integrand: 'atanh(x)/(1-x^2)', latex: '\\frac{\\operatorname{artanh} x}{1 - x^{2}}',
+      answer: 'atanh(x)^2/2', answerLatex: '\\frac{\\left(\\operatorname{artanh} x\\right)^{2}}{2}+C',
+      domain: [-0.72, 0.72],
+      hints: ['$u=\\operatorname{artanh}x$ 로 두면 $du=\\dfrac{dx}{1-x^{2}}$ 다.', '$\\int u\\,du$ 꼴이다.'],
+      steps: ['$u=\\operatorname{artanh}x$', '$\\int u\\,du=\\dfrac{\\operatorname{artanh}^{2}x}{2}$']
     }
   ];
 
@@ -4703,6 +4751,102 @@
       domain: [0.3, 1.2],
       hints: ['$\\sec^{4}=\\sec^{2}(1+\\tan^{2})$ 로 쪼갠다.', '$u=\\tan x,;du=\\sec^{2}x\\,dx$'],
       steps: ['$u=\\tan x$', '$\\int\\dfrac{1+u^{2}}{\\sqrt u}du=2\\sqrt u+\\dfrac{2u^{5/2}}{5}$']
+    },
+    {
+      id: 'h276', topic: '역쌍곡선 부분적분',
+      integrand: 'x*acosh(x)', latex: 'x \\operatorname{arcosh} x',
+      answer: '(2*x^2-1)*acosh(x)/4-x*sqrt(x^2-1)/4', answerLatex: '\\frac{\\left(2 x^{2} - 1\\right) \\operatorname{arcosh} x}{4} - \\frac{x \\sqrt{x^{2} - 1}}{4}+C',
+      domain: [1.35, 3.4],
+      hints: ['$v=\\dfrac{2x^{2}-1}{4}$ 로 잡으면 남는 적분이 깔끔해진다.', '$\\int\\dfrac{2x^{2}-1}{4\\sqrt{x^{2}-1}}dx=\\dfrac{x\\sqrt{x^{2}-1}}{4}$'],
+      steps: ['$v=\\dfrac{2x^{2}-1}{4}$ 로 부분적분', '$=\\dfrac{(2x^{2}-1)\\operatorname{arcosh}x}{4}-\\dfrac{x\\sqrt{x^{2}-1}}{4}$']
+    },
+    {
+      id: 'h277', topic: '역쌍곡선 부분적분',
+      integrand: 'x*atanh(x)', latex: 'x \\operatorname{artanh} x',
+      answer: '(x^2-1)*atanh(x)/2+x/2', answerLatex: '\\frac{\\left(x^{2} - 1\\right) \\operatorname{artanh} x}{2} + \\frac{x}{2}+C',
+      domain: [-0.72, 0.72],
+      hints: ['$v=\\dfrac{x^{2}-1}{2}$ 로 잡으면 $\\dfrac{x^{2}-1}{1-x^{2}}=-1$ 로 약분된다.', '남는 적분이 $\\dfrac12\\int dx$ 가 된다.'],
+      steps: ['$v=\\dfrac{x^{2}-1}{2}$ 로 부분적분', '$=\\dfrac{(x^{2}-1)\\operatorname{artanh}x}{2}+\\dfrac x2$']
+    },
+    {
+      id: 'h278', topic: '역쌍곡선 부분적분',
+      integrand: 'x^2*asinh(x)', latex: 'x^{2} \\operatorname{arsinh} x',
+      answer: 'x^3*asinh(x)/3-(x^2+1)^(3/2)/9+sqrt(x^2+1)/3', answerLatex: '\\frac{x^{3} \\operatorname{arsinh} x}{3} - \\frac{\\left(x^{2} + 1\\right)^{\\frac{3}{2}}}{9} + \\frac{\\sqrt{x^{2} + 1}}{3}+C',
+      domain: [-1.5, 1.7],
+      hints: ['$v=\\dfrac{x^{3}}{3}$ 로 부분적분하면 $\\dfrac13\\int\\dfrac{x^{3}}{\\sqrt{1+x^{2}}}dx$ 가 남는다.', '$u=1+x^{2}$ 로 두면 $\\dfrac12\\int\\dfrac{u-1}{\\sqrt u}du$ 다.'],
+      steps: ['$=\\dfrac{x^{3}\\operatorname{arsinh}x}{3}-\\dfrac13\\int\\dfrac{x^{3}dx}{\\sqrt{1+x^{2}}}$', '$\\int\\dfrac{x^{3}dx}{\\sqrt{1+x^{2}}}=\\dfrac{(1+x^{2})^{3/2}}{3}-\\sqrt{1+x^{2}}$']
+    },
+    {
+      id: 'h279', topic: '역쌍곡선 부분적분',
+      integrand: 'asinh(x)^2', latex: '\\left(\\operatorname{arsinh} x\\right)^{2}',
+      answer: 'x*asinh(x)^2-2*sqrt(1+x^2)*asinh(x)+2*x', answerLatex: 'x \\left(\\operatorname{arsinh} x\\right)^{2} - 2 \\sqrt{1 + x^{2}} \\operatorname{arsinh} x + 2 x+C',
+      domain: [-1.5, 1.7],
+      hints: ['부분적분 후 $\\int\\dfrac{2x\\operatorname{arsinh}x}{\\sqrt{1+x^{2}}}dx$ 가 남는다.', '$\\left(2\\sqrt{1+x^{2}}\\right)\'=\\dfrac{2x}{\\sqrt{1+x^{2}}}$ 로 한 번 더 부분적분한다.'],
+      steps: ['$=x\\operatorname{arsinh}^{2}x-\\int\\dfrac{2x\\operatorname{arsinh}x}{\\sqrt{1+x^{2}}}dx$', '$=x\\operatorname{arsinh}^{2}x-2\\sqrt{1+x^{2}}\\operatorname{arsinh}x+2x$']
+    },
+    {
+      id: 'h280', topic: '역쌍곡선 부분적분',
+      integrand: 'x*asinh(x)/sqrt(1+x^2)', latex: '\\frac{x \\operatorname{arsinh} x}{\\sqrt{1 + x^{2}}}',
+      answer: 'sqrt(1+x^2)*asinh(x)-x', answerLatex: '\\sqrt{1 + x^{2}} \\operatorname{arsinh} x - x+C',
+      domain: [-1.5, 1.7],
+      hints: ['$dv=\\dfrac{x\\,dx}{\\sqrt{1+x^{2}}}\\Rightarrow v=\\sqrt{1+x^{2}}$', '남는 적분에서 $\\dfrac{\\sqrt{1+x^{2}}}{\\sqrt{1+x^{2}}}=1$ 로 약분된다.'],
+      steps: ['$=\\sqrt{1+x^{2}}\\operatorname{arsinh}x-\\int dx$', '$=\\sqrt{1+x^{2}}\\operatorname{arsinh}x-x$']
+    },
+    {
+      id: 'h281', topic: '역쌍곡선 부분적분',
+      integrand: 'x*acosh(x)/sqrt(x^2-1)', latex: '\\frac{x \\operatorname{arcosh} x}{\\sqrt{x^{2} - 1}}',
+      answer: 'sqrt(x^2-1)*acosh(x)-x', answerLatex: '\\sqrt{x^{2} - 1} \\operatorname{arcosh} x - x+C',
+      domain: [1.35, 3.4],
+      hints: ['$v=\\sqrt{x^{2}-1}$ 로 부분적분한다.', '남는 적분은 $\\int dx$ 다.'],
+      steps: ['$=\\sqrt{x^{2}-1}\\operatorname{arcosh}x-\\int dx$', '$=\\sqrt{x^{2}-1}\\operatorname{arcosh}x-x$']
+    },
+    {
+      id: 'h282', topic: '역쌍곡선 부분적분',
+      integrand: 'atanh(x)/x^2', latex: '\\frac{\\operatorname{artanh} x}{x^{2}}',
+      answer: 'ln(x)-ln(1-x^2)/2-atanh(x)/x', answerLatex: '\\ln x - \\frac{\\ln\\left(1 - x^{2}\\right)}{2} - \\frac{\\operatorname{artanh} x}{x}+C',
+      domain: [0.15, 0.8],
+      hints: ['$v=-\\dfrac1x$ 로 부분적분한다.', '남는 $\\int\\dfrac{dx}{x(1-x^{2})}=\\ln|x|-\\dfrac12\\ln|1-x^{2}|$'],
+      steps: ['$=-\\dfrac{\\operatorname{artanh}x}{x}+\\int\\dfrac{dx}{x(1-x^{2})}$', '$\\dfrac{1}{x(1-x^{2})}=\\dfrac1x+\\dfrac{x}{1-x^{2}}$']
+    },
+    {
+      id: 'h283', topic: '역쌍곡선 부분적분',
+      integrand: 'acosh(x)/x^2', latex: '\\frac{\\operatorname{arcosh} x}{x^{2}}',
+      answer: 'atan(sqrt(x^2-1))-acosh(x)/x', answerLatex: '\\arctan\\left(\\sqrt{x^{2} - 1}\\right) - \\frac{\\operatorname{arcosh} x}{x}+C',
+      domain: [1.35, 3.4],
+      hints: ['$v=-\\dfrac1x$ 로 부분적분한다.', '남는 $\\int\\dfrac{dx}{x\\sqrt{x^{2}-1}}=\\arctan\\sqrt{x^{2}-1}$'],
+      steps: ['$=-\\dfrac{\\operatorname{arcosh}x}{x}+\\int\\dfrac{dx}{x\\sqrt{x^{2}-1}}$', '$=\\arctan\\sqrt{x^{2}-1}-\\dfrac{\\operatorname{arcosh}x}{x}$']
+    },
+    {
+      id: 'h284', topic: '역쌍곡선 치환',
+      integrand: 'asinh(x)^2/sqrt(1+x^2)', latex: '\\frac{\\left(\\operatorname{arsinh} x\\right)^{2}}{\\sqrt{1 + x^{2}}}',
+      answer: 'asinh(x)^3/3', answerLatex: '\\frac{\\left(\\operatorname{arsinh} x\\right)^{3}}{3}+C',
+      domain: [-1.5, 1.7],
+      hints: ['$u=\\operatorname{arsinh}x$ 로 두면 $\\int u^{2}du$ 다.', '거듭제곱 법칙으로 끝난다.'],
+      steps: ['$u=\\operatorname{arsinh}x$', '$\\int u^{2}du=\\dfrac{\\operatorname{arsinh}^{3}x}{3}$']
+    },
+    {
+      id: 'h285', topic: '역쌍곡선 치환',
+      integrand: '1/(sqrt(1+x^2)*asinh(x))', latex: '\\frac{1}{\\sqrt{1 + x^{2}} \\operatorname{arsinh} x}',
+      answer: 'ln(asinh(x))', answerLatex: '\\ln\\left|\\operatorname{arsinh} x\\right|+C',
+      domain: [0.3, 2.6],
+      hints: ['$u=\\operatorname{arsinh}x$ 로 두면 $\\int\\dfrac{du}{u}$ 다.', '결과는 로그의 로그 꼴이다.'],
+      steps: ['$u=\\operatorname{arsinh}x,;du=\\dfrac{dx}{\\sqrt{1+x^{2}}}$', '$\\int\\dfrac{du}{u}=\\ln\\left|\\operatorname{arsinh}x\\right|$']
+    },
+    {
+      id: 'h286', topic: '역쌍곡선 치환',
+      integrand: '1/(sqrt(x^2+1)*(asinh(x)^2+1))', latex: '\\frac{1}{\\sqrt{x^{2} + 1} \\left(\\left(\\operatorname{arsinh} x\\right)^{2} + 1\\right)}',
+      answer: 'atan(asinh(x))', answerLatex: '\\arctan\\left(\\operatorname{arsinh} x\\right)+C',
+      domain: [-1.5, 1.7],
+      hints: ['$u=\\operatorname{arsinh}x$ 로 두면 $\\int\\dfrac{du}{u^{2}+1}$ 다.', '$\\arctan$ 이 남는다.'],
+      steps: ['$u=\\operatorname{arsinh}x$', '$\\arctan\\left(\\operatorname{arsinh}x\\right)$']
+    },
+    {
+      id: 'h287', topic: '역쌍곡선 부분적분',
+      integrand: 'x^3*asinh(x)', latex: 'x^{3} \\operatorname{arsinh} x',
+      answer: 'x^4*asinh(x)/4-x^3*sqrt(1+x^2)/16+3*x*sqrt(1+x^2)/32-3*asinh(x)/32', answerLatex: '\\frac{x^{4} \\operatorname{arsinh} x}{4} - \\frac{x^{3} \\sqrt{1 + x^{2}}}{16} + \\frac{3 x \\sqrt{1 + x^{2}}}{32} - \\frac{3 \\operatorname{arsinh} x}{32}+C',
+      domain: [-1.5, 1.7],
+      hints: ['$v=\\dfrac{x^{4}}{4}$ 로 부분적분하면 $\\dfrac14\\int\\dfrac{x^{4}}{\\sqrt{1+x^{2}}}dx$ 가 남는다.', '$I_{n}=\\dfrac{x^{n-1}\\sqrt{1+x^{2}}}{n}-\\dfrac{n-1}{n}I_{n-2}$ 점화식을 쓴다.'],
+      steps: ['$I_{2}=\\dfrac{x\\sqrt{1+x^{2}}}{2}-\\dfrac{\\operatorname{arsinh}x}{2}$', '$I_{4}=\\dfrac{x^{3}\\sqrt{1+x^{2}}}{4}-\\dfrac34I_{2}$', '$\\dfrac{x^{4}\\operatorname{arsinh}x}{4}-\\dfrac{I_{4}}{4}$ 를 정리한다']
     }
   ];
 
@@ -5330,6 +5474,94 @@
       domain: [1.35, 3.4],
       hints: ['$t=\\sqrt x$ 로 두면 $\\int\\dfrac{2t^{2}}{1+t^{4}}dt$ 로 $\\sqrt{\\tan x}$ 문제와 같은 꼴이 된다.', '$t^{2}\\pm1$ 로 쪼갠 뒤 $u=t\\mp\\dfrac1t$ 치환을 각각 쓴다.'],
       steps: ['$t=\\sqrt x:;\\int\\dfrac{2t^{2}}{1+t^{4}}dt$', '$=\\int\\dfrac{t^{2}+1}{t^{4}+1}dt+\\int\\dfrac{t^{2}-1}{t^{4}+1}dt$', '$\\arctan$ 항과 $\\operatorname{artanh}$ 항이 남는다']
+    },
+    {
+      id: 'x079', topic: '역쌍곡선 배각',
+      integrand: 'asinh(2*x*sqrt(1+x^2))', latex: '\\operatorname{arsinh}\\left(2 x \\sqrt{1 + x^{2}}\\right)',
+      answer: '2*x*asinh(x)-2*sqrt(1+x^2)', answerLatex: '2 x \\operatorname{arsinh} x - 2 \\sqrt{1 + x^{2}}+C',
+      domain: [0.2, 1.6],
+      hints: ['$\\sinh 2t=2\\sinh t\\cosh t$ 를 거꾸로 읽는다.', '$x=\\sinh t$ 로 두면 피적분함수는 그냥 $2t=2\\operatorname{arsinh}x$ 다.'],
+      steps: ['$\\operatorname{arsinh}\\left(2x\\sqrt{1+x^{2}}\\right)=2\\operatorname{arsinh}x$', '$2\\int\\operatorname{arsinh}x\\,dx=2x\\operatorname{arsinh}x-2\\sqrt{1+x^{2}}$']
+    },
+    {
+      id: 'x080', topic: '역쌍곡선 배각',
+      integrand: 'acosh(2*x^2-1)', latex: '\\operatorname{arcosh}\\left(2 x^{2} - 1\\right)',
+      answer: '2*x*acosh(x)-2*sqrt(x^2-1)', answerLatex: '2 x \\operatorname{arcosh} x - 2 \\sqrt{x^{2} - 1}+C',
+      domain: [1.35, 3.4],
+      hints: ['$\\cosh 2t=2\\cosh^{2}t-1$ 을 거꾸로 읽는다.', '$x=\\cosh t;(t\\ge 0)$ 이면 피적분함수는 $2t=2\\operatorname{arcosh}x$ 다.'],
+      steps: ['$\\operatorname{arcosh}(2x^{2}-1)=2\\operatorname{arcosh}x$', '$2\\int\\operatorname{arcosh}x\\,dx=2x\\operatorname{arcosh}x-2\\sqrt{x^{2}-1}$']
+    },
+    {
+      id: 'x081', topic: '역쌍곡선 배각',
+      integrand: 'atanh(2*x/(1+x^2))', latex: '\\operatorname{artanh}\\left(\\frac{2 x}{1 + x^{2}}\\right)',
+      answer: '2*x*atanh(x)+ln(1-x^2)', answerLatex: '2 x \\operatorname{artanh} x + \\ln\\left(1 - x^{2}\\right)+C',
+      domain: [-0.72, 0.72],
+      hints: ['쌍곡선 배각공식 $\\tanh 2t=\\dfrac{2\\tanh t}{1+\\tanh^{2}t}$ 를 거꾸로 읽는다.', '$x=\\tanh t$ 로 두면 피적분함수가 그냥 $2t=2\\operatorname{artanh}x$ 가 된다.'],
+      steps: ['$\\operatorname{artanh}\\dfrac{2x}{1+x^{2}}=2\\operatorname{artanh}x$', '$2\\int\\operatorname{artanh}x\\,dx=2x\\operatorname{artanh}x+\\ln(1-x^{2})$']
+    },
+    {
+      id: 'x082', topic: '역쌍곡선 치환',
+      integrand: 'asinh(x)/(1+x^2)^(3/2)', latex: '\\frac{\\operatorname{arsinh} x}{\\left(1 + x^{2}\\right)^{\\frac{3}{2}}}',
+      answer: 'x*asinh(x)/sqrt(1+x^2)-ln(1+x^2)/2', answerLatex: '\\frac{x \\operatorname{arsinh} x}{\\sqrt{1 + x^{2}}} - \\frac{\\ln\\left(1 + x^{2}\\right)}{2}+C',
+      domain: [0.2, 2.4],
+      hints: ['$x=\\sinh t$ 로 두면 $\\int\\dfrac{t}{\\cosh^{2}t}dt$ 로 바뀐다.', '$\\int t\\operatorname{sech}^{2}t\\,dt=t\\tanh t-\\ln\\cosh t$'],
+      steps: ['$x=\\sinh t,;dx=\\cosh t\\,dt$', '$\\int t\\operatorname{sech}^{2}t\\,dt=t\\tanh t-\\ln\\cosh t$', '$\\tanh t=\\dfrac{x}{\\sqrt{1+x^{2}}},;\\cosh t=\\sqrt{1+x^{2}}$']
+    },
+    {
+      id: 'x083', topic: '역쌍곡선 치환',
+      integrand: 'atanh(x)/(1-x^2)^(3/2)', latex: '\\frac{\\operatorname{artanh} x}{\\left(1 - x^{2}\\right)^{\\frac{3}{2}}}',
+      answer: 'x*atanh(x)/sqrt(1-x^2)-1/sqrt(1-x^2)', answerLatex: '\\frac{x \\operatorname{artanh} x}{\\sqrt{1 - x^{2}}} - \\frac{1}{\\sqrt{1 - x^{2}}}+C',
+      domain: [-0.72, 0.72],
+      hints: ['$x=\\tanh t$ 로 두면 $\\int t\\cosh t\\,dt$ 로 바뀐다.', '$\\int t\\cosh t\\,dt=t\\sinh t-\\cosh t$'],
+      steps: ['$x=\\tanh t,;dx=\\operatorname{sech}^{2}t\\,dt,;(1-x^{2})^{3/2}=\\operatorname{sech}^{3}t$', '$\\int t\\cosh t\\,dt=t\\sinh t-\\cosh t$', '$\\sinh t=\\dfrac{x}{\\sqrt{1-x^{2}}},;\\cosh t=\\dfrac{1}{\\sqrt{1-x^{2}}}$']
+    },
+    {
+      id: 'x084', topic: '역쌍곡선 치환',
+      integrand: 'acosh(x)/(x^2-1)^(3/2)', latex: '\\frac{\\operatorname{arcosh} x}{\\left(x^{2} - 1\\right)^{\\frac{3}{2}}}',
+      answer: 'ln(x^2-1)/2-x*acosh(x)/sqrt(x^2-1)', answerLatex: '\\frac{\\ln\\left(x^{2} - 1\\right)}{2} - \\frac{x \\operatorname{arcosh} x}{\\sqrt{x^{2} - 1}}+C',
+      domain: [1.35, 3.4],
+      hints: ['$x=\\cosh t$ 로 두면 $\\int\\dfrac{t}{\\sinh^{2}t}dt$ 로 바뀐다.', '$\\int t\\operatorname{csch}^{2}t\\,dt=-t\\coth t+\\ln|\\sinh t|$'],
+      steps: ['$x=\\cosh t$', '$-t\\coth t+\\ln\\sinh t$', '$\\coth t=\\dfrac{x}{\\sqrt{x^{2}-1}},;\\sinh t=\\sqrt{x^{2}-1}$']
+    },
+    {
+      id: 'x085', topic: '역쌍곡선 부분적분',
+      integrand: 'asinh(sqrt(x))', latex: '\\operatorname{arsinh}\\left(\\sqrt{x}\\right)',
+      answer: '(2*x+1)*asinh(sqrt(x))/2-sqrt(x^2+x)/2', answerLatex: '\\frac{\\left(2 x + 1\\right) \\operatorname{arsinh}\\left(\\sqrt{x}\\right)}{2} - \\frac{\\sqrt{x^{2} + x}}{2}+C',
+      domain: [0.3, 3],
+      hints: ['$dv=dx$ 로 부분적분하면 $\\dfrac12\\int\\sqrt{\\dfrac{x}{1+x}}dx$ 가 남는다.', '$u=\\sqrt x$ 로 다시 치환하면 $2\\int\\dfrac{u^{2}}{\\sqrt{1+u^{2}}}du$ 다.'],
+      steps: ['$=x\\operatorname{arsinh}\\sqrt x-\\dfrac12\\int\\dfrac{\\sqrt x}{\\sqrt{1+x}}dx$', '$\\int\\sqrt{\\dfrac{x}{1+x}}dx=\\sqrt{x(1+x)}-\\operatorname{arsinh}\\sqrt x$', '정리하면 $\\dfrac{(2x+1)\\operatorname{arsinh}\\sqrt x}{2}-\\dfrac{\\sqrt{x^{2}+x}}{2}$']
+    },
+    {
+      id: 'x086', topic: '역쌍곡선 부분적분',
+      integrand: 'atanh(sqrt(x))', latex: '\\operatorname{artanh}\\left(\\sqrt{x}\\right)',
+      answer: '(x-1)*atanh(sqrt(x))+sqrt(x)', answerLatex: '\\left(x - 1\\right) \\operatorname{artanh}\\left(\\sqrt{x}\\right) + \\sqrt{x}+C',
+      domain: [0.05, 0.82],
+      hints: ['$v=x-1$ 로 잡으면 남는 적분이 크게 줄어든다.', '$\\left(\\operatorname{artanh}\\sqrt x\\right)\'=\\dfrac{1}{2\\sqrt x(1-x)}$'],
+      steps: ['$v=x-1$ 로 부분적분: $(x-1)\\operatorname{artanh}\\sqrt x+\\int\\dfrac{dx}{2\\sqrt x}$', '$=(x-1)\\operatorname{artanh}\\sqrt x+\\sqrt x$']
+    },
+    {
+      id: 'x087', topic: '역쌍곡선 위장',
+      integrand: 'atanh(1/x)', latex: '\\operatorname{artanh}\\left(\\frac{1}{x}\\right)',
+      answer: 'x*atanh(1/x)+ln(x^2-1)/2', answerLatex: 'x \\operatorname{artanh}\\left(\\frac{1}{x}\\right) + \\frac{\\ln\\left|x^{2} - 1\\right|}{2}+C',
+      domain: [1.35, 3.4],
+      hints: ['$\\operatorname{artanh}\\dfrac1x=\\dfrac12\\ln\\dfrac{x+1}{x-1}$ 이므로 $|x|>1$ 에서 정의된다.', '$\\left(\\operatorname{artanh}\\dfrac1x\\right)\'=-\\dfrac{1}{x^{2}-1}$'],
+      steps: ['$dv=dx$ 로 부분적분: $x\\operatorname{artanh}\\dfrac1x+\\int\\dfrac{x\\,dx}{x^{2}-1}$', '$=x\\operatorname{artanh}\\dfrac1x+\\dfrac{\\ln|x^{2}-1|}{2}$']
+    },
+    {
+      id: 'x088', topic: '역쌍곡선 지수',
+      integrand: 'e^x*atanh(e^x)', latex: 'e^{x} \\operatorname{artanh}\\left(e^{x}\\right)',
+      answer: 'e^x*atanh(e^x)+ln(1-e^(2*x))/2', answerLatex: 'e^{x} \\operatorname{artanh}\\left(e^{x}\\right) + \\frac{\\ln\\left(1 - e^{2 x}\\right)}{2}+C',
+      domain: [-2.2, -0.3],
+      hints: ['$u=e^{x}$ 로 두면 $\\int\\operatorname{artanh}u\\,du$ 다.', '$\\int\\operatorname{artanh}u\\,du=u\\operatorname{artanh}u+\\dfrac{\\ln(1-u^{2})}{2}$'],
+      steps: ['$u=e^{x},;du=e^{x}dx$', '$\\int\\operatorname{artanh}u\\,du=u\\operatorname{artanh}u+\\dfrac{\\ln(1-u^{2})}{2}$', '$u$ 를 되돌린다']
+    },
+    {
+      id: 'x089', topic: '역쌍곡선 부분적분',
+      integrand: 'asinh(x)*sqrt(1+x^2)', latex: '\\operatorname{arsinh} x \\sqrt{1 + x^{2}}',
+      answer: 'x*sqrt(1+x^2)*asinh(x)/2+asinh(x)^2/4-x^2/4', answerLatex: '\\frac{x \\sqrt{1 + x^{2}} \\operatorname{arsinh} x}{2} + \\frac{\\left(\\operatorname{arsinh} x\\right)^{2}}{4} - \\frac{x^{2}}{4}+C',
+      domain: [0.2, 2],
+      hints: ['$v=\\dfrac{x\\sqrt{1+x^{2}}+\\operatorname{arsinh}x}{2}$ 로 부분적분한다.', '남는 적분은 $\\int\\left(\\dfrac x2+\\dfrac{\\operatorname{arsinh}x}{2\\sqrt{1+x^{2}}}\\right)dx$ 다.'],
+      steps: ['$v=\\int\\sqrt{1+x^{2}}dx=\\dfrac{x\\sqrt{1+x^{2}}+\\operatorname{arsinh}x}{2}$', '$\\int\\dfrac{v}{\\sqrt{1+x^{2}}}dx=\\dfrac{x^{2}}{4}+\\dfrac{\\operatorname{arsinh}^{2}x}{4}$', '두 결과를 뺀다']
     }
   ];
 

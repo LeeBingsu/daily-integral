@@ -5,6 +5,12 @@
   var STORE_KEY = 'dailyIntegral.local.v1';
   var $ = function (id) { return document.getElementById(id); };
 
+  // 터치 기기(휴대폰·태블릿)에서는 입력칸에 자동 포커스를 주지 않는다.
+  // 포커스를 주면 문제를 열자마자 화면 절반을 가리며 키보드가 올라온다.
+  function isTouch() {
+    return !!(window.matchMedia && window.matchMedia('(hover: none) and (pointer: coarse)').matches);
+  }
+
   // ------------------------------------------------------------- 저장소
 
   function blankStore() {
@@ -244,7 +250,7 @@
     if (session.revealed) revealSolution(true);
 
     for (var i = 0; i < session.hintsShown; i++) appendHint(i);
-    $('answerInput').focus();
+    if (!isTouch()) $('answerInput').focus();
   }
 
   function updateAttemptChip() {

@@ -26,7 +26,8 @@
       best: 0,
       lastSolvedDay: null,
       days: {},                       // '2026-08-18': { easy: {solved, attempts, hints, revealed} }
-      practice: { solved: 0, attempts: 0, day: null, used: {} },
+      // open: 꺼내 두고 아직 끝내지 않은 연습 문제 (난이도 -> 문제 id)
+      practice: { solved: 0, attempts: 0, day: null, used: {}, open: {} },
       // penOnly 가 null 이면 '자동' — 터치가 되는 기기에서만 켠다
       pad: { penOnly: null, color: 0, width: 1 },
       admin: false
@@ -160,26 +161,61 @@
     return Math.max(0, q - practiceUsed(level));
   }
 
+  // 문제 id 로 찾아보기 (연습하다 만 문제를 다시 꺼낼 때 쓴다)
+  var problemById = null;
+
+  function findProblem(id) {
+    if (!id) return null;
+    if (!problemById) {
+      problemById = {};
+      PROBLEMS.all.forEach(function (p) { problemById[p.id] = p; });
+    }
+    return problemById[id] || null;
+  }
+
   function consumePractice(level) {
     if (isAdmin() || PRACTICE_QUOTA[level] === Infinity) return;
     store.practice.used[level] = practiceUsed(level) + 1;
     save();
   }
 
-  // 연습 문제 한 개를 꺼낸다. 몫이 없으면 자물쇠 화면을 띄운다.
-  function startPractice(level, avoidId) {
+  /*
+   * 연습 문제 한 개를 꺼낸다. 몫이 없으면 자물쇠 화면을 띄운다.
+   *
+   *   한 번 꺼낸 문제는 끝낼 때까지 난이도별로 들고 있는다. 난이도를 바꿨다
+   *   돌아오거나 첫 화면에 다녀와도 풀던 문제가 그대로 있고, 하루 몫도 그대로다.
+   *   몫은 '새 문제를 꺼낼 때'만 깎인다 — fresh 를 주면(다음 문제 버튼) 새로 꺼낸다.
+   */
+  function startPractice(level, avoidId, fresh) {
     session.mode = 'practice';
     session.level = level;
+
+    if (!fresh) {
+      var open = findProblem(store.practice.open[level]);
+      if (open) {
+        showLock(null);
+        loadProblem(open);
+        renderQuota();
+        renderLevels();
+        return true;
+      }
+    }
+
     if (practiceLeft(level) <= 0) {
       showLock(level);
       renderLevels();
       renderQuota();
       return false;
     }
+
     consumePractice(level);
+    var p = randomProblem(level, avoidId);
+    store.practice.open[level] = p.id;
+    save();
     showLock(null);
-    loadProblem(randomProblem(level, avoidId));
+    loadProblem(p);
     renderQuota();
+    renderLevels();
     return true;
   }
 
@@ -305,14 +341,6 @@
       }).join('<i>\u00b7</i>');
     }
     bar.appendChild(info);
-
-    if (!IS_APP) {
-      var btn = document.createElement('button');
-      btn.className = 'btn ghost sm';
-      btn.textContent = store.admin ? '잠그기' : '관리자 키';
-      btn.onclick = store.admin ? lockAdmin : function () { askAdminKey(); };
-      bar.appendChild(btn);
-    }
   }
 
   // onSuccess 를 주면 통과 뒤 그것만 실행한다 (아카이브에서 눌렀을 때 등)
@@ -328,6 +356,7 @@
     renderQuota();
     renderLevels();
     renderArchive();
+    renderAdminBtn();
     if (onSuccess) { onSuccess(); return; }
     if ($('lockCard').classList.contains('hidden')) {
       showFeedback('ok', '관리자 모드입니다. 하루 제한이 풀렸습니다.');
@@ -336,12 +365,20 @@
     }
   }
 
+  // 관리자 키는 맨 아래 한 자리에만 둔다. 앱에서는 아예 안 쓰므로 감춘다.
+  function renderAdminBtn() {
+    var b = $('adminBtn');
+    b.classList.toggle('hidden', IS_APP);
+    b.textContent = store.admin ? '관리자 잠그기' : '관리자 키';
+  }
+
   function lockAdmin() {
     store.admin = false;
     save();
     renderQuota();
     renderLevels();
     renderArchive();
+    renderAdminBtn();
     if (practiceLeft(session.level) <= 0) showLock(session.level);
   }
 
@@ -550,6 +587,10 @@
     session.revealed = true;
     if (session.mode !== 'practice') {
       ensureRecord(session.dateKey, session.level).revealed = true;
+      save();
+    } else if (store.practice.open[session.level] === p.id) {
+      // 다 끝낸 문제는 놓아준다. '다음 문제'는 새로 꺼내고 그때 몫이 깎인다.
+      delete store.practice.open[session.level];
       save();
     }
     if (!silent) updateAttemptChip();
@@ -928,10 +969,6 @@
       ? '지난 날짜도 모두 열 수 있습니다'
       : (store.admin ? '관리자 모드 · 지난 날짜도 열 수 있습니다'
                      : '지난 날짜는 관리자 키가 있어야 열립니다');
-    var kb = $('archiveKeyBtn');
-    kb.classList.toggle('hidden', IS_APP);
-    kb.textContent = store.admin ? '잠그기' : '관리자 키';
-    kb.onclick = store.admin ? lockAdmin : function () { askAdminKey(); };
   }
 
   // ------------------------------------------------------------- 통계
@@ -1481,6 +1518,11 @@
 
     $('backBtn').onclick = function () { switchView('hub'); };
 
+    renderAdminBtn();
+    $('adminBtn').onclick = function () {
+      if (store.admin) lockAdmin(); else askAdminKey();
+    };
+
     $('submitBtn').onclick = check;
     padInit();
     $('answerInput').addEventListener('input', onAnswerInput);
@@ -1506,7 +1548,7 @@
     $('revealBtn').onclick = function () { revealSolution(false); };
 
     $('nextBtn').onclick = function () {
-      startPractice(session.level, session.problem && session.problem.id);
+      startPractice(session.level, session.problem && session.problem.id, true);
     };
 
     $('resetDataBtn').onclick = function () {

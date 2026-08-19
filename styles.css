@@ -457,6 +457,15 @@ body:not([data-view="hub"]) .backwrap { display: flex; }
 
 footer { text-align: center; color: var(--ink-3); font-size: 12px; letter-spacing: .08em; padding-top: 12px; }
 footer b { font-family: var(--serif); }
+/* 관리자 키는 평소에 눈에 띌 필요가 없어 맨 아래에 작게 둔다 */
+footer .keylink {
+  display: block; margin: 10px auto 0; padding: 4px 8px;
+  font: inherit; font-size: 10.5px; letter-spacing: .06em;
+  background: none; border: 0; cursor: pointer;
+  color: var(--ink-3); opacity: .55;
+  transition: opacity .15s, color .15s;
+}
+footer .keylink:hover, footer .keylink:focus-visible { opacity: 1; color: var(--accent); }
 
 @media (max-width: 620px) {
   header.top { gap: 7px; }
@@ -577,5 +586,5 @@ body.pad-open { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) {
   .orb .ball, .btn, .day, .icon-btn, .levels button, .palette button, .orb-back { transition: none; }
   .hub-ring, .orb .spin { transition: none; }
-  .tool, .pad-toast { transition: none; }
+  .tool, .pad-toast, footer .keylink { transition: none; }
 }

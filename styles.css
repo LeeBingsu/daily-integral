@@ -182,7 +182,6 @@ body[data-view="hub"] header.top { justify-content: flex-end; }
   color: var(--accent); letter-spacing: -.015em;
 }
 .hub-core .kicker { font-style: italic; text-transform: none; letter-spacing: .02em; font-size: 15px; color: var(--ink-2); font-family: var(--serif); }
-.hub-core .hint { margin-top: 14px; font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: var(--ink-3); opacity: .8; }
 
 .orb {
   position: absolute; left: 50%; top: 50%;
@@ -459,7 +458,6 @@ footer b { font-family: var(--serif); }
   .hub { --r: 128px; --orb: 60px; max-width: 336px; }
   .hub-core .word { font-size: clamp(24px, 8.5vw, 34px); }
   .hub-core .kicker { font-size: 13px; }
-  .hub-core .hint { display: none; }
   .orb .ball { font-size: 20px; }
   .orb .lab { font-size: 10.5px; letter-spacing: .05em; }
   .problem { font-size: 25px; }

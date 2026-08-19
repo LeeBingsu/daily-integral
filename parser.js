@@ -13,8 +13,8 @@
 
   // 여러 글자 이름은 긴 것부터 맞춰야 arcsin 이 a*r*c*... 로 쪼개지지 않는다.
   var NAMES = [
-    'arcsinh', 'arccosh', 'arctanh', 'arcsin', 'arccos', 'arctan',
-    'asinh', 'acosh', 'atanh', 'asin', 'acos', 'atan',
+    'arcsinh', 'arccosh', 'arctanh', 'arcsin', 'arccos', 'arctan', 'arccot',
+    'asinh', 'acosh', 'atanh', 'asin', 'acos', 'atan', 'acot',
     'sinh', 'cosh', 'tanh', 'sech', 'csch', 'coth',
     'sqrt', 'cbrt', 'abs', 'sgn', 'exp',
     'sin', 'cos', 'tan', 'sec', 'csc', 'cot',
@@ -28,7 +28,10 @@
     csc: function (v) { return 1 / Math.sin(v); },
     cot: function (v) { return 1 / Math.tan(v); },
     asin: Math.asin, acos: Math.acos, atan: Math.atan,
+    // arccot 은 (0, pi) 를 값으로 갖는 가지를 쓴다 — arctan(x)+arccot(x)=pi/2 가 성립한다
+    acot: function (v) { return Math.PI / 2 - Math.atan(v); },
     arcsin: Math.asin, arccos: Math.acos, arctan: Math.atan,
+    arccot: function (v) { return Math.PI / 2 - Math.atan(v); },
     sinh: Math.sinh, cosh: Math.cosh, tanh: Math.tanh,
     sech: function (v) { return 1 / Math.cosh(v); },
     csch: function (v) { return 1 / Math.sinh(v); },
@@ -335,6 +338,7 @@
     exp: '\\exp', sin: '\\sin', cos: '\\cos', tan: '\\tan', sec: '\\sec',
     csc: '\\csc', cot: '\\cot', sinh: '\\sinh', cosh: '\\cosh', tanh: '\\tanh',
     asin: '\\arcsin', acos: '\\arccos', atan: '\\arctan',
+    acot: '\\operatorname{arccot}', arccot: '\\operatorname{arccot}',
     arcsin: '\\arcsin', arccos: '\\arccos', arctan: '\\arctan',
     sech: '\\operatorname{sech}', csch: '\\operatorname{csch}', coth: '\\coth',
     asinh: '\\operatorname{arsinh}', acosh: '\\operatorname{arcosh}', atanh: '\\operatorname{artanh}',

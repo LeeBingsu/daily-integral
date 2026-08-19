@@ -1023,6 +1023,24 @@
     }
   }
 
+  /*
+   * 안드로이드 뒤로 가기.
+   *
+   *   이 사이트는 한 페이지 안에서 화면만 갈아 끼우는 구조라 웹뷰가 볼 때는
+   *   방문 기록이 하나뿐이다. 그래서 앱에서 뒤로 가기를 누르면 갈 곳이 없다며
+   *   바로 앱이 닫혔다. 여기서 '한 단계 뒤'가 무엇인지 알려 준다.
+   *
+   *   MainActivity 가 이 함수를 먼저 불러 보고, true 를 받으면 앱을 닫지 않는다.
+   *   웹 브라우저에서는 아무도 부르지 않으므로 동작이 달라지지 않는다.
+   */
+  window.appBack = function () {
+    // 연습장이 얹혀 있으면 그것부터 닫는다
+    if (!$('padOverlay').classList.contains('hidden')) { padClose(); return true; }
+    // 문제·아카이브·통계 화면이면 첫 화면으로
+    if (document.body.dataset.view !== 'hub') { switchView('hub'); return true; }
+    return false;                     // 첫 화면이라 더 갈 데가 없다
+  };
+
   // ------------------------------------------------------------- 카운트다운
 
   function tickCountdown() {

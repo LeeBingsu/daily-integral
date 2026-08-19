@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">매일 적분</string>
+    <string name="back_to_exit">한 번 더 누르면 종료됩니다</string>
 </resources>

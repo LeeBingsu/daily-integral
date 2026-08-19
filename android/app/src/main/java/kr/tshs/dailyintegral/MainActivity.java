@@ -3,11 +3,13 @@ package kr.tshs.dailyintegral;
 import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.webkit.ValueCallback;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,6 +25,7 @@ import androidx.webkit.WebViewAssetLoader;
 public class MainActivity extends AppCompatActivity {
 
     private WebView web;
+    private long lastBackAt;
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
@@ -61,17 +64,41 @@ public class MainActivity extends AppCompatActivity {
         if (saved != null) web.restoreState(saved);
         else web.loadUrl("https://appassets.androidplatform.net/assets/index.html");
 
-        // 뒤로 가기는 웹 히스토리를 먼저 따라간다
-        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+        /*
+         * 뒤로 가기.
+         *
+         *   한 페이지 안에서 화면만 갈아 끼우는 사이트라 웹뷰가 보기엔 방문 기록이
+         *   하나뿐이다. 그래서 예전에는 어느 화면에서 눌러도 앱이 바로 닫혔다.
+         *   웹 쪽 appBack() 에 '한 단계 뒤'가 있는지 먼저 물어보고,
+         *   있다고 하면(연습장이 열려 있거나 첫 화면이 아니면) 앱을 닫지 않는다.
+         *   첫 화면에서는 두 번 눌러야 닫히게 해 실수로 나가는 걸 막는다.
+         */
+        final OnBackPressedCallback back = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                if (web.canGoBack()) web.goBack();
-                else {
-                    setEnabled(false);
-                    getOnBackPressedDispatcher().onBackPressed();
-                }
+                final OnBackPressedCallback self = this;
+                web.evaluateJavascript(
+                        "(function(){try{return window.appBack&&window.appBack()?1:0}catch(e){return 0}})()",
+                        new ValueCallback<String>() {
+                            @Override
+                            public void onReceiveValue(String v) {
+                                if ("1".equals(v)) return;       // 웹이 처리했다
+                                if (web.canGoBack()) { web.goBack(); return; }
+
+                                long now = System.currentTimeMillis();
+                                if (now - lastBackAt < 2000) {
+                                    self.setEnabled(false);
+                                    getOnBackPressedDispatcher().onBackPressed();
+                                    return;
+                                }
+                                lastBackAt = now;
+                                Toast.makeText(MainActivity.this, R.string.back_to_exit,
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        });
             }
-        });
+        };
+        getOnBackPressedDispatcher().addCallback(this, back);
     }
 
     @Override

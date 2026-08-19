@@ -57,6 +57,7 @@ $\int e^{ax}\sinh bx\,dx$, $\int\sinh^{4}x\,dx$ 까지.
 | 탐색 | 첫 화면의 구슬 허브에서 단계·모드를 고르고, 되돌아가기 구슬로 복귀 |
 | 테마 | 라이트 / 다크 |
 | 오프라인 | 서비스 워커가 첫 방문에 전부 받아 둔다. 설치하면 비행기 모드에서도 그대로 돌아간다 |
+| 안드로이드 APK | 웹 자산을 통째로 담은 APK 를 Actions 가 빌드한다. `INTERNET` 권한 없이 완전 오프라인 |
 
 기록은 브라우저 `localStorage` 에만 저장되고 외부로 전송되지 않습니다.
 
@@ -78,6 +79,63 @@ node build-sw.js
 python3 -m http.server 8000
 ```
 
+## 안드로이드 APK 설치
+
+브라우저 설치(PWA)와 별개로, **APK 로 깔 수 있는 안드로이드 앱**을 Actions 가 함께 빌드합니다.
+웹 자산을 통째로 APK 안에 넣기 때문에 **설치 직후부터, 한 번도 인터넷에 연결하지 않아도** 그대로 돌아갑니다.
+매니페스트에 `INTERNET` 권한 자체를 넣지 않았습니다.
+
+### 받는 곳
+
+| 어디서 | 어떻게 |
+|---|---|
+| 최신 빌드 | Actions → 최근 실행 → 아래 **Artifacts** 의 `apk` 를 내려받아 압축을 풀면 `daily-integral-1.0.<번호>.apk` |
+| 릴리스 | `v1.0.0` 처럼 `v` 로 시작하는 태그를 밀면 Releases 페이지에 APK 가 바로 붙습니다 |
+
+```sh
+git tag v1.0.0 && git push origin v1.0.0     # 릴리스에 APK 첨부
+```
+
+### 설치
+
+내려받은 `.apk` 를 폰으로 옮겨 열면 됩니다. 스토어를 거치지 않으므로
+"출처를 알 수 없는 앱" / "이 출처의 앱 설치 허용" 을 한 번 켜 줘야 합니다.
+안드로이드 7.0(minSdk 24) 이상이면 설치됩니다.
+
+### 서명
+
+비밀값이 없으면 **디버그 키**로 서명해 그대로 설치 가능한 APK 가 나옵니다.
+계속 같은 키로 서명해 덮어쓰기 업데이트를 하고 싶다면 키스토어를 만들어
+저장소 **Settings → Secrets and variables → Actions** 에 넣어 주세요.
+
+```sh
+keytool -genkeypair -v -keystore release.jks -alias daily-integral \
+        -keyalg RSA -keysize 2048 -validity 10000
+base64 -w0 release.jks          # 이 문자열을 ANDROID_KEYSTORE_BASE64 에
+```
+
+| 비밀값 | 내용 |
+|---|---|
+| `ANDROID_KEYSTORE_BASE64` | `release.jks` 를 base64 로 인코딩한 문자열 |
+| `ANDROID_KEYSTORE_PASSWORD` | 키스토어 비밀번호 |
+| `ANDROID_KEY_ALIAS` | 키 별칭 (`daily-integral`) |
+| `ANDROID_KEY_PASSWORD` | 키 비밀번호 |
+
+키스토어 파일과 비밀번호는 저장소에 커밋하지 마세요. 잃어버리면 같은 키로
+업데이트를 낼 수 없어 앱을 지웠다 다시 깔아야 합니다.
+
+### 앱 구조
+
+`android/` 는 얇은 웹뷰 껍데기입니다. 출제·채점·힌트·기록이 전부 자바스크립트라
+자바 코드는 화면을 띄우는 `MainActivity` 하나뿐입니다.
+
+- 빌드할 때 `syncWebAssets` 가 저장소 루트의 웹 파일을 `app/src/main/assets/` 로 복사합니다 —
+  사본을 커밋하지 않으므로 웹을 고치면 앱도 자동으로 따라옵니다.
+- `file://` 대신 `WebViewAssetLoader` 로 `https://appassets.androidplatform.net/` 출처를 만들어 띄웁니다.
+  `file://` 출처에서는 `localStorage` 가 막히는 기기가 있어, 기록이 날아가지 않게 하려는 것입니다.
+- 서비스 워커(`sw.js`)는 APK 에 넣지 않습니다. 자산이 이미 앱 안에 있어 캐시할 이유가 없습니다.
+- 기록은 앱 안 `localStorage` 에 쌓이므로 **웹 사이트와 따로 관리**됩니다.
+
 ## 배포
 
 `main` 에 푸시하면 `.github/workflows/deploy.yml` 이 돌면서
@@ -87,8 +145,9 @@ python3 -m http.server 8000
 3. `node grade-test.js` 로 채점 엔진 회귀 테스트
 4. `node build-sw.js` 로 서비스 워커 생성
 5. 실행에 필요한 파일만 추려 GitHub Pages 로 배포
+6. 같은 검증을 통과한 뒤 안드로이드 APK 를 빌드해 Artifacts 로 올림 (태그면 릴리스에도 첨부)
 
-검증이 하나라도 실패하면 배포되지 않습니다. `generate.js` 같은 개발용 파일은
+검증이 하나라도 실패하면 배포도 APK 빌드도 하지 않습니다. `generate.js` 같은 개발용 파일은
 배포본에서 빠집니다.
 
 > 처음 한 번은 저장소 **Settings → Pages → Source** 를
@@ -152,6 +211,7 @@ manifest.webmanifest / icons/   설치용 메타데이터와 아이콘
 .github/workflows/deploy.yml    검증 후 Pages 배포
 grade-test.js   채점 엔진 회귀 테스트 (node grade-test.js)
 vendor/katex/   KaTeX 0.16.11 (MIT)
+android/        안드로이드 APK 프로젝트 (웹뷰 껍데기, 웹 자산은 빌드 때 복사)
 ```
 
 ## 문제 추가·수정하기

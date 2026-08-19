@@ -1,0 +1,72 @@
+plugins {
+    id 'com.android.application'
+}
+
+// 저장소 루트 (웹 자산이 있는 곳)
+def webRoot = rootProject.file('..')
+
+android {
+    namespace 'kr.tshs.dailyintegral'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId 'kr.tshs.dailyintegral'
+        minSdk 24                       // Android 7.0
+        targetSdk 34
+        // CI 는 -PversionCode=<실행번호> 로 넘긴다
+        versionCode (project.findProperty('versionCode') ?: '1').toString().toInteger()
+        versionName (project.findProperty('versionName') ?: '1.0').toString()
+    }
+
+    // 서명 키가 있으면 그걸로, 없으면 디버그 키로 서명한다.
+    // 서명이 아예 없는 APK 는 기기에 설치가 안 되기 때문에, 비밀값 없이도
+    // 바로 깔아볼 수 있는 결과물이 나오도록 이렇게 둔다.
+    def ksPath = System.getenv('ANDROID_KEYSTORE_PATH')
+    def hasKeystore = ksPath != null && !ksPath.isEmpty() && file(ksPath).exists()
+
+    signingConfigs {
+        if (hasKeystore) {
+            release {
+                storeFile file(ksPath)
+                storePassword System.getenv('ANDROID_KEYSTORE_PASSWORD')
+                keyAlias System.getenv('ANDROID_KEY_ALIAS')
+                keyPassword System.getenv('ANDROID_KEY_PASSWORD')
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false          // 웹뷰 껍데기라 줄일 자바 코드가 거의 없다
+            signingConfig hasKeystore ? signingConfigs.release : signingConfigs.debug
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+dependencies {
+    // 앱 자산을 https 출처로 내보내는 WebViewAssetLoader.
+    // file:// 로 열면 localStorage 가 막히는 기기가 있어 이걸 쓴다.
+    implementation 'androidx.webkit:webkit:1.11.0'
+    implementation 'androidx.appcompat:appcompat:1.7.0'
+}
+
+// 웹 자산을 APK 안으로 복사한다. 저장소에 사본을 두지 않으려고 빌드 때 가져온다.
+// sw.js 는 넣지 않는다 — 자산이 이미 앱 안에 있어 서비스 워커가 할 일이 없다.
+tasks.register('syncWebAssets', Copy) {
+    from(webRoot) {
+        include 'index.html', 'styles.css', 'app.js', 'parser.js', 'problems.js'
+        include 'manifest.webmanifest'
+        include 'icons/**'
+        include 'vendor/**'
+        // 루트를 훑으므로 빌드 산출물·안드로이드 프로젝트는 애초에 걷어낸다
+        exclude 'android/**', 'node_modules/**', '_site/**', '.git/**'
+    }
+    into layout.projectDirectory.dir('src/main/assets')
+}
+
+tasks.named('preBuild') { dependsOn 'syncWebAssets' }

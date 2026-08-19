@@ -12,6 +12,11 @@ CNAME          text eol=lf
 LICENSE        text eol=lf
 .gitattributes text eol=lf
 .gitignore     text eol=lf
+*.gradle       text eol=lf
+*.java         text eol=lf
+*.xml          text eol=lf
+*.properties   text eol=lf
+gradlew        text eol=lf
 
 # 바이너리는 절대 손대지 않는다.
 # 예전 설정(`* text=auto`)은 이 파일들까지 줄바꿈 정규화 대상으로 봐서,
@@ -27,3 +32,7 @@ LICENSE        text eol=lf
 *.otf   binary
 *.eot   binary
 *.pdf   binary
+*.jar   binary
+
+# 윈도우 배치 파일은 CRLF 여야 실행된다
+gradlew.bat text eol=crlf

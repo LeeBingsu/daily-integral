@@ -15,7 +15,7 @@
 
   function blankStore() {
     return {
-      theme: 'dark',
+      theme: 'light',
       streak: 0,
       best: 0,
       lastSolvedDay: null,
@@ -464,6 +464,89 @@
     }
   }
 
+  // ------------------------------------------------------------- 구슬 허브
+
+  // 가운데 표제를 중심으로 구슬을 원형으로 돌려 배치한다.
+  // 각도는 CSS 변수로 넘기고, 배치는 transform 이 맡는다.
+  var ORBS = [
+    { key: 'easy',     glyph: 'E', label: '쉬움',   color: 'var(--lv-easy)' },
+    { key: 'medium',   glyph: 'M', label: '보통',   color: 'var(--lv-medium)' },
+    { key: 'hard',     glyph: 'H', label: '어려움', color: 'var(--lv-hard)' },
+    { key: 'monster',  glyph: 'X', label: '몬스터', color: 'var(--lv-monster)' },
+    { key: 'practice', glyph: '\u221e', label: '연습',   color: 'var(--lv-practice)' },
+    { key: 'archive',  glyph: 'A', label: '아카이브', color: 'var(--lv-archive)' },
+    { key: 'stats',    glyph: 'S', label: '통계',   color: 'var(--lv-stats)' }
+  ];
+
+  var WEB_R = 36.5;   // viewBox(100×100) 기준 반지름 — CSS 의 --r 비율과 맞춰 둔 값
+
+  function renderHub() {
+    var hub = $('hub');
+    hub.querySelectorAll('.orb').forEach(function (n) { n.remove(); });
+
+    var n = ORBS.length, pts = [];
+    ORBS.forEach(function (o, i) {
+      var deg = -90 + 360 * i / n;
+      var rad = deg * Math.PI / 180;
+      pts.push([50 + WEB_R * Math.cos(rad), 50 + WEB_R * Math.sin(rad)]);
+
+      var b = document.createElement('button');
+      b.className = 'orb';
+      b.style.setProperty('--a', deg + 'deg');
+      b.style.setProperty('--c', o.color);
+      b.setAttribute('aria-label', o.label);
+
+      var ball = document.createElement('span');
+      ball.className = 'ball';
+      ball.textContent = o.glyph;
+      b.appendChild(ball);
+
+      var lab = document.createElement('span');
+      lab.className = 'lab';
+      lab.textContent = o.label;
+      b.appendChild(lab);
+
+      var rec = PROBLEMS.labels[o.key] ? recordFor(TODAY_KEY, o.key) : null;
+      if (rec && rec.solved) {
+        var t = document.createElement('span');
+        t.className = 'tick';
+        t.textContent = '\u2713';
+        b.appendChild(t);
+      }
+
+      b.onclick = function () {
+        if (o.key === 'practice' || o.key === 'archive' || o.key === 'stats') {
+          switchView(o.key);
+        } else {
+          session.level = o.key;
+          switchView('daily');
+        }
+      };
+      hub.appendChild(b);
+    });
+
+    drawWeb(pts);
+  }
+
+  // 구슬 사이를 잇는 점선 — 바깥 다각형과 별 모양 대각선
+  function drawWeb(pts) {
+    var svg = $('hubWeb');
+    svg.innerHTML = '';
+    var NS = 'http://www.w3.org/2000/svg';
+    var poly = document.createElementNS(NS, 'polygon');
+    poly.setAttribute('points', pts.map(function (p) { return p[0] + ',' + p[1]; }).join(' '));
+    svg.appendChild(poly);
+
+    var step = pts.length >= 5 ? 2 : 1;
+    pts.forEach(function (p, i) {
+      var q = pts[(i + step) % pts.length];
+      var ln = document.createElementNS(NS, 'line');
+      ln.setAttribute('x1', p[0]); ln.setAttribute('y1', p[1]);
+      ln.setAttribute('x2', q[0]); ln.setAttribute('y2', q[1]);
+      svg.appendChild(ln);
+    });
+  }
+
   // ------------------------------------------------------------- 난이도 바
 
   function renderLevels() {
@@ -592,17 +675,17 @@
   // ------------------------------------------------------------- 뷰 전환
 
   function switchView(view, keepSession) {
-    document.querySelectorAll('.tabs button').forEach(function (b) {
-      b.setAttribute('aria-selected', String(b.dataset.view === view ||
-        (view === 'daily' && b.dataset.view === 'daily')));
-    });
+    document.body.dataset.view = view;
+    $('hubView').classList.toggle('hidden', view !== 'hub');
     $('playView').classList.toggle('hidden', !(view === 'daily' || view === 'practice'));
     $('archiveView').classList.toggle('hidden', view !== 'archive');
     $('statsView').classList.toggle('hidden', view !== 'stats');
+    window.scrollTo(0, 0);
 
+    if (view === 'hub') renderHub();
     if (view === 'archive') renderArchive();
     if (view === 'stats') renderStats();
-    if (keepSession) return;
+    if (view === 'hub' || keepSession) return;
 
     if (view === 'daily') {
       session.mode = 'daily';
@@ -673,9 +756,7 @@
       save(); applyTheme();
     };
 
-    document.querySelectorAll('.tabs button').forEach(function (b) {
-      b.onclick = function () { switchView(b.dataset.view); };
-    });
+    $('backBtn').onclick = function () { switchView('hub'); };
 
     $('submitBtn').onclick = check;
     $('answerInput').addEventListener('input', onAnswerInput);
@@ -710,13 +791,13 @@
       save();
       applyTheme();
       renderStreak(); renderStats(); renderArchive(); renderLevels();
-      switchView('daily');
+      switchView('hub');
     };
 
     renderStreak();
     renderArchive();
     renderStats();
-    switchView('daily');
+    switchView('hub');
 
     tickCountdown();
     setInterval(tickCountdown, 1000);

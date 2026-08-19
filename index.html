@@ -25,15 +25,25 @@
     <button class="icon-btn" id="themeBtn" title="테마 전환" aria-label="테마 전환">&#9681;</button>
   </header>
 
-  <nav class="tabs" role="tablist">
-    <button role="tab" data-view="daily" aria-selected="true">오늘의 문제</button>
-    <button role="tab" data-view="practice" aria-selected="false">연습 모드</button>
-    <button role="tab" data-view="archive" aria-selected="false">아카이브</button>
-    <button role="tab" data-view="stats" aria-selected="false">통계</button>
-  </nav>
+  <!-- ------------------------------------------------------ 구슬 허브 -->
+  <div class="backwrap">
+    <button class="orb-back" id="backBtn" aria-label="처음 화면으로">&larr;</button>
+    <span class="lab">처음으로</span>
+  </div>
+
+  <section id="hubView">
+    <div class="hub" id="hub">
+      <svg class="hub-web" id="hubWeb" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"></svg>
+      <div class="hub-core">
+        <div class="kicker">하루 한 문제</div>
+        <div class="word">매일 적분</div>
+        <div class="hint">구슬을 눌러 시작하세요</div>
+      </div>
+    </div>
+  </section>
 
   <!-- ------------------------------------------------------ 문제 화면 -->
-  <section id="playView">
+  <section id="playView" class="hidden">
     <div class="levels" id="levelBar"></div>
 
     <div class="card">

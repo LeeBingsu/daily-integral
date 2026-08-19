@@ -4300,6 +4300,138 @@ addDef('monster', '로그 적분', 'sin(x)*ln(sin(x))/sqrt(1+sin(x)^2)', 'pi*ln(
   steps: ['$u=\\cos x$ 치환', '$u=\\sqrt2\\sin\\theta$ 로 한 번 더 치환한다',
           '남는 로그 적분에서 $\\dfrac{\\pi\\ln 2}{8}$ 이 나온다'] });
 
+// ================================================================== 정적분 2차분
+
+addDef('hard', '역수 대칭', 'x/(x^8+2*x^4+1)', 'pi/8', { lo: '0', hi: 'inf',
+  hints: ['분모는 $(x^{4}+1)^{2}$ 이다. $u=x^{2}$ 로 두면 차수가 절반이 된다.',
+          '$\\dfrac12\\int_{0}^{\\infty}\\dfrac{du}{(u^{2}+1)^{2}}$ 는 표준 점화식이다.'],
+  steps: ['$u=x^{2},\;du=2x\\,dx$',
+          '$\\dfrac12\\left[\\dfrac{u}{2(u^{2}+1)}+\\dfrac{\\arctan u}{2}\\right]_{0}^{\\infty}=\\dfrac{\\pi}{8}$'] });
+
+addDef('hard', '부분적분', 'ln(1+x^2)/(1+x^2)^3', 'pi*(12*ln(2)-7)/32', { lo: '0', hi: 'inf',
+  hints: ['$x=\\tan\\theta$ 로 두면 $\\int_{0}^{\\pi/2}\\cos^{4}\\theta\\ln(\\sec^{2}\\theta)d\\theta$ 다.',
+          '$-2\\int_{0}^{\\pi/2}\\cos^{4}\\theta\\ln\\cos\\theta\\,d\\theta$ 를 왈리스 적분의 매개변수 미분으로 얻는다.'],
+  steps: ['$x=\\tan\\theta$ 치환',
+          '$\\int_{0}^{\\pi/2}\\cos^{s}\\theta\\,d\\theta$ 를 $s$ 로 미분해 $\\ln\\cos$ 를 만든다',
+          '$s=4$ 에서 값을 읽으면 $\\dfrac{\\pi(12\\ln 2-7)}{32}$'] });
+
+addDef('hard', '부분적분', 'x^3*ln(x)/(1+x^2)^2', 'ln(2)/4-pi^2/48', { lo: '0', hi: '1',
+  hints: ['$u=x^{2}$ 로 두면 $\\dfrac14\\int_{0}^{1}\\dfrac{u\\ln u}{(1+u)^{2}}du$ 다.',
+          '$\\dfrac{u}{(1+u)^{2}}=\\dfrac{1}{1+u}-\\dfrac{1}{(1+u)^{2}}$ 로 쪼갠다.'],
+  steps: ['$u=x^{2}$ 치환 (로그에서 $\\ln x=\\frac12\\ln u$)',
+          '각 조각을 부분적분하면 $\\int_{0}^{1}\\dfrac{\\ln u}{1+u}du=-\\dfrac{\\pi^{2}}{12}$ 가 나온다'] });
+
+addDef('hard', '급수 전개', 'x*e^(-2*x)/(e^(-x)+1)', '1-pi^2/12', { lo: '0', hi: 'inf',
+  hints: ['$\\dfrac{e^{-2x}}{e^{-x}+1}=\\dfrac{e^{-x}}{1+e^{x}}$ 로 정리한다.',
+          '$\\dfrac{1}{1+e^{x}}=\\sum_{n\\ge1}(-1)^{n-1}e^{-nx}$ 로 펴서 항별로 적분한다.'],
+  steps: ['$\\sum_{n\\ge1}(-1)^{n-1}\\int_{0}^{\\infty}xe^{-(n+1)x}dx=\\sum_{n\\ge1}\\dfrac{(-1)^{n-1}}{(n+1)^{2}}$',
+          '$=1-\\dfrac{\\pi^{2}}{12}$'] });
+
+addDef('hard', '분수 지수', 'sec(x)^2/(sec(x)+tan(x))^(5/2)', '(30-8*3^(1/4))/63',
+  { lo: '0', hi: 'pi/6',
+  hints: ['$u=\\sec x+\\tan x$ 로 두면 $du=u\\sec x\\,dx$ 다.',
+          '$\\sec x=\\dfrac{u^{2}+1}{2u}$ 이므로 $u$ 만의 거듭제곱 적분이 된다.'],
+  steps: ['$u=\\sec x+\\tan x$', '$\\int\\dfrac{u^{2}+1}{2}u^{-7/2}du$ 꼴로 바뀐다',
+          '항별로 적분한 뒤 $u(0)=1,\;u(\\pi/6)=\\sqrt3$ 을 대입한다'] });
+
+addDef('hard', '유명한 근사', 'x^4*(1+x)^4/(1+x^2)', '94/21-pi', { lo: '0', hi: '1',
+  hints: ['$x^{4}(1+x)^{4}$ 를 전개해 $1+x^{2}$ 로 나눈다.',
+          '$\\dfrac{22}{7}-\\pi$ 문제의 짝 — 이번에는 $\\dfrac{94}{21}$ 이 나온다.'],
+  steps: ['나눗셈하면 $x^{6}+4x^{5}+5x^{4}-4x^{2}+4-\\dfrac{4}{1+x^{2}}$',
+          '$\\dfrac17+\\dfrac23+1-\\dfrac43+4-\\pi=\\dfrac{94}{21}-\\pi$'] });
+
+addDef('monster', '적분대회 결승', 'tan(x)^(1/3)/(sin(x)+cos(x))^2', '2*sqrt(3)*pi/9',
+  { lo: '0', hi: 'pi/2',
+  hints: ['분모·분자를 $\\cos^{2}x$ 로 나누면 $\\dfrac{u^{1/3}\\,du}{(1+u)^{2}}$ 꼴이 된다 ($u=\\tan x$).',
+          '$\\int_{0}^{\\infty}\\dfrac{u^{s-1}}{(1+u)^{2}}du=\\dfrac{\\pi(s-1)}{\\sin\\pi s}$ 를 쓴다.'],
+  steps: ['$u=\\tan x$ 로 두면 $\\int_{0}^{\\infty}\\dfrac{u^{1/3}}{(1+u)^{2}}du$',
+          '베타 함수 $B\\left(\\dfrac43,\\dfrac23\\right)$ 로 읽는다',
+          '$=\\dfrac{2\\sqrt3\\pi}{9}$'] });
+
+addDef('monster', '이중 로그', 'ln((1-sqrt(2)*x+x^2)/(1-sqrt(3)*x+x^2))/x', '19*pi^2/288',
+  { lo: '0', hi: '1',
+  hints: ['$\\int_{0}^{1}\\dfrac{\\ln(1-2x\\cos\\theta+x^{2})}{x}dx=\\dfrac{\\theta^{2}}{2}-\\dfrac{\\pi\\theta}{2}+\\dfrac{\\pi^{2}}{6}$ 를 쓴다.',
+          '$\\sqrt2=2\\cos\\dfrac\\pi4$, $\\sqrt3=2\\cos\\dfrac\\pi6$ 이다.'],
+  steps: ['두 로그를 각각 위 공식에 넣는다',
+          '$\\theta=\\dfrac\\pi4$ 와 $\\theta=\\dfrac\\pi6$ 의 차를 취한다',
+          '$=\\dfrac{19\\pi^{2}}{288}$'] });
+
+addDef('monster', '로그 적분', 'x*ln(sin(x))/sin(2*x)', '-pi^3/48', { lo: '0', hi: 'pi/2',
+  hints: ['$\\sin 2x=2\\sin x\\cos x$ 이므로 $\\dfrac{x\\ln\\sin x}{2\\sin x\\cos x}$ 다.',
+          '$x\\to\\dfrac\\pi2-x$ 대칭으로 $\\ln\\sin$ 과 $\\ln\\cos$ 를 짝지어 본다.'],
+  steps: ['대칭 치환으로 $I$ 를 다시 쓴 뒤 원래 식과 더한다',
+          '$\\ln\\sin x+\\ln\\cos x=\\ln\\dfrac{\\sin 2x}{2}$ 를 이용한다',
+          '$=-\\dfrac{\\pi^{3}}{48}$'] });
+
+addDef('monster', '푸아송 합', 'cos(2*pi*x^2)/cosh(pi*x)^2', '1/4', { lo: '0', hi: 'inf',
+  hints: ['$\\operatorname{sech}^{2}$ 와 $\\cos(2\\pi x^{2})$ 는 둘 다 푸리에 변환의 고정점 근처에 있다.',
+          '$e^{-\\pi x^{2}}$ 가 자기 자신의 푸리에 변환이라는 점에서 출발한다.'],
+  steps: ['$\\cos(2\\pi x^{2})=\\mathrm{Re}\\,e^{2\\pi i x^{2}}$ 로 놓는다',
+          '푸아송 합공식을 $\\operatorname{sech}^{2}$ 에 적용한다', '$=\\dfrac14$'] });
+
+addDef('monster', '역수 대칭', 'ln(x)/((pi^2+ln(x)^2)*(1+x)^2*sqrt(x))', '-pi/24',
+  { lo: '0', hi: 'inf',
+  hints: ['$x\\to\\dfrac1x$ 로 두면 $\\ln x$ 의 부호만 뒤집힌다 — 대칭을 쓴다.',
+          '$\\pi^{2}+\\ln^{2}x$ 는 $\\ln(-x)$ 의 절댓값 제곱이므로 복소 로그를 부른다.'],
+  steps: ['$x\\to1/x$ 대칭으로 구간을 $[0,1]$ 로 접는다',
+          '$\\dfrac{1}{\\pi^{2}+\\ln^{2}x}$ 를 라플라스 표현으로 바꾼다', '$=-\\dfrac{\\pi}{24}$'] });
+
+addDef('monster', '위장된 급수', 'sin(2*x)*sec(x)^4/(e^(2*pi*tan(x))-1)', '1/12',
+  { lo: '0', hi: 'pi/2',
+  hints: ['$u=\\tan x$ 로 두면 $\\int_{0}^{\\infty}\\dfrac{2u\\,du}{e^{2\\pi u}-1}$ 가 된다.',
+          '$\\int_{0}^{\\infty}\\dfrac{u\\,du}{e^{2\\pi u}-1}=\\dfrac{1}{24}$ (베르누이 수)'],
+  steps: ['$\\sin 2x\\sec^{4}x=2\\tan x\\sec^{2}x$ 이므로 $u=\\tan x$ 치환이 딱 맞는다',
+          '$2\\int_{0}^{\\infty}\\dfrac{u}{e^{2\\pi u}-1}du=2\\cdot\\dfrac{1}{24}=\\dfrac1{12}$'] });
+
+addDef('monster', '역함수 대칭', 'arctan(cot(x)^2)', '(pi^2-2*ln(sqrt(2)+1)^2)/8',
+  { lo: '0', hi: 'pi/4',
+  hints: ['$\\arctan(\\cot^{2}x)=\\dfrac\\pi2-\\arctan(\\tan^{2}x)$ 로 바꾼다.',
+          '$\\int_{0}^{\\pi/4}\\arctan(\\tan^{2}x)dx$ 를 파인만 기법으로 계산한다.'],
+  steps: ['$I(a)=\\int_{0}^{\\pi/4}\\arctan(a\\tan^{2}x)dx$ 로 두고 $a$ 로 미분한다',
+          '$I\'(a)$ 는 유리 삼각적분이 된다', '$a=1$ 까지 적분하면 $\\ln^{2}(\\sqrt2+1)$ 항이 나온다'] });
+
+addDef('monster', '역수 대칭', 'x*ln(x)/(x^8+2*x^4+1)', '-pi/16', { lo: '0', hi: 'inf',
+  hints: ['$u=x^{2}$ 로 두면 $\\dfrac14\\int_{0}^{\\infty}\\dfrac{\\ln u}{(u^{2}+1)^{2}}du$ 다.',
+          '$\\int_{0}^{\\infty}\\dfrac{\\ln u}{(u^{2}+1)^{2}}du=-\\dfrac\\pi4$'],
+  steps: ['$u=x^{2}$ 치환',
+          '$u\\to1/u$ 대칭으로 $\\ln u$ 항을 정리한다', '$=-\\dfrac{\\pi}{16}$'] });
+
+addDef('monster', '역수 대칭', 'x^5*ln(x)/(x^8+2*x^4+1)', 'pi/16', { lo: '0', hi: 'inf',
+  hints: ['$u=x^{2}$ 로 두면 $\\dfrac14\\int_{0}^{\\infty}\\dfrac{u^{2}\\ln u}{(u^{2}+1)^{2}}du$ 다.',
+          '$u\\to\\dfrac1u$ 로 두면 앞 문제와 부호만 반대가 된다.'],
+  steps: ['$u=x^{2}$ 치환', '$u\\to1/u$ 대칭으로 앞 문제와 짝을 짓는다', '$=\\dfrac{\\pi}{16}$'] });
+
+addDef('monster', '로그 제곱', 'ln(x)^2/(x^2+2*x+2)', '(5*pi^3+4*pi*ln(2)^2)/64',
+  { lo: '0', hi: 'inf',
+  hints: ['$x^{2}+2x+2=(x+1)^{2}+1$ 이므로 극이 $-1\\pm i$ 다.',
+          '$\\int_{0}^{\\infty}\\dfrac{\\ln^{2}x}{x^{2}+2x+2}dx$ 는 열쇠구멍 경로(keyhole)로 푼다.'],
+  steps: ['$\\oint\\dfrac{\\ln^{3}z}{z^{2}+2z+2}dz$ 를 열쇠구멍 경로로 계산한다',
+          '유수는 $z=-1\\pm i$ 에서 나온다',
+          '실수부를 읽으면 $\\dfrac{5\\pi^{3}+4\\pi\\ln^{2}2}{64}$'] });
+
+addDef('monster', '파인만 기법', 'arctan(2*cos(x)^2)/cos(x)^2', 'sqrt((sqrt(5)-1)/2)*pi',
+  { lo: '0', hi: 'pi/2',
+  hints: ['$I(a)=\\int_{0}^{\\pi/2}\\dfrac{\\arctan(a\\cos^{2}x)}{\\cos^{2}x}dx$ 로 두고 $a$ 로 미분한다.',
+          '$I\'(a)=\\int_{0}^{\\pi/2}\\dfrac{dx}{1+a^{2}\\cos^{4}x}$ 는 $u=\\tan x$ 로 풀린다.'],
+  steps: ['$I\'(a)$ 를 계산하면 $\\dfrac{\\pi}{\\sqrt2}\\cdot\\dfrac{1}{\\sqrt{1+\\sqrt{1+a^{2}}}}$ 꼴이 된다',
+          '$a=0$ 에서 $2$ 까지 적분한다', '황금비가 등장해 $\\sqrt{\\dfrac{\\sqrt5-1}{2}}\\pi$ 가 나온다'] });
+
+addDef('monster', '대칭 논법', '(pi-4*x)*tan(x)/(1-tan(x))', 'pi*ln(2)-pi^2/4',
+  { lo: '-pi/4', hi: 'pi/4',
+  hints: ['$x\\to-x$ 로 두고 원래 식과 더하면 홀수 부분이 상쇄된다.',
+          '$\\dfrac{\\tan x}{1-\\tan x}+\\dfrac{-\\tan x}{1+\\tan x}$ 를 정리해 보라.'],
+  steps: ['$x\\to-x$ 대칭으로 $2I$ 를 만든다',
+          '$\\tan\\left(\\dfrac\\pi4-x\\right)=\\dfrac{1-\\tan x}{1+\\tan x}$ 를 쓴다',
+          '$\\int_{0}^{\\pi/4}\\ln(1+\\tan x)dx=\\dfrac{\\pi\\ln 2}{8}$ 로 귀결된다'] });
+
+addDef('monster', '괴상한 겉모습', 'x^2*sech((x^4-10*x^2+6*x+7)/(x^3-7*x+6))',
+    'pi^3/4+3*pi', { lo: '-inf', hi: 'inf',
+  hints: ['지수의 유리식을 부분분수로 쪼개 보라. $x^{3}-7x+6=(x-1)(x-2)(x+3)$ 이다.',
+          '글래서 주인공 정리(Glasser master theorem): $\\int_{\\mathbb R}f\\left(x-\\sum\\frac{a_{k}}{x-b_{k}}\\right)dx=\\int_{\\mathbb R}f(x)dx$'],
+  steps: ['지수가 $x-\\dfrac{a_{1}}{x-1}-\\dfrac{a_{2}}{x-2}-\\dfrac{a_{3}}{x+3}$ 꼴임을 확인한다',
+          '글래서 정리로 $\\int_{\\mathbb R}x^{2}\\operatorname{sech}x\\,dx$ 로 바뀐다 (보정항 포함)',
+          '$=\\dfrac{\\pi^{3}}{4}+3\\pi$'] });
+
 // ================================================================== 검증 + 출력
 
 var LEVELS = ['easy', 'medium', 'hard', 'monster'];

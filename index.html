@@ -191,9 +191,11 @@
 
   <div class="pad-sheet" id="padSheet">
     <canvas id="padCanvas"></canvas>
-    <div class="pad-toast" id="padToast"></div>
   </div>
 </div>
+
+<!-- 화면 아래에 잠깐 떴다 사라지는 알림. 연습장 위에도 보이도록 body 바로 밑에 둔다. -->
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script src="vendor/katex/katex.min.js"></script>
 <script src="parser.js"></script>

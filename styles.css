@@ -563,8 +563,10 @@ body.pad-open { overflow: hidden; }
 #padCanvas { position: absolute; inset: 0; width: 100%; height: 100%;
              touch-action: none; cursor: crosshair; }
 
-.pad-toast {
-  position: absolute; left: 50%; bottom: 22px; transform: translateX(-50%) translateY(8px);
+/* 화면 어디서든 쓰는 알림. 연습장(z-index 60) 위에 떠야 한다. */
+.toast {
+  position: fixed; z-index: 70;
+  left: 50%; bottom: 26px; transform: translateX(-50%) translateY(8px);
   max-width: min(90%, 420px);
   padding: 10px 16px; border-radius: 999px;
   background: var(--panel); border: 1px solid var(--line); box-shadow: var(--lift);
@@ -572,7 +574,7 @@ body.pad-open { overflow: hidden; }
   font-size: 12.5px; color: var(--ink-2); text-align: center;
   opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s;
 }
-.pad-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
 @media (max-width: 560px) {
   .pad-bar { padding: 8px 10px; }
@@ -586,5 +588,5 @@ body.pad-open { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) {
   .orb .ball, .btn, .day, .icon-btn, .levels button, .palette button, .orb-back { transition: none; }
   .hub-ring, .orb .spin { transition: none; }
-  .tool, .pad-toast, footer .keylink { transition: none; }
+  .tool, .toast, footer .keylink { transition: none; }
 }

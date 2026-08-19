@@ -10,10 +10,19 @@ var P = require('./problems.js');
 
 var fails = 0, checked = 0, seen = {};
 
+function limOf(src) {
+  if (src === 'inf') return Infinity;
+  if (src === '-inf') return -Infinity;
+  return M.compile(src)(0);
+}
+
 P.all.forEach(function (p) {
   var tag = '[' + p.id + '] ' + p.topic;
+  var def = p.value !== undefined;
 
-  ['id', 'topic', 'integrand', 'latex', 'answer', 'answerLatex', 'domain', 'hints', 'steps']
+  ['id', 'topic', 'integrand', 'latex', 'hints', 'steps']
+    .concat(def ? ['lo', 'hi', 'loLatex', 'hiLatex', 'value', 'valueLatex']
+                : ['answer', 'answerLatex', 'domain'])
     .forEach(function (k) {
       if (p[k] === undefined || p[k] === null) { console.log('MISSING  ' + tag + ' -> ' + k); fails++; }
     });
@@ -21,6 +30,20 @@ P.all.forEach(function (p) {
   seen[p.id] = true;
   if (!p.hints || p.hints.length < 2) { console.log('HINTS!   ' + tag); fails++; }
   if (!p.steps || p.steps.length < 1) { console.log('STEPS!   ' + tag); fails++; }
+
+  if (def) {
+    var fd, want;
+    try { fd = M.compile(p.integrand); } catch (e) { console.log('PARSE!   ' + tag + ' integrand: ' + e.message); fails++; return; }
+    try { want = M.compile(p.value)(0); } catch (e) { console.log('PARSE!   ' + tag + ' value: ' + e.message); fails++; return; }
+    var got = M.integrate(fd, limOf(p.lo), limOf(p.hi));
+    checked++;
+    var er = Math.abs(got - want) / Math.max(1, Math.abs(want));
+    if (!isFinite(got) || er > 1e-6) {
+      console.log('MISMATCH ' + tag + '  구적=' + got + ' 기준=' + want + ' rel=' + er.toExponential(2));
+      fails++;
+    }
+    return;
+  }
 
   var f, F;
   try { f = M.compile(p.integrand); } catch (e) { console.log('PARSE!   ' + tag + ' integrand: ' + e.message); fails++; return; }

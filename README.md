@@ -212,6 +212,7 @@ problems.js     생성된 문제 은행 898문항 — 직접 고치지 말 것
 app.js          일일 출제, 스트릭, 아카이브, 통계, 입력 처리
 verify.js       배포된 문제 은행 재검증 (node verify.js)
 build-sw.js     서비스 워커 생성기 (node build-sw.js) — sw.js 는 커밋하지 않는다
+make-icons.js   아이콘 생성기 (node make-icons.js, Playwright 필요) — 웹·안드로이드 14개
 manifest.webmanifest / icons/   설치용 메타데이터와 아이콘
 .github/workflows/deploy.yml    검증 후 Pages 배포
 grade-test.js   채점 엔진 회귀 테스트 (node grade-test.js)

@@ -7,3 +7,11 @@ sw.js
 _site/
 
 node_modules/
+
+# 안드로이드 빌드 산출물
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+# 웹 자산은 빌드 때 복사해 넣는다 (syncWebAssets)
+android/app/src/main/assets/

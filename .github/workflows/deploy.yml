@@ -3,6 +3,7 @@ name: 검증 후 배포
 on:
   push:
     branches: [main]
+    tags: ['v*']
   pull_request:
     branches: [main]
   workflow_dispatch:
@@ -58,6 +59,68 @@ jobs:
       - uses: actions/upload-pages-artifact@v3
         with:
           path: _site
+
+  apk:
+    name: 안드로이드 APK
+    needs: verify
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write        # 태그를 밀면 릴리스에 APK 를 붙인다
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      # 비밀값에 키스토어가 있으면 그걸로 서명하고, 없으면 디버그 키로 서명한다.
+      # 어느 쪽이든 기기에 바로 설치되는 APK 가 나온다.
+      - name: 서명 키 준비
+        env:
+          KS: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+        run: |
+          if [ -n "$KS" ]; then
+            echo "$KS" | base64 -d > "$RUNNER_TEMP/release.jks"
+            echo "ANDROID_KEYSTORE_PATH=$RUNNER_TEMP/release.jks" >> "$GITHUB_ENV"
+            echo "키스토어로 서명합니다"
+          else
+            echo "키스토어가 없어 디버그 키로 서명합니다 (설치는 문제없음)"
+          fi
+
+      - name: APK 빌드
+        working-directory: android
+        env:
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          chmod +x gradlew
+          ./gradlew --no-daemon assembleRelease \
+            -PversionCode=${{ github.run_number }} \
+            -PversionName=1.0.${{ github.run_number }}
+
+      - name: 결과물 이름 정리
+        run: |
+          mkdir -p dist
+          cp android/app/build/outputs/apk/release/*.apk \
+             "dist/daily-integral-1.0.${{ github.run_number }}.apk"
+          ls -la dist
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: apk
+          path: dist/*.apk
+          if-no-files-found: error
+
+      # 태그(v1.2.3 …)를 밀면 릴리스 페이지에 붙여 바로 내려받게 한다
+      - name: 릴리스에 첨부
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "${GITHUB_REF_NAME}" dist/*.apk --generate-notes || gh release upload "${GITHUB_REF_NAME}" dist/*.apk --clobber
 
   deploy:
     name: GitHub Pages 배포

@@ -150,11 +150,11 @@ body[data-view="hub"] header.top { justify-content: flex-end; }
    구슬 안쪽 .spin 이 같은 키프레임을 reverse 로 되감아 글자는 늘 똑바로 선다. */
 .hub-ring {
   position: absolute; inset: 0;
-  animation: hub-orbit 72s linear infinite;
+  animation: hub-orbit 36s linear infinite;
 }
 .orb .spin {
   position: relative; display: block; width: 100%; height: 100%;
-  animation: hub-orbit 72s linear infinite reverse;
+  animation: hub-orbit 36s linear infinite reverse;
 }
 @keyframes hub-orbit { to { transform: rotate(360deg); } }
 
@@ -390,7 +390,7 @@ body:not([data-view="hub"]) .backwrap { display: flex; }
 .muted { color: var(--ink-3); font-size: 13px; }
 .hidden { display: none !important; }
 
-footer { text-align: center; color: var(--ink-3); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; padding-top: 12px; }
+footer { text-align: center; color: var(--ink-3); font-size: 12px; letter-spacing: .08em; padding-top: 12px; }
 footer b { font-family: var(--serif); }
 
 @media (max-width: 620px) {

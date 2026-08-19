@@ -510,9 +510,65 @@
     return { ok: false, reason: 'wrong', detail: hint };
   }
 
+  // ---------------------------------------------------------------- 정적분
+
+  // 이중지수(double-exponential) 구적. 끝점 특이점과 무한 구간을 함께 다룬다.
+  // a, b 에 ±Infinity 를 넣을 수 있다.
+  function integrate(f, a, b) {
+    var map, jac, inf = !isFinite(a) || !isFinite(b);
+    if (isFinite(a) && isFinite(b)) {                     // tanh-sinh
+      var c = (a + b) / 2, hw = (b - a) / 2;
+      map = function (t) { return c + hw * Math.tanh(Math.PI / 2 * Math.sinh(t)); };
+      jac = function (t) {
+        var u = Math.cosh(Math.PI / 2 * Math.sinh(t));
+        return hw * (Math.PI / 2 * Math.cosh(t)) / (u * u);
+      };
+    } else if (isFinite(a) && b === Infinity) {           // exp-sinh
+      map = function (t) { return a + Math.exp(Math.PI / 2 * Math.sinh(t)); };
+      jac = function (t) { return Math.exp(Math.PI / 2 * Math.sinh(t)) * Math.PI / 2 * Math.cosh(t); };
+    } else if (a === -Infinity && isFinite(b)) {
+      return -integrate(function (x) { return f(-x); }, -b, Infinity);
+    } else {                                              // sinh-sinh
+      map = function (t) { return Math.sinh(Math.PI / 2 * Math.sinh(t)); };
+      jac = function (t) { return Math.cosh(Math.PI / 2 * Math.sinh(t)) * Math.PI / 2 * Math.cosh(t); };
+    }
+    var lim = inf ? 4.0 : 3.6, prev = NaN;
+    for (var lvl = 8; lvl <= 13; lvl++) {
+      var n = 1 << lvl, h = 2 * lim / n, sum = 0;
+      for (var i = 0; i <= n; i++) {
+        var t = -lim + i * h, x = map(t), w = jac(t);
+        if (!isFinite(x) || !isFinite(w)) continue;
+        var v = f(x);
+        if (!isFinite(v)) continue;
+        var term = v * w * h;
+        if (i === 0 || i === n) term /= 2;
+        if (isFinite(term)) sum += term;
+      }
+      if (isFinite(prev) && Math.abs(sum - prev) <= 1e-10 * Math.max(1, Math.abs(sum))) return sum;
+      prev = sum;
+    }
+    return prev;
+  }
+
+  // 정적분 문제의 채점 — 답이 x 없는 상수식이어야 하고, 값이 맞아야 한다.
+  function compareValue(userSrc, refSrc) {
+    var u, r;
+    try { u = parse(userSrc); } catch (err) { return { ok: false, reason: 'parse', detail: err.message }; }
+    if (usesVar(u)) return { ok: false, reason: 'hasvar', detail: '정적분의 답은 x 가 없는 상수여야 합니다.' };
+    if (usesFree(u)) return { ok: false, reason: 'hasfree', detail: '정적분에는 적분상수 +C 가 붙지 않습니다.' };
+    try { r = parse(refSrc); } catch (err) { return { ok: false, reason: 'parse', detail: err.message }; }
+    var uv = evalNode(u, 0, 0), rv = evalNode(r, 0, 0);
+    if (!isFinite(uv)) return { ok: false, reason: 'nan', detail: '값을 계산할 수 없습니다.' };
+    var err2 = Math.abs(uv - rv) / Math.max(1, Math.abs(rv));
+    if (err2 <= 1e-6) return { ok: true };
+    return { ok: false, reason: 'wrong', detail: '', got: uv, want: rv };
+  }
+
   return {
     parse: parse,
     compile: compile,
+    integrate: integrate,
+    compareValue: compareValue,
     toLatex: toLatex,
     tokenize: tokenize,
     usesVar: usesVar,

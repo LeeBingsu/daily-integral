@@ -369,6 +369,8 @@ body:not([data-view="hub"]) .backwrap { display: flex; }
   font-family: var(--serif); transition: border-color .15s, transform .15s;
 }
 .palette button:hover { border-color: var(--accent); color: var(--ink); transform: translateY(-1px); }
+/* 정적분 문항에서는 적분상수 버튼이 의미가 없다 */
+.palette.def button:last-child { display: none; }
 
 .actions { display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap; }
 .actions .spacer { margin-left: auto; }

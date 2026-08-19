@@ -61,6 +61,18 @@ var cases = [
   ['1/(x^4+1)', 'atan((x^2-1)/(sqrt(2)x))/(2sqrt(2)) - ln((x^2-sqrt(2)x+1)/(x^2+sqrt(2)x+1))/(4sqrt(2))', true]
 ];
 
+// 정적분: 답이 x 없는 상수여야 하고 값이 맞아야 한다
+var defCases = [
+  ['pi^2/6', 'pi^2/6', true],
+  ['pi^2/6', '1.6449340668', true],
+  ['pi^2/6', '2*zeta', false],      // 모르는 이름은 자유 상수로 읽혀 거부
+  ['pi^2/6', 'pi^2/6 + C', false],
+  ['pi^2/6', 'x^3/3', false],
+  ['pi^2/12', 'pi^2/6', false],
+  ['4-2*sqrt(e)', '4-2sqrt(e)', true],
+  ['pi/(2*sqrt(2))', 'pi/(2sqrt(2))', true]
+];
+
 var bad = 0;
 cases.forEach(function (c) {
   var p = pick(c[0]), input = c[1], expect = c[2];
@@ -70,6 +82,14 @@ cases.forEach(function (c) {
               (r.detail ? '  :: ' + r.detail : ''));
 });
 
+defCases.forEach(function (c) {
+  var r = M.compareValue(c[1], c[0]);
+  if (r.ok !== c[2]) bad++;
+  console.log((r.ok === c[2] ? 'ok   ' : 'FAIL ') + '정적분 =' + c[0] + '  "' + c[1] + '" -> ' + r.ok +
+              (r.detail ? '  :: ' + r.detail : ''));
+});
+
 console.log('---');
-console.log(bad === 0 ? '채점 테스트 ' + cases.length + '건 전부 통과' : bad + '건 실패');
+var total = cases.length + defCases.length;
+console.log(bad === 0 ? '채점 테스트 ' + total + '건 전부 통과' : bad + '건 실패');
 process.exit(bad ? 1 : 0);

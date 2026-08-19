@@ -144,6 +144,42 @@ function add(level, topic, integrand, answer, o) {
   });
 }
 
+// ---------------------------------------------------------------- 정적분 문항
+// 부정적분 문항과 달리 answer/domain 대신 lo/hi/value 를 갖는다.
+// 채점은 "값이 맞는가"로, 검증은 이중지수 구적으로 한다.
+
+function limVal(src) {
+  if (src === 'inf') return Infinity;
+  if (src === '-inf') return -Infinity;
+  return M.compile(src)(0);
+}
+function limTex(src) {
+  if (src === 'inf') return '\\infty';
+  if (src === '-inf') return '-\\infty';
+  return tidyTex(M.latexOf(src));
+}
+
+function addDef(level, topic, integrand, value, o) {
+  o = o || {};
+  integrand = tidyAscii(integrand.replace(/\^1(?![0-9])/g, ''));
+  var key = 'DEF:' + integrand.replace(/\s+/g, '') + '|' + o.lo + '|' + o.hi;
+  if (seen[key]) return;
+  seen[key] = true;
+  out.push({
+    level: level,
+    topic: topic,
+    integrand: integrand,
+    latex: tidyTex(o.latex || M.latexOf(integrand)),
+    lo: o.lo, hi: o.hi,
+    loLatex: o.loLatex || limTex(o.lo),
+    hiLatex: o.hiLatex || limTex(o.hi),
+    value: value,
+    valueLatex: tidyTex(o.valueLatex || M.latexOf(value)),
+    hints: (o.hints || []).map(tidyTex),
+    steps: (o.steps || []).map(tidyTex)
+  });
+}
+
 // ================================================================== 쉬움
 
 // 거듭제곱 법칙 (단항)
@@ -3974,6 +4010,296 @@ add('monster', '로그 부분적분', 'csc(x)^2*ln(cos(x)+sqrt(cos(2*x)))',
           '남는 적분은 $\\cos 2x=1-2\\sin^{2}x$ 로 두고 정리한다']
 });
 
+// ================================================================== 정적분 (올림피아드)
+// 문제식 출처: 300 Integral Practice Set (Maths Olympiad Preparation, 2024) 정적분 파트.
+// 값은 전부 이중지수 구적으로 다시 확인했다.
+
+// ------------------------------------------------------------------ 어려움
+addDef('hard', '반각 치환', '1/(sin(2*x)+cos(2*x)+1)', 'ln(2)/2', { lo: '0', hi: 'pi/4',
+  hints: ['배각공식으로 $\\sin 2x=2\\sin x\\cos x$, $1+\\cos 2x=2\\cos^{2}x$ 를 넣는다.',
+          '분모가 $2\\cos x(\\sin x+\\cos x)$ 로 묶여 $\\dfrac{\\sec^{2}x}{2(\\tan x+1)}$ 가 된다.'],
+  steps: ['$u=\\tan x$ 로 두면 $\\dfrac12\\int_{0}^{1}\\dfrac{du}{u+1}$',
+          '$=\\dfrac{\\ln 2}{2}$'] });
+
+addDef('hard', '부분적분', 'x*arcsin(x)/sqrt(1-x^2)', '(6-sqrt(3)*pi)/12', { lo: '0', hi: '1/2',
+  hints: ['$dv=\\dfrac{x\\,dx}{\\sqrt{1-x^{2}}}\\Rightarrow v=-\\sqrt{1-x^{2}}$ 로 부분적분한다.',
+          '남는 적분은 $\\int dx$ 로 줄어든다.'],
+  steps: ['$\\left[-\\sqrt{1-x^{2}}\\arcsin x\\right]_{0}^{1/2}+\\int_{0}^{1/2}dx$',
+          '$=-\\dfrac{\\sqrt3}{2}\\cdot\\dfrac{\\pi}{6}+\\dfrac12=\\dfrac{6-\\sqrt3\\pi}{12}$'] });
+
+addDef('hard', '부분적분', 'ln(x)/sqrt(x)', '4-2*sqrt(e)', { lo: '1', hi: 'e',
+  hints: ['$v=2\\sqrt x$ 로 부분적분한다.', '$\\int\\dfrac{\\ln x}{\\sqrt x}dx=2\\sqrt x(\\ln x-2)$'],
+  steps: ['$\\left[2\\sqrt x(\\ln x-2)\\right]_{1}^{e}$', '$=2\\sqrt e(1-2)-2(0-2)=4-2\\sqrt e$'] });
+
+addDef('hard', '삼각 유리화', '(1-sin(x))/(1+sin(x))', '4-pi', { lo: '0', hi: 'pi',
+  hints: ['분자·분모에 $1-\\sin x$ 를 곱해 분모를 $\\cos^{2}x$ 로 만든다.',
+          '$\\sec^{2}x-2\\sec x\\tan x+\\tan^{2}x$ 로 펴진다.'],
+  steps: ['$\\dfrac{(1-\\sin x)^{2}}{\\cos^{2}x}=\\sec^{2}x-2\\sec x\\tan x+\\sec^{2}x-1$',
+          '원시함수는 $2\\tan x-2\\sec x-x$', '끝점 극한을 조심해서 대입하면 $4-\\pi$'] });
+
+addDef('hard', '치환적분', 'sin(2*x)/(2+cos(x))', '1+4*ln(5/6)', { lo: '0', hi: 'pi/3',
+  hints: ['$\\sin 2x=2\\sin x\\cos x$ 로 펴고 $u=2+\\cos x$ 로 둔다.',
+          '$\\cos x=u-2$ 이므로 $-2\\int\\dfrac{u-2}{u}du$ 가 된다.'],
+  steps: ['$u=2+\\cos x,\;du=-\\sin x\\,dx$',
+          '$-2\\int_{3}^{5/2}\\left(1-\\dfrac2u\\right)du=1+4\\ln\\dfrac56$'] });
+
+addDef('hard', '치환적분', 'cos(x)/(2-sin(2*x))', 'pi/4', { lo: '0', hi: 'pi/2',
+  hints: ['$2-\\sin 2x=1+(\\sin x-\\cos x)^{2}$ 로 완전제곱된다.',
+          '$u=\\sin x-\\cos x$ 로 두면 $du=(\\cos x+\\sin x)dx$ — 대칭을 쓴다.'],
+  steps: ['$x\\to\\frac\\pi2-x$ 로 두면 $\\int\\cos\\to\\int\\sin$ 이므로 둘을 더해 $2I$ 를 만든다',
+          '$2I=\\int_{0}^{\\pi/2}\\dfrac{\\cos x+\\sin x}{1+(\\sin x-\\cos x)^{2}}dx=\\left[\\arctan u\\right]_{-1}^{1}=\\dfrac\\pi2$'] });
+
+addDef('hard', '완전제곱', '1/((x+1)*sqrt(x^2+2*x+2))', 'ln(sqrt(3/2))',
+  { lo: 'sqrt(3)-1', hi: '2*sqrt(2)-1',
+  hints: ['$x^{2}+2x+2=(x+1)^{2}+1$ 로 완전제곱하고 $t=x+1$ 로 둔다.',
+          '$\\int\\dfrac{dt}{t\\sqrt{t^{2}+1}}=\\ln\\dfrac{t}{1+\\sqrt{t^{2}+1}}$'],
+  steps: ['$t=x+1$ 이면 적분 구간은 $\\sqrt3$ 에서 $2\\sqrt2$ 까지',
+          '$\\left[\\ln\\dfrac{t}{1+\\sqrt{t^{2}+1}}\\right]_{\\sqrt3}^{2\\sqrt2}=\\ln\\sqrt{\\dfrac32}$'] });
+
+addDef('hard', '부분분수', '(x^4+81)/(x*(x^2+9)^2)', '1/10+9/(e^2+9)', { lo: '1', hi: 'e',
+  hints: ['$x^{4}+81=(x^{2}+9)^{2}-18x^{2}$ 로 쓰면 두 조각으로 갈라진다.',
+          '$\\dfrac{1}{x}-\\dfrac{18x}{(x^{2}+9)^{2}}$ 만 남는다.'],
+  steps: ['$\\dfrac{x^{4}+81}{x(x^{2}+9)^{2}}=\\dfrac1x-\\dfrac{18x}{(x^{2}+9)^{2}}$',
+          '원시함수는 $\\ln x+\\dfrac{9}{x^{2}+9}$', '끝점을 대입한다'] });
+
+addDef('hard', '부분분수', '(x^2+2*x-1)/(2*x^3+3*x^2-2*x)', 'ln(72)/10', { lo: '1', hi: '2',
+  hints: ['$2x^{3}+3x^{2}-2x=x(2x-1)(x+2)$ 로 인수분해한다.',
+          '가리기(cover-up)로 세 계수를 한 번에 구한다.'],
+  steps: ['$\\dfrac{1/2}{x}+\\dfrac{1/10}{2x-1}\\cdot 2-\\dfrac{1/10}{x+2}$ 꼴로 갈라진다',
+          '로그를 모아 끝점을 대입하면 $\\dfrac{\\ln 72}{10}$'] });
+
+addDef('hard', '순환 부분적분', 'e^(-x)*sin(2*x)^2', '(8-8*e^(-pi))/17', { lo: '0', hi: 'pi',
+  hints: ['$\\sin^{2}2x=\\dfrac{1-\\cos 4x}{2}$ 로 먼저 내린다.',
+          '$\\int e^{-x}\\cos 4x\\,dx=\\dfrac{e^{-x}(-\\cos 4x+4\\sin 4x)}{17}$'],
+  steps: ['$\\dfrac12\\int_{0}^{\\pi}e^{-x}dx-\\dfrac12\\int_{0}^{\\pi}e^{-x}\\cos 4x\\,dx$',
+          '두 값을 합치면 $\\dfrac{8(1-e^{-\\pi})}{17}$'] });
+
+addDef('hard', '삼각함수 고차', 'tan(x)^4/(1-tan(x)^2)', 'pi/12-sqrt(3)/3+atanh(1/sqrt(3))/2',
+  { lo: '0', hi: 'pi/6',
+  hints: ['$\\dfrac{t^{4}}{1-t^{2}}=-t^{2}-1+\\dfrac{1}{1-t^{2}}$ 로 다항식 나눗셈을 한다.',
+          '$t=\\tan x$ 이므로 $\\int\\tan^{2}$ 와 $\\int\\dfrac{dx}{1-\\tan^{2}x}$ 로 갈린다.'],
+  steps: ['나눗셈으로 세 조각으로 나눈다',
+          '$\\int\\dfrac{dx}{1-\\tan^{2}x}=\\dfrac12\\operatorname{artanh}(\\tan x)$ 를 쓴다'] });
+
+addDef('hard', '유리식 극한', '1/(1+x^4)', 'pi/(2*sqrt(2))', { lo: '0', hi: 'inf',
+  hints: ['$x\\to\\frac1x$ 대칭을 쓰거나, $u=x-\\dfrac1x$ 치환으로 간다.',
+          '$\\dfrac{1}{1+x^{4}}=\\dfrac12\\cdot\\dfrac{x^{2}+1}{x^{4}+1}-\\dfrac12\\cdot\\dfrac{x^{2}-1}{x^{4}+1}$'],
+  steps: ['$\\int_{0}^{\\infty}\\dfrac{x^{2}+1}{x^{4}+1}dx=\\dfrac{\\pi}{\\sqrt2}$ (여기서 $u=x-\\frac1x$)',
+          '$\\int_{0}^{\\infty}\\dfrac{x^{2}-1}{x^{4}+1}dx=0$ (로그 항이 상쇄)',
+          '따라서 $\\dfrac{\\pi}{2\\sqrt2}$'] });
+
+addDef('hard', '쌍곡선함수', 'sech(x)', 'pi', { lo: '-inf', hi: 'inf',
+  hints: ['$\\int\\operatorname{sech}x\\,dx=\\arctan(\\sinh x)$ 다.',
+          '$\\sinh x$ 는 $\\pm\\infty$ 로 가므로 $\\arctan$ 이 $\\pm\\frac\\pi2$ 에 닿는다.'],
+  steps: ['$\\left[\\arctan(\\sinh x)\\right]_{-\\infty}^{\\infty}$',
+          '$=\\dfrac\\pi2-\\left(-\\dfrac\\pi2\\right)=\\pi$'] });
+
+addDef('hard', '유명한 근사', 'x^4*(1-x)^4/(1+x^2)', '22/7-pi', { lo: '0', hi: '1',
+  hints: ['분자를 전개해 $1+x^{2}$ 로 나누면 다항식 + $\\dfrac{4}{1+x^{2}}$ 가 된다.',
+          '적분값이 양수라는 사실이 곧 $\\dfrac{22}{7}>\\pi$ 의 증명이다.'],
+  steps: ['$\\dfrac{x^{4}(1-x)^{4}}{1+x^{2}}=x^{6}-4x^{5}+5x^{4}-4x^{2}+4-\\dfrac{4}{1+x^{2}}$',
+          '항별로 적분하면 $\\dfrac{22}{7}-\\pi$'] });
+
+addDef('hard', '파인만 기법', 'ln(x+1)/(x^2-x+1)', 'pi*ln(3)/(2*sqrt(3))', { lo: '0', hi: '2',
+  hints: ['$\\dfrac{x+1}{x^{3}+1}=\\dfrac{1}{x^{2}-x+1}$ 임을 이용해 꼴을 바꿔 본다.',
+          '$x\\to\\dfrac{2-x}{1+x}$ 로 두면 구간이 자기 자신으로 돌아온다.'],
+  steps: ['치환 $x\\mapsto\\dfrac{2-x}{1+x}$ 로 $I$ 를 다시 쓴다',
+          '두 표현을 더하면 $\\ln 3$ 이 상수로 빠져나온다',
+          '$2I=\\ln 3\\int_{0}^{2}\\dfrac{dx}{x^{2}-x+1}$'] });
+
+addDef('hard', '삼각 항등식', '(sec(x)+csc(x))*(sec(x)+tan(x))/(csc(x)+cot(x))',
+  '1+2/sqrt(3)', { lo: '0', hi: 'pi/3',
+  hints: ['$\\dfrac{\\sec x+\\tan x}{\\csc x+\\cot x}=\\tan x$ 로 간단해진다.',
+          '$(\\sec x+\\csc x)\\tan x=\\sec x\\tan x+\\sec x$ 다.'],
+  steps: ['$(\\sec x+\\csc x)\\tan x=\\sec x\\tan x+\\sec x$',
+          '원시함수는 $\\sec x+\\ln|\\sec x+\\tan x|$ … 가 아니라 정리하면 $\\sec x+\\tan x$ 형태로 떨어진다',
+          '끝점을 대입하면 $1+\\dfrac{2}{\\sqrt3}$'] });
+
+// ------------------------------------------------------------------ 몬스터
+addDef('monster', '급수 전개', 'ln(x)/(x-1)', 'pi^2/6', { lo: '0', hi: '1',
+  hints: ['$\\dfrac{1}{1-x}=\\sum_{n\\ge 0}x^{n}$ 로 펴고 항별로 적분한다.',
+          '$\\int_{0}^{1}x^{n}\\ln x\\,dx=-\\dfrac{1}{(n+1)^{2}}$'],
+  steps: ['$-\\int_{0}^{1}\\dfrac{\\ln x}{1-x}dx=-\\sum_{n\\ge0}\\int_{0}^{1}x^{n}\\ln x\\,dx$',
+          '$=\\sum_{n\\ge1}\\dfrac{1}{n^{2}}=\\zeta(2)=\\dfrac{\\pi^{2}}{6}$'] });
+
+addDef('monster', '급수 전개', 'ln(x)/(x+1)', '-pi^2/12', { lo: '0', hi: '1',
+  hints: ['$\\dfrac{1}{1+x}=\\sum_{n\\ge0}(-1)^{n}x^{n}$ 로 펴서 항별로 적분한다.',
+          '교대급수 $\\sum\\dfrac{(-1)^{n}}{n^{2}}=-\\dfrac{\\pi^{2}}{12}$ 를 쓴다.'],
+  steps: ['$\\sum_{n\\ge0}(-1)^{n}\\int_{0}^{1}x^{n}\\ln x\\,dx=-\\sum_{n\\ge1}\\dfrac{(-1)^{n-1}}{n^{2}}$',
+          '$=-\\dfrac{\\pi^{2}}{12}$'] });
+
+addDef('monster', '대칭 논법', 'ln(cos(x))', '-pi*ln(2)/2', { lo: '0', hi: 'pi/2',
+  hints: ['$x\\to\\frac\\pi2-x$ 로 두면 $\\int\\ln\\cos=\\int\\ln\\sin$ 임을 얻는다.',
+          '둘을 더하고 $\\sin x\\cos x=\\frac{\\sin 2x}{2}$ 를 쓴다.'],
+  steps: ['$2I=\\int_{0}^{\\pi/2}\\ln\\dfrac{\\sin 2x}{2}dx$',
+          '$u=2x$ 로 두면 오른쪽이 다시 $I$ 가 되어 $2I=I-\\dfrac\\pi2\\ln2$',
+          '$I=-\\dfrac{\\pi\\ln 2}{2}$'] });
+
+addDef('monster', '급수 전개', 'ln(1+x^2)/(1+x)', '3*ln(2)^2/4-pi^2/48', { lo: '0', hi: '1',
+  hints: ['$\\ln(1+x^{2})=\\ln(1+x)+\\ln(1-x)+\\ln\\dfrac{1+x^{2}}{1-x^{2}}$ 같은 분해를 시도한다.',
+          '또는 $I(a)=\\int_{0}^{1}\\dfrac{\\ln(1+a x^{2})}{1+x}dx$ 로 두고 $a$ 로 미분한다.'],
+  steps: ['파인만 기법: $I\'(a)=\\int_{0}^{1}\\dfrac{x^{2}}{(1+ax^{2})(1+x)}dx$',
+          '부분분수로 쪼갠 뒤 $a$ 에 대해 $0$ 에서 $1$ 까지 적분한다'] });
+
+addDef('monster', '대칭 논법', 'ln(2+tan(x)^2)', 'pi*ln(sqrt(2)+1)', { lo: '0', hi: 'pi/2',
+  hints: ['$2+\\tan^{2}x=\\dfrac{1+\\cos^{2}x}{\\cos^{2}x}$ 로 정리한다.',
+          '$\\int_{0}^{\\pi/2}\\ln(a^{2}\\cos^{2}x+b^{2}\\sin^{2}x)dx=\\pi\\ln\\dfrac{a+b}{2}$ 를 쓴다.'],
+  steps: ['$\\ln(1+\\cos^{2}x)-2\\ln\\cos x$ 로 나눈다',
+          '앞 항에 $a=\\sqrt2,\;b=1$ 공식을, 뒤 항에 $\\int\\ln\\cos=-\\frac\\pi2\\ln2$ 를 쓴다',
+          '$=\\pi\\ln(\\sqrt2+1)$'] });
+
+addDef('monster', '제타 함수', 'x/(e^x+1)', 'pi^2/12', { lo: '0', hi: 'inf',
+  hints: ['$\\dfrac{1}{e^{x}+1}=\\sum_{n\\ge1}(-1)^{n-1}e^{-nx}$ 로 편다.',
+          '$\\int_{0}^{\\infty}xe^{-nx}dx=\\dfrac{1}{n^{2}}$'],
+  steps: ['$\\sum_{n\\ge1}\\dfrac{(-1)^{n-1}}{n^{2}}=\\eta(2)=\\dfrac{\\zeta(2)}{2}$',
+          '$=\\dfrac{\\pi^{2}}{12}$'] });
+
+addDef('monster', '급수 전개', 'ln(1+e^(-x))', 'pi^2/12', { lo: '0', hi: 'inf',
+  hints: ['$\\ln(1+t)=\\sum_{n\\ge1}\\dfrac{(-1)^{n-1}t^{n}}{n}$ 에 $t=e^{-x}$ 를 넣는다.',
+          '부분적분하면 앞 문제 $\\int_{0}^{\\infty}\\dfrac{x}{e^{x}+1}dx$ 와 같아진다.'],
+  steps: ['$\\sum_{n\\ge1}\\dfrac{(-1)^{n-1}}{n}\\int_{0}^{\\infty}e^{-nx}dx=\\sum_{n\\ge1}\\dfrac{(-1)^{n-1}}{n^{2}}$',
+          '$=\\dfrac{\\pi^{2}}{12}$'] });
+
+addDef('monster', '파인만 기법', '(x-1)/((1+x^3)*ln(x))', 'ln(3)/2', { lo: '0', hi: '1',
+  hints: ['$\\dfrac{x^{a}-1}{\\ln x}=\\int_{0}^{a}x^{t}dt$ 라는 표현을 쓴다.',
+          '적분 순서를 바꾸면 $\\int_{0}^{1}\\dfrac{x^{t}}{1+x^{3}}dx$ 가 남는다.'],
+  steps: ['$I=\\int_{0}^{1}\\int_{0}^{1}\\dfrac{x^{t}}{1+x^{3}}dt\\,dx$',
+          '순서를 바꿔 $t$ 로 먼저 적분한다', '$=\\dfrac{\\ln 3}{2}$'] });
+
+addDef('monster', '대칭 논법', 'ln(tan(x))/(1-tan(x)+tan(x)^2)', '-7*pi^2/72', { lo: '0', hi: 'pi/2',
+  hints: ['$u=\\tan x$ 로 두면 $\\int_{0}^{\\infty}\\dfrac{\\ln u}{(1-u+u^{2})(1+u^{2})}du$ 다.',
+          '$u\\to\\dfrac1u$ 대칭으로 구간을 $[0,1]$ 로 접는다.'],
+  steps: ['$u=\\tan x$ 치환',
+          '$u\\to 1/u$ 로 접으면 $\\ln u$ 의 부호가 뒤집혀 조합이 단순해진다',
+          '남은 적분을 급수로 펴면 $-\\dfrac{7\\pi^{2}}{72}$'] });
+
+addDef('monster', '대칭 논법', 'ln(tan(x))/(1+tan(x)^3)', '-37*pi^2/432', { lo: '0', hi: 'pi/2',
+  hints: ['앞 문제와 같은 $u=\\tan x$ 치환에서 시작한다.',
+          '$1+u^{3}=(1+u)(1-u+u^{2})$ 로 인수분해한 뒤 부분분수를 쓴다.'],
+  steps: ['$u=\\tan x$ 로 두고 $u\\to1/u$ 대칭을 쓴다',
+          '$\\int_{0}^{1}\\dfrac{\\ln u}{1+u}$, $\\int_{0}^{1}\\dfrac{u\\ln u}{1-u+u^{2}}$ 등으로 갈라진다'] });
+
+addDef('monster', '대칭 논법', '(1-x^99)/((1+x)*(1+x^100))', '99*ln(2)/100', { lo: '0', hi: '1',
+  hints: ['$x\\to\\dfrac1x$ 로 두면 $[1,\\infty)$ 조각과 짝이 맞는다.',
+          '$\\dfrac{1-x^{99}}{(1+x)(1+x^{100})}$ 를 $\\dfrac{1}{1+x}-\\dfrac{x^{99}+\\cdots}{\\cdots}$ 로 정리해 본다.'],
+  steps: ['$I=\\int_{0}^{1}\\dfrac{dx}{1+x}-\\int_{0}^{1}\\dfrac{x^{99}(1+x)}{(1+x)(1+x^{100})}dx$ 꼴로 나눈다',
+          '뒤 항은 $u=x^{100}$ 치환으로 $\\dfrac{\\ln 2}{100}$',
+          '$=\\ln 2-\\dfrac{\\ln 2}{100}=\\dfrac{99\\ln 2}{100}$'] });
+
+addDef('monster', '5차 유리식', '1/(x^4+x^3+x^2+x+1)', 'sqrt(10+2*sqrt(5))*pi/5',
+  { lo: '-inf', hi: 'inf',
+  hints: ['분모는 $\\dfrac{x^{5}-1}{x-1}$ 이므로 근이 $1$ 이 아닌 5차 단위근이다.',
+          '유수(residue)를 쓰거나, $\\int_{-\\infty}^{\\infty}\\dfrac{dx}{x^{2}-2x\\cos\\theta+1}=\\dfrac{\\pi}{\\sin\\theta}$ 를 두 번 쓴다.'],
+  steps: ['$x^{4}+x^{3}+x^{2}+x+1=\\prod\\left(x^{2}-2x\\cos\\dfrac{2k\\pi}{5}+1\\right)$',
+          '각 이차식 적분에 위 공식을 적용해 더한다'] });
+
+addDef('monster', '파인만 기법', 'ln(1+1/x^2)', 'pi', { lo: '0', hi: 'inf',
+  hints: ['$dv=dx$ 로 부분적분하면 $\\int_{0}^{\\infty}\\dfrac{2\\,dx}{1+x^{2}}$ 가 남는다.',
+          '경계항 $x\\ln\\left(1+\\frac{1}{x^{2}}\\right)$ 는 양 끝에서 $0$ 이다.'],
+  steps: ['$=\\left[x\\ln\\left(1+\\dfrac{1}{x^{2}}\\right)\\right]_{0}^{\\infty}+2\\int_{0}^{\\infty}\\dfrac{dx}{1+x^{2}}$',
+          '$=0+2\\cdot\\dfrac\\pi2=\\pi$'] });
+
+addDef('monster', '지수 치환', 'sqrt(e^x-1)/(2*cosh(x)-1)', 'pi/sqrt(3)', { lo: '0', hi: 'inf',
+  hints: ['$u=\\sqrt{e^{x}-1}$ 로 두면 $e^{x}=u^{2}+1$, $dx=\\dfrac{2u\\,du}{u^{2}+1}$ 다.',
+          '$2\\cosh x-1=e^{x}+e^{-x}-1=\\dfrac{u^{4}+u^{2}+1}{u^{2}+1}$'],
+  steps: ['치환하면 $\\int_{0}^{\\infty}\\dfrac{2u^{2}}{u^{4}+u^{2}+1}du$',
+          '$u\\to\\frac1u$ 대칭으로 $\\int_{0}^{\\infty}\\dfrac{u^{2}+1}{u^{4}+u^{2}+1}du$ 를 만든다',
+          '$=\\dfrac{\\pi}{\\sqrt3}$'] });
+
+addDef('monster', '적분대회 결승', 'ln(2*e^x-1)/(e^x-1)', 'pi^2/4', { lo: '0', hi: 'inf',
+  hints: ['$t=1-e^{-x}$ 로 두면 $\\dfrac{dx}{e^{x}-1}=\\dfrac{dt}{t}\\cdot\\dfrac{1}{1}$ 꼴이 나온다.',
+          '$2e^{x}-1=\\dfrac{1+t}{1-t}$ 로 정리된다.'],
+  steps: ['$t=1-e^{-x}$ 치환',
+          '$\\int_{0}^{1}\\dfrac{1}{t}\\ln\\dfrac{1+t}{1-t}dt=2\\sum_{n\\ge0}\\dfrac{1}{(2n+1)^{2}}$',
+          '$=2\\cdot\\dfrac{\\pi^{2}}{8}=\\dfrac{\\pi^{2}}{4}$'] });
+
+addDef('monster', 'Ahmed 적분', 'arctan(sqrt(2+x^2))/((1+x^2)*sqrt(2+x^2))', '5*pi^2/96',
+  { lo: '0', hi: '1',
+  hints: ['유명한 Ahmed 적분이다. $I(a)=\\int_{0}^{1}\\dfrac{\\arctan(a\\sqrt{2+x^{2}})}{(1+x^{2})\\sqrt{2+x^{2}}}dx$ 로 두고 미분한다.',
+          '$a=1$ 에서의 값과 $a\\to\\infty$ 극한을 이어 붙인다.'],
+  steps: ['$I\'(a)$ 를 계산하면 유리함수 적분이 된다',
+          '$a\\to\\infty$ 에서 $\\dfrac\\pi2\\int_{0}^{1}\\dfrac{dx}{(1+x^{2})\\sqrt{2+x^{2}}}$ 를 얻는다',
+          '차를 취하면 $\\dfrac{5\\pi^{2}}{96}$'] });
+
+addDef('monster', 'Ahmed 적분', 'arctan(sqrt(2+x^2))/((1+x^2)*sqrt(2+x^2))', 'pi^2/32',
+  { lo: '1', hi: 'inf',
+  hints: ['$[0,1]$ 짝과 합치면 $\\int_{0}^{\\infty}$ 가 되어 계산이 쉬워진다.',
+          '$\\int_{0}^{\\infty}\\dfrac{\\arctan\\sqrt{2+x^{2}}}{(1+x^{2})\\sqrt{2+x^{2}}}dx=\\dfrac{\\pi^{2}}{6}\\cdot\\dfrac{?}{}$ 를 먼저 구한다.'],
+  steps: ['$x\\to\\frac1x$ 대칭은 여기서 통하지 않으므로 $[0,\\infty)$ 값을 직접 구한다',
+          '$[0,1]$ 조각 $\\dfrac{5\\pi^{2}}{96}$ 을 빼면 $\\dfrac{\\pi^{2}}{32}$'] });
+
+addDef('monster', '쌍곡선 급수', 'sin(x)*cos(x)/(sinh(x)*cosh(x))', 'pi*tanh(pi/2)/4',
+  { lo: '0', hi: 'inf',
+  hints: ['$\\dfrac{\\sin x\\cos x}{\\sinh x\\cosh x}=\\dfrac{\\sin 2x}{\\sinh 2x}$ 로 줄인다.',
+          '$\\dfrac{1}{\\sinh t}=2\\sum_{n\\ge0}e^{-(2n+1)t}$ 로 펴고 항별로 적분한다.'],
+  steps: ['$u=2x$ 로 두면 $\\dfrac12\\int_{0}^{\\infty}\\dfrac{\\sin u}{\\sinh u}du$',
+          '급수를 넣으면 $\\sum_{n\\ge0}\\dfrac{1}{(2n+1)^{2}+1}$ 꼴이 된다',
+          '$=\\dfrac{\\pi}{4}\\tanh\\dfrac\\pi2$'] });
+
+addDef('monster', '베타 함수', 'sqrt(x/(1-x))*ln(x/(1-x))', 'pi', { lo: '0', hi: '1',
+  hints: ['$B(a,b)=\\int_{0}^{1}x^{a-1}(1-x)^{b-1}dx$ 를 $a$ 로 미분해 $\\ln$ 을 만든다.',
+          '$a=\\frac32,\;b=\\frac12$ 근처에서 미분값을 본다.'],
+  steps: ['$I=\\left.\\dfrac{\\partial}{\\partial s}\\int_{0}^{1}x^{1/2+s}(1-x)^{-1/2-s}dx\\right|_{s=0}$',
+          '베타 함수의 $\\psi$ 표현을 쓰면 $\\pi$ 가 나온다'] });
+
+addDef('monster', '위장된 미분', 'e^(cos(2*x))*sin(x+sin(2*x))/sin(x)', 'pi*e/2',
+  { lo: '0', hi: 'pi/2',
+  hints: ['$\\sin(x+\\sin 2x)=\\sin x\\cos(\\sin 2x)+\\cos x\\sin(\\sin 2x)$ 로 편다.',
+          '$e^{\\cos 2x}\\cos(\\sin 2x)$ 는 $\\mathrm{Re}\\,e^{e^{2ix}}$ 의 실수부다.'],
+  steps: ['복소수로 $\\mathrm{Re}\\,e^{e^{2ix}}$ 를 급수로 편다',
+          '$\\int_{0}^{\\pi/2}$ 에서 상수항만 살아남는다', '$=\\dfrac{\\pi e}{2}$'] });
+
+addDef('monster', '적분대회 고전', 'sqrt(tan(x)*(1-tan(x)))', 'pi*(sqrt((sqrt(2)+1)/2)-1)',
+  { lo: '0', hi: 'pi/4',
+  hints: ['$u=\\tan x$ 로 두면 $\\int_{0}^{1}\\dfrac{\\sqrt{u(1-u)}}{1+u^{2}}du$ 다.',
+          '$u=\\dfrac{1+\\sin\\theta}{2}$ 같은 치환으로 근호를 없앤다.'],
+  steps: ['$u=\\tan x$ 치환', '근호를 없애면 유리 삼각적분이 된다',
+          '$1+u^{2}$ 의 복소 인수분해로 정리하면 답의 중첩 근호가 나온다'] });
+
+addDef('monster', '급수 전개', 'arctan(x)*ln(x)/x', '-pi^3/32', { lo: '0', hi: '1',
+  hints: ['$\\arctan x=\\sum_{n\\ge0}\\dfrac{(-1)^{n}x^{2n+1}}{2n+1}$ 로 펴고 항별로 적분한다.',
+          '$\\int_{0}^{1}x^{2n}\\ln x\\,dx=-\\dfrac{1}{(2n+1)^{2}}$'],
+  steps: ['$-\\sum_{n\\ge0}\\dfrac{(-1)^{n}}{(2n+1)^{3}}$ 가 된다',
+          '이 교대급수는 $\\dfrac{\\pi^{3}}{32}$ 다'] });
+
+addDef('monster', '직교성', 'sin(x)^2020*sin(2022*x)', '1/2021', { lo: '0', hi: 'pi/2',
+  hints: ['$\\int_{0}^{\\pi/2}\\sin^{n}x\\sin((n+2)x)dx=\\dfrac{1}{n+1}$ 이라는 점화 구조를 찾는다.',
+          '$\\sin((n+2)x)=\\sin(nx)\\cos 2x+\\cos(nx)\\sin 2x$ 로 펴고 부분적분한다.'],
+  steps: ['$I_{n}=\\int_{0}^{\\pi/2}\\sin^{n}x\\sin((n+2)x)dx$ 로 두고 점화식을 세운다',
+          '$I_{n}=\\dfrac{1}{n+1}$ 이므로 $n=2020$ 에서 $\\dfrac{1}{2021}$'] });
+
+addDef('monster', '직교성', 'cos(x)^2022*cos(2022*x)', 'pi/2^2023', { lo: '0', hi: 'pi/2',
+  hints: ['$\\cos^{n}x\\cos(nx)$ 는 $\\left(\\dfrac{e^{ix}+e^{-ix}}{2}\\right)^{n}$ 전개에서 상수항만 남는다.',
+          '$\\int_{0}^{\\pi/2}\\cos^{n}x\\cos(nx)dx=\\dfrac{\\pi}{2^{n+1}}$'],
+  steps: ['복소지수로 펴면 $\\mathrm{Re}\\left(\\dfrac{(1+e^{2ix})^{n}}{2^{n}}\\right)$ 꼴',
+          '이항전개에서 진동하지 않는 항만 살아남는다', '$n=2022$ 에서 $\\dfrac{\\pi}{2^{2023}}$'] });
+
+addDef('monster', '파인만 기법', '(x-sin(x))/(x^3*(x^2+4))', 'pi*(1-e^(-2))/32',
+  { lo: '0', hi: 'inf',
+  hints: ['$\\dfrac{1}{x^{3}(x^{2}+4)}=\\dfrac{1}{4x^{3}}-\\dfrac{1}{16x}+\\dfrac{x}{16(x^{2}+4)}$ 로 쪼갠다.',
+          '$\\int_{0}^{\\infty}\\dfrac{x-\\sin x}{x^{3}}dx=\\dfrac\\pi4$ 와 라플라스 변환을 함께 쓴다.'],
+  steps: ['부분분수로 나눈 뒤 각 조각을 디리클레 적분으로 처리한다',
+          '$\\int_{0}^{\\infty}\\dfrac{\\sin x}{x(x^{2}+4)}dx$ 에서 $e^{-2}$ 가 나온다'] });
+
+addDef('monster', '함정 문제', '(2*x^3-3*x^2-x+1)^(1/3)', '0', { lo: '0', hi: '1',
+  hints: ['$x\\to 1-x$ 를 넣어 보면 피적분함수의 부호가 뒤집힌다.',
+          '$2(1-x)^{3}-3(1-x)^{2}-(1-x)+1$ 을 전개해 확인해 보라.'],
+  steps: ['$f(1-x)=-f(x)$ 임을 보인다',
+          '$I=\\int_{0}^{1}f=\\int_{0}^{1}f(1-x)dx=-I$', '따라서 $I=0$'] });
+
+addDef('monster', '괴상한 근호', 'tan(x)^(1/3)', '(pi*sqrt(3)-ln(8))/6', { lo: '0', hi: 'pi/4',
+  hints: ['$u=\\tan^{1/3}x$ 로 두면 $dx=\\dfrac{3u^{2}du}{1+u^{6}}$ 다.',
+          '$\\int_{0}^{1}\\dfrac{3u^{3}}{1+u^{6}}du$ 를 $u^{2}$ 로 다시 치환한다.'],
+  steps: ['$u=\\tan^{1/3}x$', '$t=u^{2}$ 로 두면 $\\dfrac32\\int_{0}^{1}\\dfrac{t\\,dt}{1+t^{3}}$',
+          '부분분수로 풀면 $\\dfrac{\\pi\\sqrt3-\\ln 8}{6}$'] });
+
+addDef('monster', '로그 적분', 'sin(x)*ln(sin(x))/sqrt(1+sin(x)^2)', 'pi*ln(1/2)/8',
+  { lo: '0', hi: 'pi/2',
+  hints: ['$u=\\cos x$ 로 두면 $\\int_{0}^{1}\\dfrac{\\ln\\sqrt{1-u^{2}}}{\\sqrt{2-u^{2}}}du$ 가 된다.',
+          '$\\ln\\sqrt{1-u^{2}}=\\frac12[\\ln(1-u)+\\ln(1+u)]$ 로 쪼갠다.'],
+  steps: ['$u=\\cos x$ 치환', '$u=\\sqrt2\\sin\\theta$ 로 한 번 더 치환한다',
+          '남는 로그 적분에서 $\\dfrac{\\pi\\ln 2}{8}$ 이 나온다'] });
+
 // ================================================================== 검증 + 출력
 
 var LEVELS = ['easy', 'medium', 'hard', 'monster'];
@@ -3984,6 +4310,7 @@ var ID_PREFIX = { easy: 'e', medium: 'm', hard: 'h', monster: 'x' };
 // 기준 부정적분을 수치 미분해 피적분함수와 맞는지 확인한다.
 function checkOne(p) {
   var f, F;
+  if (p.value !== undefined) return checkDefinite(p);
   try { f = M.compile(p.integrand); } catch (e) { return '피적분함수 파싱 실패: ' + e.message; }
   try { F = M.compile(p.answer); } catch (e) { return '기준답 파싱 실패: ' + e.message; }
   var lo = p.domain[0], hi = p.domain[1];
@@ -4003,6 +4330,22 @@ function checkOne(p) {
   return null;
 }
 
+// 정적분은 구적값과 기준값을 견준다.
+function checkDefinite(p) {
+  var f, v;
+  try { f = M.compile(p.integrand); } catch (e) { return '피적분함수 파싱 실패: ' + e.message; }
+  try { v = M.compile(p.value)(0); } catch (e) { return '기준값 파싱 실패: ' + e.message; }
+  if (!isFinite(v)) return '기준값이 유한하지 않음';
+  var got = M.integrate(f, limVal(p.lo), limVal(p.hi));
+  if (!isFinite(got)) return '구적이 발산';
+  var err = Math.abs(got - v) / Math.max(1, Math.abs(v));
+  if (err > 1e-6) return '불일치 구적=' + got.toPrecision(10) + ' 기준=' + v.toPrecision(10) +
+    ' (rel ' + err.toExponential(2) + ')';
+  if (!p.hints || p.hints.length < 2) return '힌트가 부족';
+  if (!p.steps || p.steps.length < 1) return '풀이가 없음';
+  return null;
+}
+
 var failures = [];
 out.forEach(function (p) {
   var why = checkOne(p);
@@ -4014,8 +4357,8 @@ if (failures.length) {
   failures.forEach(function (f) {
     console.error('  [' + f.p.level + '] ' + f.p.topic);
     console.error('    ∫ ' + f.p.integrand + ' dx');
-    console.error('    F = ' + f.p.answer);
-    console.error('    구간 [' + f.p.domain + ']  →  ' + f.why + '\n');
+    console.error('    F = ' + (f.p.answer !== undefined ? f.p.answer : '= ' + f.p.value));
+    console.error('    구간 [' + (f.p.domain || (f.p.lo + ', ' + f.p.hi)) + ']  →  ' + f.why + '\n');
   });
   process.exit(1);
 }
@@ -4030,11 +4373,16 @@ LEVELS.forEach(function (lv) {
 function q(s) { return "'" + String(s).replace(/\\/g, '\\\\').replace(/'/g, "\\'") + "'"; }
 
 function emit(p) {
-  return '    {\n' +
+  var head = '    {\n' +
     '      id: ' + q(p.id) + ', topic: ' + q(p.topic) + ',\n' +
-    '      integrand: ' + q(p.integrand) + ', latex: ' + q(p.latex) + ',\n' +
-    '      answer: ' + q(p.answer) + ', answerLatex: ' + q(p.answerLatex) + ',\n' +
-    '      domain: [' + p.domain[0] + ', ' + p.domain[1] + '],\n' +
+    '      integrand: ' + q(p.integrand) + ', latex: ' + q(p.latex) + ',\n';
+  var body = p.value !== undefined
+    ? '      lo: ' + q(p.lo) + ', hi: ' + q(p.hi) + ',\n' +
+      '      loLatex: ' + q(p.loLatex) + ', hiLatex: ' + q(p.hiLatex) + ',\n' +
+      '      value: ' + q(p.value) + ', valueLatex: ' + q(p.valueLatex) + ',\n'
+    : '      answer: ' + q(p.answer) + ', answerLatex: ' + q(p.answerLatex) + ',\n' +
+      '      domain: [' + p.domain[0] + ', ' + p.domain[1] + '],\n';
+  return head + body +
     '      hints: [' + p.hints.map(q).join(', ') + '],\n' +
     '      steps: [' + p.steps.map(q).join(', ') + ']\n' +
     '    }';

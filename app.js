@@ -296,7 +296,7 @@
     var btn = document.createElement('button');
     btn.className = 'btn ghost sm';
     btn.textContent = store.admin ? '잠그기' : '관리자 키';
-    btn.onclick = store.admin ? lockAdmin : askAdminKey;
+    btn.onclick = store.admin ? lockAdmin : function () { askAdminKey(); };
     bar.appendChild(btn);
   }
 
@@ -456,8 +456,16 @@
       modeChip.classList.add('hidden');
     }
 
-    renderTex($('problemBox'), '\\int ' + problem.latex + '\\,dx', true,
+    var isDef = problem.value !== undefined;
+    var bounds = isDef ? '_{' + problem.loLatex + '}^{' + problem.hiLatex + '}' : '';
+    renderTex($('problemBox'), '\\int' + bounds + ' ' + problem.latex + '\\,dx', true,
       '∫ ' + problem.integrand + ' dx');
+
+    // 정적분은 답이 상수라 입력 안내와 팔레트가 달라진다
+    $('answerInput').placeholder = isDef
+      ? '예:  pi^2/6     (x 없는 상수로 답하세요)'
+      : '예:  x³/3 + C     (적분상수는 생략해도 됩니다)';
+    $('palette').classList.toggle('def', isDef);
 
     $('nextBtn').classList.toggle('hidden', session.mode !== 'practice');
     $('answerInput').value = '';
@@ -518,7 +526,8 @@
       row.appendChild(body);
       steps.appendChild(row);
     });
-    renderTex($('finalAnswer'), p.answerLatex, false, p.answer + ' + C');
+    if (p.value !== undefined) renderTex($('finalAnswer'), p.valueLatex, false, '= ' + p.value);
+    else renderTex($('finalAnswer'), p.answerLatex, false, p.answer + ' + C');
     $('solution').classList.add('show');
     session.revealed = true;
     if (session.mode !== 'practice') {
@@ -537,7 +546,9 @@
 
     var res;
     try {
-      res = MathExpr.compareAntiderivative(raw, p.answer, p.domain, p.integrand);
+      res = p.value !== undefined
+        ? MathExpr.compareValue(raw, p.value)
+        : MathExpr.compareAntiderivative(raw, p.answer, p.domain, p.integrand);
     } catch (e) {
       showFeedback('bad', '수식을 읽을 수 없습니다: ' + e.message);
       return;
@@ -566,8 +577,12 @@
       showFeedback('bad', '수식 해석 실패: ' + res.detail);
     } else if (res.reason === 'novar') {
       showFeedback('bad', res.detail + ' 부정적분은 x 의 함수여야 합니다.');
+    } else if (res.reason === 'hasvar' || res.reason === 'hasfree' || res.reason === 'nan') {
+      showFeedback('bad', res.detail);
     } else if (res.reason === 'domain') {
       showFeedback('bad', res.detail);
+    } else if (p.value !== undefined) {
+      showFeedback('bad', '<b>오답입니다.</b> 값이 맞지 않습니다.');
     } else {
       showFeedback('bad', '<b>오답입니다.</b> ' + (res.detail || '미분해서 피적분함수가 되는지 확인해 보세요.'));
     }

@@ -4432,6 +4432,1889 @@ addDef('monster', '괴상한 겉모습', 'x^2*sech((x^4-10*x^2+6*x+7)/(x^3-7*x+6
           '글래서 정리로 $\\int_{\\mathbb R}x^{2}\\operatorname{sech}x\\,dx$ 로 바뀐다 (보정항 포함)',
           '$=\\dfrac{\\pi^{3}}{4}+3\\pi$'] });
 
+
+// ================================================================== MIT 적분 벌 예선 (2010~2023)
+//
+//   MIT Integration Bee 예선 문제들. 문제 자체는 MIT 가 공개한 것이고,
+//   힌트와 풀이는 여기서 새로 썼다. 기준 부정적분·정적분 값은 전부
+//   아래 검증 단계에서 수치로 확인한다.
+//
+//   전체 280문항 중 259문항을 옮겼다. 빠진 21문항과 이유:
+//     바닥·천장함수      2012#7, 2013#14, 2014#18, 2016#8, 2022#3, 2023#8
+//     중첩 절댓값        2023#11
+//     극한 문제(적분 아님) 2017#15, 2019#12, 2022#11
+//     음수의 홀수 거듭제곱근 (파서가 NaN)  2014#2, 2016#7
+//     진동이 너무 빨라 수치적분 불가  2018#3, 2019#6
+//     이항계수가 천문학적  2020#9
+//     급수·무한곱 형태     2020#14, 2022#17(→1-x 로 중복), 2023#17(→1-x 로 중복)
+//     피적분함수가 항등적으로 0 (부정적분 채점 불가)  2023#10
+//     정리하면 x 하나뿐  2020#6
+
+// --- 2010 -----------------------------------------------------------
+
+addDef('hard', '곱-합 공식', 'sin(x)*sin(2*x)*sin(3*x)', '1/6',
+  { lo: '0', hi: 'pi/2',
+  hints: ['$\\sin x\\sin 3x$ 를 먼저 합으로 바꾼다.',
+          '남은 $\\sin 2x$ 를 곱하면 $\\sin 2x,\\sin 4x,\\sin 6x$ 만 남는다.'],
+  steps: ['$\\sin x\\sin3x=\\dfrac{\\cos2x-\\cos4x}{2}$',
+          '정리하면 피적분함수는 $\\dfrac{\\sin2x+\\sin4x-\\sin6x}{4}$',
+          '$=\\dfrac{1}{4}\\left(1+0-\\dfrac13\\right)=\\dfrac16$'] });
+
+addDef('hard', '삼각 치환', 'sin(2*x)^3*cos(x)', '16/35',
+  { lo: '0', hi: 'pi/2',
+  hints: ['$\\sin 2x=2\\sin x\\cos x$ 를 먼저 풀어 쓴다.',
+          '$8\\sin^{3}x\\cos^{4}x$ 가 되면 $u=\\cos x$ 로 끝난다.'],
+  steps: ['$\\sin^{3}2x\\cos x=8\\sin^{3}x\\cos^{4}x$',
+          '$u=\\cos x$ 로 두면 $8\\int_{0}^{1}(1-u^{2})u^{4}du$',
+          '$=8\\left(\\dfrac15-\\dfrac17\\right)=\\dfrac{16}{35}$'] });
+
+add('hard', '치환적분', '(x+1)^2*(x-1)^(1/3)',
+    '(3/10)*(x-1)^(10/3)+(12/7)*(x-1)^(7/3)+3*(x-1)^(4/3)',
+  { domain: [1.2, 3.0],
+  hints: ['$u=x-1$ 로 두면 $x+1=u+2$ 가 된다.',
+          '$(u+2)^{2}u^{1/3}$ 을 전개하면 거듭제곱 세 개다.'],
+  steps: ['$u=x-1$ 치환',
+          '$(u^{2}+4u+4)u^{1/3}=u^{7/3}+4u^{4/3}+4u^{1/3}$',
+          '항마다 거듭제곱 법칙을 쓴다'] });
+
+add('hard', '부분적분', 'x*ln(1+1/x)',
+    'x^2*ln(1+1/x)/2+x/2-ln(x+1)/2',
+  { domain: [0.4, 3.0],
+  hints: ['$\\ln\\left(1+\\dfrac1x\\right)=\\ln(x+1)-\\ln x$ 로 쪼개면 미분이 쉽다.',
+          '그 도함수는 $-\\dfrac{1}{x(x+1)}$ 이다.'],
+  steps: ['$u=\\ln(1+1/x),\\ dv=x\\,dx$ 로 부분적분',
+          '$\\dfrac{x^{2}}{2}\\ln\\left(1+\\dfrac1x\\right)+\\dfrac12\\int\\dfrac{x}{x+1}dx$',
+          '$=\\dfrac{x^{2}}{2}\\ln\\left(1+\\dfrac1x\\right)+\\dfrac{x}{2}-\\dfrac{\\ln(x+1)}{2}$'] });
+
+addDef('hard', '로그 치환', 'sin(ln(x))^2', '2/5',
+  { lo: '0', hi: '1',
+  hints: ['$t=\\ln x$ 로 두면 구간이 $(-\\infty,0]$ 이 되고 $dx=e^{t}dt$ 다.',
+          '$\\sin^{2}t=\\dfrac{1-\\cos2t}{2}$ 로 낮춘다.'],
+  steps: ['$t=\\ln x$ 치환 $\\Rightarrow\\int_{-\\infty}^{0}\\sin^{2}t\\,e^{t}dt$',
+          '$\\int_{-\\infty}^{0}e^{t}dt=1,\\ \\int_{-\\infty}^{0}e^{t}\\cos2t\\,dt=\\dfrac15$',
+          '$=\\dfrac{1}{2}\\left(1-\\dfrac15\\right)=\\dfrac25$'] });
+
+add('medium', '지수 유리식', '1/(1+3*e^x)', 'x-ln(1+3*e^x)',
+  { domain: [-1.0, 2.0],
+  hints: ['$\\dfrac{1}{1+3e^{x}}=1-\\dfrac{3e^{x}}{1+3e^{x}}$ 로 쪼갠다.',
+          '뒤쪽은 분모의 도함수가 분자다.'],
+  steps: ['$1-\\dfrac{3e^{x}}{1+3e^{x}}$ 로 나눈다',
+          '뒤 항은 $\\ln(1+3e^{x})$',
+          '$=x-\\ln(1+3e^{x})$'] });
+
+addDef('monster', '탄젠트 치환', '1/(sin(x)^3*cos(x)^5)', '16/3+3*ln(3)/2',
+  { lo: 'pi/4', hi: 'pi/3',
+  hints: ['$t=\\tan x$ 로 두면 $\\sin^{3}x\\cos^{5}x=\\dfrac{t^{3}}{(1+t^{2})^{4}}$ 다.',
+          '$dx=\\dfrac{dt}{1+t^{2}}$ 를 곱하면 $\\dfrac{(1+t^{2})^{3}}{t^{3}}$ 만 남는다.'],
+  steps: ['$t=\\tan x$ 치환 $\\Rightarrow\\displaystyle\\int_{1}^{\\sqrt3}\\dfrac{(1+t^{2})^{3}}{t^{3}}dt$',
+          '전개하면 $t^{-3}+3t^{-1}+3t+t^{3}$',
+          '$\\left[-\\dfrac{1}{2t^{2}}+3\\ln t+\\dfrac{3t^{2}}{2}+\\dfrac{t^{4}}{4}\\right]_{1}^{\\sqrt3}=\\dfrac{16}{3}+\\dfrac{3\\ln3}{2}$'] });
+
+addDef('hard', '역삼각 치환', '1/(x*sqrt(x^4-1))', 'pi/4',
+  { lo: '1', hi: 'inf',
+  hints: ['분자·분모에 $x$ 를 곱해 $u=x^{2}$ 를 만든다.',
+          '$\\int\\dfrac{du}{u\\sqrt{u^{2}-1}}=\\operatorname{arcsec}u$ 다.'],
+  steps: ['$u=x^{2}\\Rightarrow\\dfrac12\\int_{1}^{\\infty}\\dfrac{du}{u\\sqrt{u^{2}-1}}$',
+          '$=\\dfrac12\\left[\\operatorname{arcsec}u\\right]_{1}^{\\infty}$',
+          '$=\\dfrac12\\cdot\\dfrac{\\pi}{2}=\\dfrac{\\pi}{4}$'] });
+
+add('hard', '부분분수', '1/(x*(x^5+1))', 'ln(x)-ln(x^5+1)/5',
+  { domain: [0.4, 2.4],
+  hints: ['$\\dfrac{1}{x(x^{5}+1)}=\\dfrac1x-\\dfrac{x^{4}}{x^{5}+1}$ 이다.',
+          '뒤쪽은 분모의 도함수가 $5x^{4}$ 다.'],
+  steps: ['$\\dfrac1x-\\dfrac{x^{4}}{x^{5}+1}$ 로 쪼갠다',
+          '$=\\ln x-\\dfrac{1}{5}\\ln(x^{5}+1)$'] });
+
+addDef('monster', '분수 지수', 'sqrt(tan(x))', 'pi/(2*sqrt(2))+ln(sqrt(2)-1)/sqrt(2)',
+  { lo: '0', hi: 'pi/4',
+  hints: ['$u=\\sqrt{\\tan x}$ 로 두면 $dx=\\dfrac{2u\\,du}{1+u^{4}}$ 다.',
+          '$\\dfrac{2u^{2}}{1+u^{4}}$ 는 $1+u^{4}=(u^{2}+\\sqrt2u+1)(u^{2}-\\sqrt2u+1)$ 로 쪼갠다.'],
+  steps: ['$u=\\sqrt{\\tan x}\\Rightarrow2\\displaystyle\\int_{0}^{1}\\dfrac{u^{2}}{1+u^{4}}du$',
+          '$\\dfrac{1}{2\\sqrt2}\\ln\\dfrac{u^{2}-\\sqrt2u+1}{u^{2}+\\sqrt2u+1}+\\dfrac{1}{\\sqrt2}\\left(\\arctan(\\sqrt2u+1)+\\arctan(\\sqrt2u-1)\\right)$ 를 대입',
+          '$=\\dfrac{\\pi}{2\\sqrt2}+\\dfrac{\\ln(\\sqrt2-1)}{\\sqrt2}$'] });
+
+addDef('monster', '킹 성질', 'ln(1+x)/(1+x^2)', 'pi*ln(2)/8',
+  { lo: '0', hi: '1',
+  hints: ['$x=\\tan\\theta$ 로 두면 $\\int_{0}^{\\pi/4}\\ln(1+\\tan\\theta)d\\theta$ 가 된다.',
+          '$\\theta\\to\\dfrac\\pi4-\\theta$ 를 넣고 두 식을 더해 보라.'],
+  steps: ['$x=\\tan\\theta$ 치환',
+          '$\\ln(1+\\tan\\theta)+\\ln\\left(1+\\tan\\left(\\tfrac\\pi4-\\theta\\right)\\right)=\\ln2$',
+          '$2I=\\dfrac{\\pi}{4}\\ln2\\Rightarrow I=\\dfrac{\\pi\\ln2}{8}$'] });
+
+addDef('hard', '거듭제곱근 치환', 'sqrt(x)/(sqrt(x)-x^(1/3))', '10747/10+6*ln(2)',
+  { lo: '64', hi: '729',
+  hints: ['$2$ 와 $3$ 의 최소공배수를 보고 $x=t^{6}$ 으로 둔다.',
+          '적분 구간이 $t=2$ 에서 $t=3$ 으로 깔끔해진다.'],
+  steps: ['$x=t^{6},\\ dx=6t^{5}dt\\Rightarrow\\displaystyle\\int_{2}^{3}\\dfrac{6t^{6}}{t-1}dt$',
+          '$\\dfrac{t^{6}}{t-1}=t^{5}+t^{4}+t^{3}+t^{2}+t+1+\\dfrac{1}{t-1}$',
+          '$=\\dfrac{10747}{10}+6\\ln2$'] });
+
+add('monster', '지수 탑', 'x^x*(1+ln(x))', 'x^x',
+  { domain: [0.45, 2.2],
+  hints: ['$x^{x}=e^{x\\ln x}$ 로 쓰고 미분해 보라.',
+          '$(x^{x})\'=x^{x}(1+\\ln x)$ 다.'],
+  steps: ['$x^{x}=e^{x\\ln x}$',
+          '$(e^{x\\ln x})\'=e^{x\\ln x}(\\ln x+1)$',
+          '피적분함수가 그대로 도함수이므로 $=x^{x}$'] });
+
+addDef('hard', '치환적분', 'x^(13/2)*sqrt(1+x^(5/2))', '(88*sqrt(2)-32)/525',
+  { lo: '0', hi: '1',
+  hints: ['$t=1+x^{5/2}$ 로 두면 $dt=\\dfrac52x^{3/2}dx$ 다.',
+          '$x^{13/2}=x^{5}\\cdot x^{3/2}$ 이고 $x^{5}=(t-1)^{2}$ 이다.'],
+  steps: ['$t=1+x^{5/2}\\Rightarrow\\dfrac25\\displaystyle\\int_{1}^{2}(t-1)^{2}\\sqrt t\\,dt$',
+          '$=\\dfrac25\\int_{1}^{2}\\left(t^{5/2}-2t^{3/2}+t^{1/2}\\right)dt$',
+          '$=\\dfrac{88\\sqrt2-32}{525}$'] });
+
+addDef('medium', '삼각 치환', '1/(1+x^2)^2', 'pi/4',
+  { lo: '0', hi: 'inf',
+  hints: ['$x=\\tan\\theta$ 로 두면 $\\dfrac{dx}{(1+x^{2})^{2}}=\\cos^{2}\\theta\\,d\\theta$ 다.',
+          '구간은 $0$ 에서 $\\dfrac\\pi2$ 가 된다.'],
+  steps: ['$x=\\tan\\theta$ 치환',
+          '$\\int_{0}^{\\pi/2}\\cos^{2}\\theta\\,d\\theta=\\dfrac{\\pi}{4}$'] });
+
+addDef('hard', '부분분수', '1/(x^4-13*x^2+36)', 'ln(3)/20-ln(2)/30',
+  { lo: '0', hi: '1',
+  hints: ['$x^{4}-13x^{2}+36=(x^{2}-4)(x^{2}-9)$ 이다.',
+          '$\\dfrac{1}{(x^{2}-4)(x^{2}-9)}=\\dfrac15\\left(\\dfrac{1}{x^{2}-9}-\\dfrac{1}{x^{2}-4}\\right)$'],
+  steps: ['부분분수로 쪼갠다',
+          '$\\int\\dfrac{dx}{x^{2}-a^{2}}=\\dfrac{1}{2a}\\ln\\left|\\dfrac{x-a}{x+a}\\right|$',
+          '$=\\dfrac{\\ln3}{20}-\\dfrac{\\ln2}{30}$'] });
+
+add('medium', '로그 치환', 'ln(ln(x))/x', 'ln(x)*ln(ln(x))-ln(x)',
+  { domain: [1.45, 4.0],
+  hints: ['$u=\\ln x$ 로 두면 $\\int\\ln u\\,du$ 가 된다.',
+          '$\\int\\ln u\\,du=u\\ln u-u$ 다.'],
+  steps: ['$u=\\ln x,\\ du=\\dfrac{dx}{x}$',
+          '$\\int\\ln u\\,du=u\\ln u-u$',
+          '$=\\ln x\\ln(\\ln x)-\\ln x$'] });
+
+add('hard', '삼각 유리식', '(1+cot(x))/(1-cot(x))', 'ln(sin(x)-cos(x))',
+  { domain: [1.0, 2.5], lnAbs: true,
+  hints: ['분자·분모에 $\\sin x$ 를 곱하면 $\\dfrac{\\sin x+\\cos x}{\\sin x-\\cos x}$ 다.',
+          '분모의 도함수가 정확히 분자다.'],
+  steps: ['$\\dfrac{1+\\cot x}{1-\\cot x}=\\dfrac{\\sin x+\\cos x}{\\sin x-\\cos x}$',
+          '$u=\\sin x-\\cos x\\Rightarrow du=(\\cos x+\\sin x)dx$',
+          '$=\\ln|\\sin x-\\cos x|$'] });
+
+add('monster', '로그 미분 되짚기', '(cos(x)+x*sin(x))/(x*(x+cos(x)))',
+    'ln(x/(x+cos(x)))',
+  { domain: [1.0, 3.0], lnAbs: true,
+  hints: ['답이 $\\ln\\dfrac{f}{g}$ 꼴이라고 짐작하고 미분해 보라.',
+          '$\\dfrac1x-\\dfrac{1-\\sin x}{x+\\cos x}$ 를 통분하면 무엇이 되는가?'],
+  steps: ['$\\left(\\ln\\dfrac{x}{x+\\cos x}\\right)\'=\\dfrac1x-\\dfrac{1-\\sin x}{x+\\cos x}$',
+          '통분하면 $\\dfrac{\\cos x+x\\sin x}{x(x+\\cos x)}$',
+          '$=\\ln\\left|\\dfrac{x}{x+\\cos x}\\right|$'] });
+
+addDef('monster', '바이어슈트라스 치환', '1/(sin(x)+sec(x))', 'ln(2+sqrt(3))/sqrt(3)',
+  { lo: '0', hi: 'pi/2',
+  hints: ['$\\dfrac{1}{\\sin x+\\sec x}=\\dfrac{\\cos x}{1+\\sin x\\cos x}$ 로 고친다.',
+          '$s=\\sin x$ 로 두면 $\\displaystyle\\int_{0}^{1}\\dfrac{ds}{1+s\\sqrt{1-s^{2}}}$ 다.'],
+  steps: ['$\\dfrac{\\cos x}{1+\\sin x\\cos x}$ 로 정리',
+          '유리화하면 $\\dfrac{1-s\\sqrt{1-s^{2}}}{s^{4}-s^{2}+1}$',
+          '$s^{4}-s^{2}+1=(s^{2}+\\sqrt3s+1)(s^{2}-\\sqrt3s+1)$ 로 쪼개면 $\\dfrac{\\ln(2+\\sqrt3)}{\\sqrt3}$'] });
+
+addDef('hard', '지수 치환', '1/sqrt(1+e^x+e^(2*x))', 'ln(1+2/sqrt(3))',
+  { lo: '0', hi: 'inf',
+  hints: ['$u=e^{x}$ 로 두면 $\\displaystyle\\int_{1}^{\\infty}\\dfrac{du}{u\\sqrt{u^{2}+u+1}}$ 다.',
+          '$\\int\\dfrac{du}{u\\sqrt{au^{2}+bu+c}}$ 는 $c>0$ 일 때 $u\\to1/u$ 로 풀린다.'],
+  steps: ['$u=e^{x}$ 치환',
+          '$-\\ln\\dfrac{2+u+2\\sqrt{u^{2}+u+1}}{u}$ 가 원시함수다',
+          '$=\\ln\\dfrac{3+2\\sqrt3}{3}=\\ln\\left(1+\\dfrac{2}{\\sqrt3}\\right)$'] });
+
+addDef('medium', '치환 후 부분적분', 'x^3*e^(x^2)', '1/2',
+  { lo: '0', hi: '1',
+  hints: ['$u=x^{2}$ 로 두면 $\\dfrac12\\int_{0}^{1}ue^{u}du$ 다.',
+          '$\\int ue^{u}du=(u-1)e^{u}$'],
+  steps: ['$u=x^{2}\\Rightarrow\\dfrac12\\int_{0}^{1}ue^{u}du$',
+          '$=\\dfrac12\\left[(u-1)e^{u}\\right]_{0}^{1}=\\dfrac12(0+1)=\\dfrac12$'] });
+
+addDef('monster', '무한 중첩 근호', '(x+sqrt(x^2+4))/2',
+    '1/4+sqrt(5)/4+ln((1+sqrt(5))/2)',
+  { lo: '0', hi: '1',
+  hints: ['$y=\\sqrt{1+x\\sqrt{1+x\\sqrt{\\cdots}}}$ 는 $y^{2}=1+xy$ 를 만족한다.',
+          '양수 해는 $y=\\dfrac{x+\\sqrt{x^{2}+4}}{2}$ 다.'],
+  steps: ['$y^{2}=1+xy\\Rightarrow y=\\dfrac{x+\\sqrt{x^{2}+4}}{2}$',
+          '$\\int\\sqrt{x^{2}+4}\\,dx=\\dfrac{x\\sqrt{x^{2}+4}}{2}+2\\ln\\left(x+\\sqrt{x^{2}+4}\\right)$',
+          '$=\\dfrac14+\\dfrac{\\sqrt5}{4}+\\ln\\dfrac{1+\\sqrt5}{2}$'] });
+
+add('hard', '미분 되짚기', '1/ln(x)-1/ln(x)^2', 'x/ln(x)',
+  { domain: [1.45, 4.0],
+  hints: ['$\\left(\\dfrac{x}{\\ln x}\\right)\'$ 를 계산해 보라.',
+          '몫의 미분법으로 $\\dfrac{\\ln x-1}{\\ln^{2}x}$ 가 나온다.'],
+  steps: ['$\\left(\\dfrac{x}{\\ln x}\\right)\'=\\dfrac{\\ln x-1}{\\ln^{2}x}$',
+          '$=\\dfrac{1}{\\ln x}-\\dfrac{1}{\\ln^{2}x}$',
+          '피적분함수와 같으므로 $=\\dfrac{x}{\\ln x}$'] });
+
+addDef('hard', '베타 함수', 'sqrt(x-1)*sqrt(2-x)', 'pi/8',
+  { lo: '1', hi: '2',
+  hints: ['$x=1+t$ 로 옮기면 $\\int_{0}^{1}\\sqrt{t(1-t)}\\,dt$ 다.',
+          '반원의 넓이로 읽어도 되고 $t=\\sin^{2}\\theta$ 로 풀어도 된다.'],
+  steps: ['$x=1+t$ 로 평행이동',
+          '$\\int_{0}^{1}\\sqrt{t(1-t)}dt$ 는 반지름 $\\dfrac12$ 인 반원의 넓이',
+          '$=\\dfrac{\\pi}{8}$'] });
+
+
+// --- 2011 -----------------------------------------------------------
+
+add('hard', '인수분해', '(x^6-1)/(x^4+x^3-x-1)', 'x^3/3-x^2/2+x',
+  { domain: [0.3, 2.4],
+  hints: ['분모를 묶어 보라: $x^{3}(x+1)-(x+1)$ 이다.',
+          '$x^{6}-1=(x^{3}-1)(x^{3}+1)$ 로 쪼개면 대부분 약분된다.'],
+  steps: ['$x^{4}+x^{3}-x-1=(x+1)(x-1)(x^{2}+x+1)$',
+          '$x^{6}-1=(x-1)(x^{2}+x+1)(x+1)(x^{2}-x+1)$',
+          '약분하면 $x^{2}-x+1$ 만 남는다'] });
+
+add('medium', '부분적분', '2*ln(x)+ln(x)^2', 'x*ln(x)^2',
+  { domain: D.pos,
+  hints: ['$\\left(x\\ln^{2}x\\right)\'$ 를 곱의 미분법으로 계산해 보라.',
+          '$\\ln^{2}x+2\\ln x$ 가 나온다.'],
+  steps: ['$\\left(x\\ln^{2}x\\right)\'=\\ln^{2}x+x\\cdot\\dfrac{2\\ln x}{x}$',
+          '$=\\ln^{2}x+2\\ln x$',
+          '피적분함수와 같으므로 $=x\\ln^{2}x$'] });
+
+add('medium', '치환적분', '2*x/sqrt(1-x^4)', 'asin(x^2)',
+  { domain: [0.15, 0.9],
+  hints: ['$u=x^{2}$ 로 두면 $du=2x\\,dx$ 다.',
+          '$\\int\\dfrac{du}{\\sqrt{1-u^{2}}}=\\arcsin u$'],
+  steps: ['$u=x^{2}$ 치환', '$\\int\\dfrac{du}{\\sqrt{1-u^{2}}}=\\arcsin u$', '$=\\arcsin(x^{2})$'] });
+
+add('medium', '다항식 나눗셈', '(x^2+1)/(x+1)', 'x^2/2-x+2*ln(x+1)',
+  { domain: D.poly, lnAbs: true,
+  hints: ['분자를 분모로 나눠 몫과 나머지를 구한다.',
+          '$x^{2}+1=(x+1)(x-1)+2$'],
+  steps: ['$\\dfrac{x^{2}+1}{x+1}=x-1+\\dfrac{2}{x+1}$',
+          '$=\\dfrac{x^{2}}{2}-x+2\\ln|x+1|$'] });
+
+add('hard', '삼각 유리식', '(sin(x)^3+sin(x)^2-2*sin(x)-2)/(sin(x)^2+2*sin(x)+1)',
+    '-cos(x)-x-tan(x)+1/cos(x)',
+  { domain: D.trig,
+  hints: ['$s=\\sin x$ 로 보고 분자·분모를 인수분해한다.',
+          '$\\dfrac{(s+1)(s^{2}-2)}{(s+1)^{2}}=\\dfrac{s^{2}-2}{s+1}=s-1-\\dfrac{1}{s+1}$'],
+  steps: ['정리하면 $\\sin x-1-\\dfrac{1}{1+\\sin x}$',
+          '$\\int\\dfrac{dx}{1+\\sin x}=\\tan x-\\sec x$',
+          '$=-\\cos x-x-\\tan x+\\sec x$'] });
+
+add('medium', '쌍곡선함수', '1/sinh(x)^2', '-cosh(x)/sinh(x)',
+  { domain: D.hyp,
+  hints: ['$\\operatorname{csch}^{2}x$ 의 원시함수는 $-\\coth x$ 다.',
+          '$(\\coth x)\'=-\\operatorname{csch}^{2}x$ 를 확인해 보라.'],
+  steps: ['$(\\coth x)\'=\\dfrac{\\sinh^{2}x-\\cosh^{2}x}{\\sinh^{2}x}=-\\dfrac{1}{\\sinh^{2}x}$',
+          '$=-\\coth x$'] });
+
+add('medium', '삼각 치환', 'sec(x)^4*tan(x)^2', 'tan(x)^3/3+tan(x)^5/5',
+  { domain: D.trig,
+  hints: ['$\\sec^{2}x$ 하나를 $dx$ 쪽에 남기고 나머지를 $\\tan$ 으로 바꾼다.',
+          '$\\sec^{2}x=1+\\tan^{2}x$'],
+  steps: ['$u=\\tan x,\\ du=\\sec^{2}x\\,dx$',
+          '$\\int(1+u^{2})u^{2}du=\\dfrac{u^{3}}{3}+\\dfrac{u^{5}}{5}$'] });
+
+add('hard', '항등식 정리', 'sqrt(csc(x)-sin(x))', '2*sqrt(sin(x))',
+  { domain: [0.25, 1.4],
+  hints: ['$\\csc x-\\sin x=\\dfrac{1-\\sin^{2}x}{\\sin x}=\\dfrac{\\cos^{2}x}{\\sin x}$',
+          '근호를 벗기면 $\\dfrac{\\cos x}{\\sqrt{\\sin x}}$ 다.'],
+  steps: ['$\\csc x-\\sin x=\\dfrac{\\cos^{2}x}{\\sin x}$',
+          '$\\int\\dfrac{\\cos x}{\\sqrt{\\sin x}}dx$ 는 $u=\\sin x$ 로 끝',
+          '$=2\\sqrt{\\sin x}$'] });
+
+add('hard', '차수 낮추기', 'cos(x)^6',
+    '5*x/16+15*sin(2*x)/64+3*sin(4*x)/64+sin(6*x)/192',
+  { domain: D.trigW,
+  hints: ['$\\cos^{2}x=\\dfrac{1+\\cos2x}{2}$ 를 세 번 쓴다.',
+          '$\\cos^{6}x=\\dfrac{10+15\\cos2x+6\\cos4x+\\cos6x}{32}$'],
+  steps: ['배각 공식으로 차수를 낮춘다',
+          '$\\cos^{6}x=\\dfrac{10+15\\cos2x+6\\cos4x+\\cos6x}{32}$',
+          '항마다 적분한다'] });
+
+add('medium', '삼각 치환', '1/(x^4+2*x^2+1)', 'x/(2*(x^2+1))+atan(x)/2',
+  { domain: D.all,
+  hints: ['$x^{4}+2x^{2}+1=(x^{2}+1)^{2}$ 이다.',
+          '$x=\\tan\\theta$ 로 두면 $\\int\\cos^{2}\\theta\\,d\\theta$ 다.'],
+  steps: ['$(x^{2}+1)^{2}$ 로 묶는다',
+          '$x=\\tan\\theta$ 치환 후 차수를 낮춘다',
+          '$=\\dfrac{x}{2(x^{2}+1)}+\\dfrac{\\arctan x}{2}$'] });
+
+add('hard', '순환 부분적분', 'cos(ln(x))', 'x*(cos(ln(x))+sin(ln(x)))/2',
+  { domain: D.pos,
+  hints: ['부분적분을 두 번 하면 원래 적분이 다시 나온다.',
+          '$t=\\ln x$ 로 두고 $\\int e^{t}\\cos t\\,dt$ 로 봐도 된다.'],
+  steps: ['$t=\\ln x\\Rightarrow\\int e^{t}\\cos t\\,dt$',
+          '$=\\dfrac{e^{t}(\\cos t+\\sin t)}{2}$',
+          '$=\\dfrac{x(\\cos(\\ln x)+\\sin(\\ln x))}{2}$'] });
+
+add('hard', '유리화', '1/(9*cos(x)^2+4*sin(x)^2)', 'atan(2*tan(x)/3)/6',
+  { domain: D.trig,
+  hints: ['분자·분모를 $\\cos^{2}x$ 로 나눈다.',
+          '$\\dfrac{\\sec^{2}x}{9+4\\tan^{2}x}$ 에서 $u=\\tan x$'],
+  steps: ['$\\dfrac{\\sec^{2}x\\,dx}{9+4\\tan^{2}x}$',
+          '$u=\\tan x\\Rightarrow\\int\\dfrac{du}{9+4u^{2}}$',
+          '$=\\dfrac{1}{6}\\arctan\\dfrac{2\\tan x}{3}$'] });
+
+add('monster', '역수 치환', '1/(x^2*(x^4+1)^(3/4))', '-(x^4+1)^(1/4)/x',
+  { domain: [0.4, 2.6],
+  hints: ['$(x^{4}+1)^{3/4}=x^{3}\\left(1+x^{-4}\\right)^{3/4}$ 로 $x$ 를 뽑아낸다.',
+          '$u=1+x^{-4}$ 로 두면 $du=-4x^{-5}dx$ 다.'],
+  steps: ['피적분함수를 $x^{-5}(1+x^{-4})^{-3/4}$ 로 고친다',
+          '$u=1+x^{-4}\\Rightarrow-\\dfrac14\\int u^{-3/4}du=-u^{1/4}$',
+          '$=-\\dfrac{(x^{4}+1)^{1/4}}{x}$'] });
+
+addDef('hard', '곱-합 공식', 'cos(x)*cos(3*x)*cos(5*x)', '0',
+  { lo: '0', hi: 'pi',
+  hints: ['곱을 합으로 바꾸면 $\\cos kx$ 들만 남는다.',
+          '$\\int_{0}^{\\pi}\\cos kx\\,dx=0$ (정수 $k\\neq0$)'],
+  steps: ['$\\cos x\\cos3x\\cos5x=\\dfrac{\\cos9x+\\cos7x+\\cos3x+\\cos x}{4}$',
+          '$k=1,3,7,9$ 모두 $\\int_{0}^{\\pi}\\cos kx\\,dx=0$',
+          '$=0$'] });
+
+add('hard', '미분 되짚기', '1/ln(x)+ln(ln(x))', 'x*ln(ln(x))',
+  { domain: D.lnln,
+  hints: ['$\\left(x\\ln(\\ln x)\\right)\'$ 를 계산해 보라.',
+          '곱의 미분법으로 $\\ln(\\ln x)+\\dfrac{1}{\\ln x}$ 가 나온다.'],
+  steps: ['$\\left(x\\ln(\\ln x)\\right)\'=\\ln(\\ln x)+x\\cdot\\dfrac{1}{x\\ln x}$',
+          '$=\\ln(\\ln x)+\\dfrac{1}{\\ln x}$',
+          '$=x\\ln(\\ln x)$'] });
+
+add('medium', '지수 유리식', '1/(2+e^x)', 'x/2-ln(2+e^x)/2',
+  { domain: D.all,
+  hints: ['$\\dfrac{1}{2+e^{x}}=\\dfrac12\\left(1-\\dfrac{e^{x}}{2+e^{x}}\\right)$',
+          '뒤쪽은 분모의 도함수가 분자다.'],
+  steps: ['둘로 쪼갠다', '$=\\dfrac{x}{2}-\\dfrac{\\ln(2+e^{x})}{2}$'] });
+
+add('monster', '이항 미분식', 'sqrt(x/(1-x^3))', '(2/3)*asin(x^(3/2))',
+  { domain: [0.1, 0.85],
+  hints: ['$u=x^{3/2}$ 로 두면 $du=\\dfrac32\\sqrt x\\,dx$ 다.',
+          '$1-x^{3}=1-u^{2}$ 가 된다.'],
+  steps: ['$u=x^{3/2}\\Rightarrow\\dfrac23\\displaystyle\\int\\dfrac{du}{\\sqrt{1-u^{2}}}$',
+          '$=\\dfrac23\\arcsin u=\\dfrac23\\arcsin\\left(x^{3/2}\\right)$'] });
+
+add('medium', '치환적분', '4*x/(1-x^4)', 'ln((1+x^2)/(1-x^2))',
+  { domain: [0.15, 0.85], lnAbs: true,
+  hints: ['$u=x^{2}$ 로 두면 $2\\int\\dfrac{du}{1-u^{2}}$ 다.',
+          '$\\int\\dfrac{du}{1-u^{2}}=\\dfrac12\\ln\\left|\\dfrac{1+u}{1-u}\\right|$'],
+  steps: ['$u=x^{2}$ 치환', '$=\\ln\\left|\\dfrac{1+x^{2}}{1-x^{2}}\\right|$'] });
+
+addDef('medium', '넓이로 읽기', 'sqrt(6*x-x^2)', '9*pi/2',
+  { lo: '0', hi: '6',
+  hints: ['완전제곱: $6x-x^{2}=9-(x-3)^{2}$',
+          '반지름 $3$ 인 반원의 넓이다.'],
+  steps: ['$\\sqrt{9-(x-3)^{2}}$ 는 중심 $(3,0)$, 반지름 $3$ 인 위쪽 반원',
+          '$=\\dfrac{\\pi\\cdot3^{2}}{2}=\\dfrac{9\\pi}{2}$'] });
+
+add('monster', '미분 되짚기', 'sin(101*x)*sin(x)^99', 'sin(x)^100*sin(100*x)/100',
+  { domain: [1.2, 1.9],
+  hints: ['$\\sin^{100}x\\,\\sin(100x)$ 를 미분해 보라.',
+          '$\\cos x\\sin100x+\\sin x\\cos100x=\\sin(101x)$ 로 합쳐진다.'],
+  steps: ['$\\left(\\dfrac{\\sin^{100}x\\sin100x}{100}\\right)\'=\\sin^{99}x\\cos x\\sin100x+\\sin^{100}x\\cos100x$',
+          '$=\\sin^{99}x\\left(\\cos x\\sin100x+\\sin x\\cos100x\\right)$',
+          '$=\\sin^{99}x\\sin(101x)$'] });
+
+add('hard', '이중 지수', 'x*e^(e^(x^2)+x^2)', 'e^(e^(x^2))/2',
+  { domain: [0.2, 1.3],
+  hints: ['$u=x^{2}$ 로 두면 $\\dfrac12\\int e^{e^{u}}e^{u}du$ 다.',
+          '다시 $v=e^{u}$ 로 두면 $\\dfrac12\\int e^{v}dv$ 다.'],
+  steps: ['$u=x^{2}$, 그다음 $v=e^{u}$',
+          '$=\\dfrac{e^{v}}{2}=\\dfrac{e^{e^{x^{2}}}}{2}$'] });
+
+addDef('hard', '평행이동', '(x^3-3*x^2+3*x-1)/(x^4+4*x^3+6*x^2+4*x+1)', 'ln(2)-5/6',
+  { lo: '0', hi: '1',
+  hints: ['분자는 $(x-1)^{3}$, 분모는 $(x+1)^{4}$ 다.',
+          '$t=x+1$ 로 옮기면 $\\dfrac{(t-2)^{3}}{t^{4}}$ 가 된다.'],
+  steps: ['$t=x+1\\Rightarrow\\displaystyle\\int_{1}^{2}\\dfrac{t^{3}-6t^{2}+12t-8}{t^{4}}dt$',
+          '$\\left[\\ln t+\\dfrac6t-\\dfrac{6}{t^{2}}+\\dfrac{8}{3t^{3}}\\right]_{1}^{2}$',
+          '$=\\ln2-\\dfrac56$'] });
+
+add('hard', '유리화', 'sqrt((1-x)/(1+x))', 'asin(x)+sqrt(1-x^2)',
+  { domain: D.unit,
+  hints: ['분자·분모에 $\\sqrt{1-x}$ 를 곱해 $\\dfrac{1-x}{\\sqrt{1-x^{2}}}$ 로 만든다.',
+          '두 조각으로 나누면 각각 표준형이다.'],
+  steps: ['$\\dfrac{1-x}{\\sqrt{1-x^{2}}}=\\dfrac{1}{\\sqrt{1-x^{2}}}-\\dfrac{x}{\\sqrt{1-x^{2}}}$',
+          '$=\\arcsin x+\\sqrt{1-x^{2}}$'] });
+
+
+// --- 2012 -----------------------------------------------------------
+
+add('medium', '거듭제곱근 치환', '1/(sqrt(x)-1)', '2*sqrt(x)+2*ln(sqrt(x)-1)',
+  { domain: [1.4, 4.0], lnAbs: true,
+  hints: ['$u=\\sqrt x$ 로 두면 $dx=2u\\,du$ 다.',
+          '$\\dfrac{2u}{u-1}=2+\\dfrac{2}{u-1}$'],
+  steps: ['$u=\\sqrt x$ 치환', '$\\int\\left(2+\\dfrac{2}{u-1}\\right)du=2u+2\\ln|u-1|$',
+          '$=2\\sqrt x+2\\ln\\left|\\sqrt x-1\\right|$'] });
+
+add('medium', '부분적분', 'x^(1/4)*ln(x)', '(4/5)*x^(5/4)*ln(x)-(16/25)*x^(5/4)',
+  { domain: D.pos,
+  hints: ['$u=\\ln x,\\ dv=x^{1/4}dx$ 로 둔다.',
+          '$v=\\dfrac45x^{5/4}$'],
+  steps: ['부분적분 $\\Rightarrow\\dfrac45x^{5/4}\\ln x-\\dfrac45\\displaystyle\\int x^{1/4}dx$',
+          '$=\\dfrac45x^{5/4}\\ln x-\\dfrac{16}{25}x^{5/4}$'] });
+
+add('monster', '이중 치환', '1/((1+sqrt(x))*sqrt(x-x^2))',
+    '-2*sqrt((1-sqrt(x))/(1+sqrt(x)))',
+  { domain: [0.1, 0.85],
+  hints: ['$\\sqrt{x-x^{2}}=\\sqrt x\\sqrt{1-x}$ 이므로 $u=\\sqrt x$ 로 두면 $\\dfrac{2\\,du}{(1+u)\\sqrt{1-u^{2}}}$ 다.',
+          '다시 $w=\\sqrt{\\dfrac{1-u}{1+u}}$ 로 두면 피적분함수가 상수가 된다.'],
+  steps: ['$u=\\sqrt x\\Rightarrow2\\displaystyle\\int\\dfrac{du}{(1+u)^{3/2}(1-u)^{1/2}}$',
+          '$w=\\sqrt{\\dfrac{1-u}{1+u}}$ 로 두면 적분이 $-2\\int dw$ 로 바뀐다',
+          '$=-2\\sqrt{\\dfrac{1-\\sqrt x}{1+\\sqrt x}}$'] });
+
+add('hard', '거듭제곱근 치환', '1/(sqrt(x)*(x^(1/4)+1)^10)',
+    '-1/(2*(x^(1/4)+1)^8)+4/(9*(x^(1/4)+1)^9)',
+  { domain: D.pos,
+  hints: ['$u=x^{1/4}$ 로 두면 $dx=4u^{3}du$ 다.',
+          '$\\dfrac{4u}{(u+1)^{10}}$ 에서 $u=(u+1)-1$ 로 쪼갠다.'],
+  steps: ['$u=x^{1/4}\\Rightarrow4\\displaystyle\\int\\dfrac{u\\,du}{(u+1)^{10}}$',
+          '$=4\\int\\left((u+1)^{-9}-(u+1)^{-10}\\right)du$',
+          '$=-\\dfrac{1}{2(u+1)^{8}}+\\dfrac{4}{9(u+1)^{9}}$'] });
+
+addDef('medium', '항등식 정리', 'sin(acos(x))', 'pi/4',
+  { lo: '0', hi: '1',
+  hints: ['$\\sin(\\arccos x)=\\sqrt{1-x^{2}}$ 다.',
+          '사분원의 넓이로 읽으면 끝이다.'],
+  steps: ['$\\sin(\\arccos x)=\\sqrt{1-x^{2}}$',
+          '$\\int_{0}^{1}\\sqrt{1-x^{2}}dx$ 는 반지름 $1$ 인 사분원의 넓이',
+          '$=\\dfrac{\\pi}{4}$'] });
+
+add('medium', '완전제곱', '1/sqrt(1-4*x-x^2)', 'asin((x+2)/sqrt(5))',
+  { domain: [-1.5, 0.15],
+  hints: ['$1-4x-x^{2}=5-(x+2)^{2}$ 로 완전제곱한다.',
+          '$\\int\\dfrac{dx}{\\sqrt{a^{2}-u^{2}}}=\\arcsin\\dfrac{u}{a}$'],
+  steps: ['$5-(x+2)^{2}$ 로 정리',
+          '$=\\arcsin\\dfrac{x+2}{\\sqrt5}$'] });
+
+addDef('medium', '삼각 유리식', '1/(1+sin(x))', '1',
+  { lo: '0', hi: 'pi/2',
+  hints: ['분자·분모에 $1-\\sin x$ 를 곱해 보라.',
+          '$\\int\\dfrac{dx}{1+\\sin x}=\\tan x-\\sec x$'],
+  steps: ['$\\dfrac{1-\\sin x}{\\cos^{2}x}=\\sec^{2}x-\\sec x\\tan x$',
+          '$\\left[\\tan x-\\sec x\\right]_{0}^{\\pi/2}$, 위끝은 극한으로 $0$',
+          '$=0-(-1)=1$'] });
+
+addDef('hard', '킹 성질', 'sqrt(x)/(sqrt(2012-x)+sqrt(x))', '1005',
+  { lo: '1', hi: '2011',
+  hints: ['$a+b=2012$ 이므로 $x\\to2012-x$ 를 넣어 보라.',
+          '원래 식과 더하면 분자가 분모와 같아진다.'],
+  steps: ['$f(x)+f(2012-x)=1$',
+          '$2I=2011-1=2010$',
+          '$I=1005$'] });
+
+add('monster', '역수 치환', '(x-1)/((x+1)*sqrt(x^3+x^2+x))', '2*acos(sqrt(x)/(x+1))',
+  { domain: [0.4, 2.4],
+  hints: ['$x^{3}+x^{2}+x=x\\left(x+1+\\dfrac1x\\right)\\cdot x$ 로 보고 $\\sqrt x$ 를 뽑아낸다.',
+          '$w=\\sqrt x+\\dfrac{1}{\\sqrt x}$ 로 두면 $dw=\\dfrac{x-1}{2x^{3/2}}dx$ 다.'],
+  steps: ['$\\sqrt{x^{3}+x^{2}+x}=x\\sqrt{w^{2}-1}$ (여기서 $w=\\sqrt x+1/\\sqrt x$)',
+          '$x+1=\\sqrt x\\,w$ 를 쓰면 적분이 $2\\displaystyle\\int\\dfrac{dw}{w\\sqrt{w^{2}-1}}$',
+          '$=2\\operatorname{arcsec}w=2\\arccos\\dfrac{\\sqrt x}{x+1}$'] });
+
+addDef('hard', '평행이동', '(x^4+4*x^3+6*x^2+4*x+1)/(x^3-3*x^2+3*x-1)', '33/2-24*ln(2)',
+  { lo: '-1', hi: '0',
+  hints: ['분자는 $(x+1)^{4}$, 분모는 $(x-1)^{3}$ 이다.',
+          '$t=x-1$ 로 옮기면 $\\dfrac{(t+2)^{4}}{t^{3}}$ 이 된다.'],
+  steps: ['$t=x-1\\Rightarrow\\displaystyle\\int_{-2}^{-1}\\left(t+8+\\dfrac{24}{t}+\\dfrac{32}{t^{2}}+\\dfrac{16}{t^{3}}\\right)dt$',
+          '$\\left[\\dfrac{t^{2}}{2}+8t+24\\ln|t|-\\dfrac{32}{t}-\\dfrac{8}{t^{2}}\\right]_{-2}^{-1}$',
+          '$=\\dfrac{33}{2}-24\\ln2$'] });
+
+add('medium', '곱의 미분 되짚기', 'cos(x)*ln(x)+sin(x)/x', 'sin(x)*ln(x)',
+  { domain: D.pos,
+  hints: ['$(\\sin x\\ln x)\'$ 를 계산해 보라.',
+          '곱의 미분법 그대로다.'],
+  steps: ['$(\\sin x\\ln x)\'=\\cos x\\ln x+\\dfrac{\\sin x}{x}$', '$=\\sin x\\ln x$'] });
+
+add('medium', '부분분수', '1/(x^3-x)', '-ln(x)+ln(x-1)/2+ln(x+1)/2',
+  { domain: [1.4, 3.4], lnAbs: true,
+  hints: ['$x^{3}-x=x(x-1)(x+1)$ 이다.',
+          '$\\dfrac{1}{x(x-1)(x+1)}=-\\dfrac1x+\\dfrac{1}{2(x-1)}+\\dfrac{1}{2(x+1)}$'],
+  steps: ['부분분수로 쪼갠다', '항마다 로그로 적분한다'] });
+
+addDef('hard', '부분적분', 'x*asin(x)/sqrt(1-x^2)', '1/2-pi*sqrt(3)/12',
+  { lo: '0', hi: '1/2',
+  hints: ['$u=\\arcsin x,\\ dv=\\dfrac{x\\,dx}{\\sqrt{1-x^{2}}}$ 로 둔다.',
+          '$v=-\\sqrt{1-x^{2}}$ 이고 $u\'v$ 가 $-1$ 로 딱 떨어진다.'],
+  steps: ['부분적분 $\\Rightarrow-\\sqrt{1-x^{2}}\\arcsin x+x$',
+          '$x=\\dfrac12$ 에서 $-\\dfrac{\\sqrt3}{2}\\cdot\\dfrac{\\pi}{6}+\\dfrac12$',
+          '$=\\dfrac12-\\dfrac{\\pi\\sqrt3}{12}$'] });
+
+addDef('hard', '베타 함수', 'x*(1-x)^99', '1/10100',
+  { lo: '0', hi: '1',
+  hints: ['$B(m,n)=\\displaystyle\\int_{0}^{1}x^{m-1}(1-x)^{n-1}dx=\\dfrac{(m-1)!(n-1)!}{(m+n-1)!}$',
+          '여기서는 $m=2,\\ n=100$ 이다.'],
+  steps: ['$B(2,100)=\\dfrac{1!\\cdot99!}{101!}$',
+          '$=\\dfrac{1}{100\\cdot101}=\\dfrac{1}{10100}$'] });
+
+addDef('hard', '배각 공식', 'sin(4*x)/sin(x)', '4/3',
+  { lo: '0', hi: 'pi/2',
+  hints: ['$\\sin4x=2\\sin2x\\cos2x=4\\sin x\\cos x\\cos2x$',
+          '약분하면 $4\\cos x\\cos2x$ 만 남는다.'],
+  steps: ['$\\dfrac{\\sin4x}{\\sin x}=4\\cos x\\cos2x=2(\\cos3x+\\cos x)$',
+          '$2\\left[\\dfrac{\\sin3x}{3}+\\sin x\\right]_{0}^{\\pi/2}$',
+          '$=2\\left(-\\dfrac13+1\\right)=\\dfrac43$'] });
+
+add('hard', '거듭제곱근 치환', 'x^(-1/2)/(1+x^(1/3))', '6*x^(1/6)-6*atan(x^(1/6))',
+  { domain: D.pos,
+  hints: ['분모 지수 $2$ 와 $3$ 의 최소공배수를 보고 $x=u^{6}$ 으로 둔다.',
+          '$6\\displaystyle\\int\\dfrac{u^{2}}{1+u^{2}}du$ 가 된다.'],
+  steps: ['$x=u^{6}$ 치환',
+          '$6\\int\\left(1-\\dfrac{1}{1+u^{2}}\\right)du=6u-6\\arctan u$',
+          '$=6x^{1/6}-6\\arctan\\left(x^{1/6}\\right)$'] });
+
+add('medium', '표준형 정리', '1/sqrt(2*x^2-1)', 'ln(x+sqrt(x^2-1/2))/sqrt(2)',
+  { domain: [0.9, 3.0], lnAbs: true,
+  hints: ['$\\sqrt2$ 를 밖으로 빼면 $\\dfrac{1}{\\sqrt2}\\displaystyle\\int\\dfrac{dx}{\\sqrt{x^{2}-1/2}}$ 다.',
+          '$\\int\\dfrac{dx}{\\sqrt{x^{2}-a^{2}}}=\\ln\\left|x+\\sqrt{x^{2}-a^{2}}\\right|$'],
+  steps: ['$\\dfrac{1}{\\sqrt2}\\int\\dfrac{dx}{\\sqrt{x^{2}-\\frac12}}$',
+          '$=\\dfrac{1}{\\sqrt2}\\ln\\left|x+\\sqrt{x^{2}-\\tfrac12}\\right|$'] });
+
+add('hard', '지수 치환', '1/sqrt(e^x-1)', '2*atan(sqrt(e^x-1))',
+  { domain: [0.15, 2.2],
+  hints: ['$u=\\sqrt{e^{x}-1}$ 로 두면 $e^{x}=u^{2}+1$ 이다.',
+          '$dx=\\dfrac{2u\\,du}{u^{2}+1}$'],
+  steps: ['$u=\\sqrt{e^{x}-1}$ 치환',
+          '$\\int\\dfrac1u\\cdot\\dfrac{2u}{u^{2}+1}du=2\\arctan u$',
+          '$=2\\arctan\\sqrt{e^{x}-1}$'] });
+
+add('medium', '치환적분', 'x/(x^4+4)', 'atan(x^2/2)/4',
+  { domain: D.poly,
+  hints: ['$u=x^{2}$ 로 두면 $\\dfrac12\\displaystyle\\int\\dfrac{du}{u^{2}+4}$ 다.',
+          '$\\int\\dfrac{du}{u^{2}+a^{2}}=\\dfrac1a\\arctan\\dfrac ua$'],
+  steps: ['$u=x^{2}$ 치환', '$=\\dfrac14\\arctan\\dfrac{x^{2}}{2}$'] });
+
+add('hard', '위상 이동', '2/(cos(x)-sin(x))^2', 'tan(x+pi/4)',
+  { domain: [0.9, 2.2],
+  hints: ['$\\cos x-\\sin x=\\sqrt2\\cos\\left(x+\\dfrac\\pi4\\right)$',
+          '제곱하면 $2\\cos^{2}\\left(x+\\dfrac\\pi4\\right)$ 다.'],
+  steps: ['$\\dfrac{2}{2\\cos^{2}(x+\\pi/4)}=\\sec^{2}\\left(x+\\dfrac\\pi4\\right)$',
+          '$=\\tan\\left(x+\\dfrac\\pi4\\right)$'] });
+
+add('hard', '부분적분', 'x*cosh(x)/sinh(x)^2', '-x/sinh(x)+ln(tanh(x/2))',
+  { domain: [0.3, 1.6], lnAbs: true,
+  hints: ['$\\dfrac{\\cosh x}{\\sinh^{2}x}dx=d\\left(-\\dfrac{1}{\\sinh x}\\right)$ 다.',
+          '$\\int\\operatorname{csch}x\\,dx=\\ln\\left|\\tanh\\dfrac x2\\right|$'],
+  steps: ['부분적분 $\\Rightarrow-\\dfrac{x}{\\sinh x}+\\displaystyle\\int\\dfrac{dx}{\\sinh x}$',
+          '$=-\\dfrac{x}{\\sinh x}+\\ln\\left|\\tanh\\dfrac x2\\right|$'] });
+
+addDef('medium', '치환적분', 'x^5*sqrt(1+x^3)', '1192/45',
+  { lo: '0', hi: '2',
+  hints: ['$t=1+x^{3}$ 으로 두면 $x^{3}=t-1$ 이다.',
+          '$x^{5}dx=x^{3}\\cdot x^{2}dx=\\dfrac{(t-1)dt}{3}$'],
+  steps: ['$t=1+x^{3}\\Rightarrow\\dfrac13\\displaystyle\\int_{1}^{9}\\left(t^{3/2}-t^{1/2}\\right)dt$',
+          '$=\\dfrac13\\left[\\dfrac{2t^{5/2}}{5}-\\dfrac{2t^{3/2}}{3}\\right]_{1}^{9}=\\dfrac{1192}{45}$'] });
+
+addDef('monster', '프룰라니 적분', '(x^7-1)/ln(x)', 'ln(8)',
+  { lo: '0', hi: '1',
+  hints: ['$I(a)=\\displaystyle\\int_{0}^{1}\\dfrac{x^{a}-1}{\\ln x}dx$ 로 두고 $a$ 로 미분한다.',
+          '$I\'(a)=\\displaystyle\\int_{0}^{1}x^{a}dx=\\dfrac{1}{a+1}$'],
+  steps: ['$I\'(a)=\\dfrac{1}{a+1}$, $I(0)=0$',
+          '$I(a)=\\ln(a+1)$',
+          '$a=7\\Rightarrow\\ln8$'] });
+
+
+// --- 2013 -----------------------------------------------------------
+
+add('medium', '로그 법칙', 'ln(x^2)-2*ln(2*x)', '-2*x*ln(2)',
+  { domain: D.pos,
+  hints: ['$\\ln(x^{2})=2\\ln x$, $\\ln(2x)=\\ln2+\\ln x$ 다.',
+          '$x$ 항이 모두 상쇄되어 상수만 남는다.'],
+  steps: ['$2\\ln x-2(\\ln2+\\ln x)=-2\\ln2$',
+          '상수의 적분이므로 $=-2x\\ln2$'] });
+
+addDef('medium', '절댓값 나누기', 'e^(|x|)', 'e+e^3-2',
+  { lo: '-1', hi: '3',
+  hints: ['$x<0$ 과 $x>0$ 으로 구간을 나눈다.',
+          '$\\int_{-1}^{0}e^{-x}dx+\\int_{0}^{3}e^{x}dx$'],
+  steps: ['$\\int_{-1}^{0}e^{-x}dx=e-1$',
+          '$\\int_{0}^{3}e^{x}dx=e^{3}-1$',
+          '$=e+e^{3}-2$'] });
+
+add('hard', '몫의 미분 되짚기', '(ln(x)*cos(x)-sin(x)/x)/ln(x)^2', 'sin(x)/ln(x)',
+  { domain: D.lnln,
+  hints: ['답이 $\\dfrac{f}{\\ln x}$ 꼴이라고 짐작하고 몫의 미분법을 써 보라.',
+          '$\\left(\\dfrac{\\sin x}{\\ln x}\\right)\'$ 를 계산해 보라.'],
+  steps: ['$\\left(\\dfrac{\\sin x}{\\ln x}\\right)\'=\\dfrac{\\cos x\\ln x-\\sin x\\cdot\\frac1x}{\\ln^{2}x}$',
+          '피적분함수와 같으므로 $=\\dfrac{\\sin x}{\\ln x}$'] });
+
+addDef('easy', '완전세제곱', 'x^3-3*x^2+3*x-1', '2500',
+  { lo: '1', hi: '11',
+  hints: ['$x^{3}-3x^{2}+3x-1=(x-1)^{3}$ 이다.',
+          '$\\int(x-1)^{3}dx=\\dfrac{(x-1)^{4}}{4}$'],
+  steps: ['$(x-1)^{3}$ 으로 묶는다',
+          '$\\left[\\dfrac{(x-1)^{4}}{4}\\right]_{1}^{11}=\\dfrac{10^{4}}{4}=2500$'] });
+
+addDef('medium', '넓이로 읽기', 'sqrt(12-3*x^2)', 'sqrt(3)*pi',
+  { lo: '0', hi: '2',
+  hints: ['$\\sqrt{12-3x^{2}}=\\sqrt3\\sqrt{4-x^{2}}$ 로 묶는다.',
+          '$\\int_{0}^{2}\\sqrt{4-x^{2}}dx$ 는 반지름 $2$ 인 사분원의 넓이다.'],
+  steps: ['$\\sqrt3\\displaystyle\\int_{0}^{2}\\sqrt{4-x^{2}}dx$',
+          '$=\\sqrt3\\cdot\\dfrac{\\pi\\cdot2^{2}}{4}=\\sqrt3\\,\\pi$'] });
+
+addDef('hard', '대칭 논법', 'x+(x-3)^7+sin(x-3)', '18',
+  { lo: '0', hi: '6',
+  hints: ['구간의 한가운데가 $x=3$ 이다.',
+          '$(x-3)^{7}$ 과 $\\sin(x-3)$ 은 $x=3$ 에 대해 홀함수다.'],
+  steps: ['홀함수 두 항은 대칭 구간에서 $0$',
+          '$\\int_{0}^{6}x\\,dx=18$'] });
+
+add('medium', '항등식 정리', 'sin(x)*sqrt(1+tan(x)^2)', '-ln(cos(x))',
+  { domain: D.trig, lnAbs: true,
+  hints: ['$1+\\tan^{2}x=\\sec^{2}x$ 다.',
+          '근호를 벗기면 $\\sin x\\sec x=\\tan x$ 다.'],
+  steps: ['$\\sqrt{1+\\tan^{2}x}=|\\sec x|$',
+          '$\\sin x\\sec x=\\tan x$',
+          '$\\int\\tan x\\,dx=-\\ln|\\cos x|$'] });
+
+add('hard', '인수분해', '(x^5-x^3+x^2-1)/(x^4-x^3+x-1)', 'x^2/2+x',
+  { domain: [1.4, 3.4],
+  hints: ['분모는 $x^{3}(x-1)+(x-1)$ 로 묶인다.',
+          '분자는 $x^{3}(x^{2}-1)+(x^{2}-1)$ 로 묶인다.'],
+  steps: ['분모 $=(x-1)(x+1)(x^{2}-x+1)$',
+          '분자 $=(x^{2}-1)(x^{3}+1)=(x-1)(x+1)^{2}(x^{2}-x+1)$',
+          '약분하면 $x+1$ 만 남는다'] });
+
+addDef('medium', '이상적분', 'ln(x)', '-1',
+  { lo: '0', hi: '1',
+  hints: ['$\\int\\ln x\\,dx=x\\ln x-x$ 다.',
+          '$x\\to0^{+}$ 에서 $x\\ln x\\to0$ 이다.'],
+  steps: ['$\\left[x\\ln x-x\\right]_{0}^{1}$',
+          '위끝 $=-1$, 아래끝 $=0$',
+          '$=-1$'] });
+
+add('medium', '지수 유리식', '1/(1-e^(-x))', 'ln(e^x-1)',
+  { domain: [0.25, 2.2], lnAbs: true,
+  hints: ['분자·분모에 $e^{x}$ 를 곱해 $\\dfrac{e^{x}}{e^{x}-1}$ 로 만든다.',
+          '분모의 도함수가 분자다.'],
+  steps: ['$\\dfrac{e^{x}}{e^{x}-1}$ 로 고친다', '$=\\ln\\left|e^{x}-1\\right|$'] });
+
+addDef('medium', '차수 낮추기', 'sin(x)^2*cos(x)^2', 'pi/8',
+  { lo: '0', hi: 'pi',
+  hints: ['$\\sin x\\cos x=\\dfrac{\\sin2x}{2}$ 다.',
+          '$\\sin^{2}2x$ 의 평균은 $\\dfrac12$ 다.'],
+  steps: ['$\\dfrac{\\sin^{2}2x}{4}$ 로 고친다',
+          '$\\dfrac14\\int_{0}^{\\pi}\\sin^{2}2x\\,dx=\\dfrac14\\cdot\\dfrac{\\pi}{2}$',
+          '$=\\dfrac{\\pi}{8}$'] });
+
+addDef('hard', '치환적분', 'pi*sin(pi*sqrt(x))/sqrt(x)', '4',
+  { lo: '0', hi: '441',
+  hints: ['$u=\\sqrt x$ 로 두면 $\\dfrac{dx}{\\sqrt x}=2\\,du$ 다.',
+          '$441=21^{2}$ 이므로 $u$ 는 $0$ 에서 $21$ 까지다.'],
+  steps: ['$u=\\sqrt x\\Rightarrow2\\pi\\displaystyle\\int_{0}^{21}\\sin(\\pi u)du$',
+          '$=2\\left[-\\cos(\\pi u)\\right]_{0}^{21}=2(1+1)$',
+          '$=4$'] });
+
+add('hard', '거듭제곱근 치환', 'e^(x^(1/4))',
+    '4*e^(x^(1/4))*(x^(3/4)-3*sqrt(x)+6*x^(1/4)-6)',
+  { domain: D.pos,
+  hints: ['$u=x^{1/4}$ 로 두면 $dx=4u^{3}du$ 다.',
+          '$\\int u^{3}e^{u}du$ 는 부분적분 세 번이다.'],
+  steps: ['$u=x^{1/4}\\Rightarrow4\\displaystyle\\int u^{3}e^{u}du$',
+          '$\\int u^{3}e^{u}du=e^{u}(u^{3}-3u^{2}+6u-6)$',
+          '$u$ 를 되돌린다'] });
+
+add('hard', '항등식 정리', 'cos(x)*cot(x)', 'ln(tan(x/2))+cos(x)',
+  { domain: [0.3, 1.5], lnAbs: true,
+  hints: ['$\\cos x\\cot x=\\dfrac{\\cos^{2}x}{\\sin x}=\\dfrac{1-\\sin^{2}x}{\\sin x}$',
+          '$=\\csc x-\\sin x$ 로 갈라진다.'],
+  steps: ['$\\csc x-\\sin x$ 로 쪼갠다',
+          '$\\int\\csc x\\,dx=\\ln\\left|\\tan\\dfrac x2\\right|$',
+          '$=\\ln\\left|\\tan\\dfrac x2\\right|+\\cos x$'] });
+
+add('medium', '다항식 나눗셈', 'x^3/(1+x^2)', 'x^2/2-ln(1+x^2)/2',
+  { domain: D.all,
+  hints: ['$\\dfrac{x^{3}}{1+x^{2}}=x-\\dfrac{x}{1+x^{2}}$ 다.',
+          '뒤쪽은 $u=1+x^{2}$ 치환이다.'],
+  steps: ['나눗셈으로 쪼갠다', '$=\\dfrac{x^{2}}{2}-\\dfrac{\\ln(1+x^{2})}{2}$'] });
+
+add('medium', '완전제곱', '1/(2-2*x+x^2)', 'atan(x-1)',
+  { domain: D.all,
+  hints: ['$x^{2}-2x+2=(x-1)^{2}+1$ 이다.',
+          '$\\int\\dfrac{du}{u^{2}+1}=\\arctan u$'],
+  steps: ['완전제곱 후 $u=x-1$', '$=\\arctan(x-1)$'] });
+
+add('hard', '부분적분', 'sin(x)*ln(sin(x))',
+    '-cos(x)*ln(sin(x))+ln(tan(x/2))+cos(x)',
+  { domain: [0.3, 1.5], lnAbs: true,
+  hints: ['$u=\\ln(\\sin x),\\ dv=\\sin x\\,dx$ 로 둔다.',
+          '남는 적분이 $\\displaystyle\\int\\dfrac{\\cos^{2}x}{\\sin x}dx=\\int(\\csc x-\\sin x)dx$ 다.'],
+  steps: ['부분적분 $\\Rightarrow-\\cos x\\ln(\\sin x)+\\displaystyle\\int\\dfrac{\\cos^{2}x}{\\sin x}dx$',
+          '$\\int(\\csc x-\\sin x)dx=\\ln\\left|\\tan\\dfrac x2\\right|+\\cos x$'] });
+
+add('medium', '치환적분', 'x/(1-x^4)', 'ln((1+x^2)/(1-x^2))/4',
+  { domain: [0.15, 0.85], lnAbs: true,
+  hints: ['$u=x^{2}$ 로 두면 $\\dfrac12\\displaystyle\\int\\dfrac{du}{1-u^{2}}$ 다.',
+          '$\\int\\dfrac{du}{1-u^{2}}=\\dfrac12\\ln\\left|\\dfrac{1+u}{1-u}\\right|$'],
+  steps: ['$u=x^{2}$ 치환', '$=\\dfrac14\\ln\\left|\\dfrac{1+x^{2}}{1-x^{2}}\\right|$'] });
+
+add('hard', '삼각 치환', 'sqrt(12-3*x^2)', 'sqrt(3)*(x*sqrt(4-x^2)/2+2*asin(x/2))',
+  { domain: [-1.5, 1.7],
+  hints: ['$\\sqrt3$ 를 밖으로 빼고 $x=2\\sin\\theta$ 로 둔다.',
+          '$\\int\\sqrt{a^{2}-x^{2}}dx=\\dfrac{x\\sqrt{a^{2}-x^{2}}}{2}+\\dfrac{a^{2}}{2}\\arcsin\\dfrac xa$'],
+  steps: ['$\\sqrt3\\displaystyle\\int\\sqrt{4-x^{2}}dx$',
+          '$=\\sqrt3\\left(\\dfrac{x\\sqrt{4-x^{2}}}{2}+2\\arcsin\\dfrac x2\\right)$'] });
+
+add('hard', '삼각 치환', 'sec(x)^5*tan(x)^3', '(1/cos(x))^7/7-(1/cos(x))^5/5',
+  { domain: D.trig,
+  hints: ['$\\sec x\\tan x\\,dx$ 를 $du$ 로 남기고 나머지를 $\\sec$ 로 바꾼다.',
+          '$\\tan^{2}x=\\sec^{2}x-1$'],
+  steps: ['$u=\\sec x$ 치환',
+          '$\\int u^{4}(u^{2}-1)du=\\dfrac{u^{7}}{7}-\\dfrac{u^{5}}{5}$'] });
+
+addDef('hard', '삼각 유리식', '1/(1-sin(x))', '2',
+  { lo: '-pi/4', hi: 'pi/4',
+  hints: ['분자·분모에 $1+\\sin x$ 를 곱한다.',
+          '$\\int\\dfrac{dx}{1-\\sin x}=\\tan x+\\sec x$'],
+  steps: ['$\\dfrac{1+\\sin x}{\\cos^{2}x}=\\sec^{2}x+\\sec x\\tan x$',
+          '$\\left[\\tan x+\\sec x\\right]_{-\\pi/4}^{\\pi/4}=(1+\\sqrt2)-(-1+\\sqrt2)$',
+          '$=2$'] });
+
+add('hard', '역삼각 치환', '1/(x*sqrt(x^2-2))', 'acos(sqrt(2)/x)/sqrt(2)',
+  { domain: [1.6, 4.0],
+  hints: ['$\\int\\dfrac{dx}{x\\sqrt{x^{2}-a^{2}}}=\\dfrac1a\\operatorname{arcsec}\\dfrac xa$ 다.',
+          '$\\operatorname{arcsec}u=\\arccos\\dfrac1u$'],
+  steps: ['$a=\\sqrt2$ 로 놓고 표준형을 쓴다',
+          '$=\\dfrac{1}{\\sqrt2}\\arccos\\dfrac{\\sqrt2}{x}$'] });
+
+
+// --- 2014 -----------------------------------------------------------
+
+addDef('easy', '로그 적분', 'ln(x^2)', '2',
+  { lo: '1', hi: 'e',
+  hints: ['$\\ln(x^{2})=2\\ln x$ 다.',
+          '$\\int\\ln x\\,dx=x\\ln x-x$'],
+  steps: ['$2\\left[x\\ln x-x\\right]_{1}^{e}$', '$=2\\left[(e-e)-(0-1)\\right]=2$'] });
+
+addDef('medium', '미적분 기본정리', '(1-2*x)*e^(1+x-x^2)', '-e',
+  { lo: '0', hi: 'inf',
+  hints: ['피적분함수가 통째로 어떤 함수의 도함수다.',
+          '$\\left(e^{1+x-x^{2}}\\right)\'=(1-2x)e^{1+x-x^{2}}$'],
+  steps: ['$\\left[e^{1+x-x^{2}}\\right]_{0}^{\\infty}$',
+          '위끝은 $0$, 아래끝은 $e$',
+          '$=-e$'] });
+
+addDef('hard', '무한 중첩 근호', '(1+sqrt(1+4*x))/2', '19/6',
+  { lo: '0', hi: '2',
+  hints: ['$y=\\sqrt{x+\\sqrt{x+\\cdots}}$ 는 $y^{2}=x+y$ 를 만족한다.',
+          '양수 해는 $y=\\dfrac{1+\\sqrt{1+4x}}{2}$ 다.'],
+  steps: ['$y^{2}=x+y\\Rightarrow y=\\dfrac{1+\\sqrt{1+4x}}{2}$',
+          '$\\dfrac12\\left[x+\\dfrac{(1+4x)^{3/2}}{6}\\right]_{0}^{2}$',
+          '$=\\dfrac{19}{6}$'] });
+
+add('hard', '거듭제곱근 치환', 'sqrt(x)*e^sqrt(x)', '2*e^sqrt(x)*(x-2*sqrt(x)+2)',
+  { domain: D.pos,
+  hints: ['$u=\\sqrt x$ 로 두면 $dx=2u\\,du$ 다.',
+          '$2\\displaystyle\\int u^{2}e^{u}du$ 는 부분적분 두 번이다.'],
+  steps: ['$u=\\sqrt x\\Rightarrow2\\displaystyle\\int u^{2}e^{u}du$',
+          '$\\int u^{2}e^{u}du=e^{u}(u^{2}-2u+2)$',
+          '$=2e^{\\sqrt x}\\left(x-2\\sqrt x+2\\right)$'] });
+
+add('medium', '곱-합 공식', 'sin(2*x)*cos(3*x)', '-cos(5*x)/10+cos(x)/2',
+  { domain: D.trigW,
+  hints: ['$\\sin A\\cos B=\\dfrac{\\sin(A+B)+\\sin(A-B)}{2}$',
+          '$=\\dfrac{\\sin5x-\\sin x}{2}$'],
+  steps: ['곱을 합으로 바꾼다', '$=-\\dfrac{\\cos5x}{10}+\\dfrac{\\cos x}{2}$'] });
+
+addDef('monster', '절댓값 나누기', '|1+2*sin(x)|', '2*pi/3+4*sqrt(3)',
+  { lo: '0', hi: '2*pi',
+  hints: ['$1+2\\sin x=0$ 이 되는 곳은 $x=\\dfrac{7\\pi}{6},\\dfrac{11\\pi}{6}$ 다.',
+          '그 사이에서만 음수이므로 그 조각의 부호를 뒤집는다.'],
+  steps: ['$\\int_{0}^{2\\pi}(1+2\\sin x)dx=2\\pi$',
+          '음수 구간의 적분은 $\\dfrac{2\\pi}{3}-2\\sqrt3$',
+          '$\\int|f|=2\\pi-2\\left(\\dfrac{2\\pi}{3}-2\\sqrt3\\right)=\\dfrac{2\\pi}{3}+4\\sqrt3$'] });
+
+add('monster', '치환적분', 'x*(1-x)^2014', '(1-x)^2016/2016-(1-x)^2015/2015',
+  { domain: [-0.0009, 0.0009],
+  hints: ['$u=1-x$ 로 두면 $x=1-u$ 다.',
+          '$\\int(u^{2015}-u^{2014})du$ 만 남는다.'],
+  steps: ['$u=1-x,\\ dx=-du$',
+          '$\\int(1-u)u^{2014}(-du)=\\int\\left(u^{2015}-u^{2014}\\right)du$',
+          '$=\\dfrac{(1-x)^{2016}}{2016}-\\dfrac{(1-x)^{2015}}{2015}$'] });
+
+addDef('medium', '다항식 나눗셈', 'x^2/(x-1)', '1/2-ln(2)',
+  { lo: '-1', hi: '0',
+  hints: ['$\\dfrac{x^{2}}{x-1}=x+1+\\dfrac{1}{x-1}$ 다.',
+          '$\\left[\\dfrac{x^{2}}{2}+x+\\ln|x-1|\\right]$'],
+  steps: ['나눗셈으로 쪼갠다',
+          '$\\left[\\dfrac{x^{2}}{2}+x+\\ln|x-1|\\right]_{-1}^{0}$',
+          '$=0-\\left(-\\dfrac12+\\ln2\\right)=\\dfrac12-\\ln2$'] });
+
+add('hard', '부분분수', '1/(x^2-15*x-2014)', '(ln(x-53)-ln(x+38))/91',
+  { domain: [54.0, 70.0], lnAbs: true,
+  hints: ['판별식이 $225+8056=8281=91^{2}$ 이다.',
+          '근이 $53$ 과 $-38$ 이므로 $(x-53)(x+38)$ 로 인수분해된다.'],
+  steps: ['$x^{2}-15x-2014=(x-53)(x+38)$',
+          '$\\dfrac{1}{91}\\left(\\dfrac{1}{x-53}-\\dfrac{1}{x+38}\\right)$',
+          '$=\\dfrac{1}{91}\\ln\\left|\\dfrac{x-53}{x+38}\\right|$'] });
+
+add('monster', '미분 되짚기', 'e^x*(ln(1+x^2)-2*(1+x)*atan(x))',
+    'e^x*(ln(1+x^2)-2*x*atan(x))',
+  { domain: D.all,
+  hints: ['$\\int e^{x}(f+f\')dx=e^{x}f$ 꼴을 의심해 보라.',
+          '$f=\\ln(1+x^{2})-2x\\arctan x$ 로 두고 $f\'$ 을 계산해 보라.'],
+  steps: ['$f=\\ln(1+x^{2})-2x\\arctan x$',
+          '$f\'=\\dfrac{2x}{1+x^{2}}-2\\arctan x-\\dfrac{2x}{1+x^{2}}=-2\\arctan x$',
+          '$f+f\'=\\ln(1+x^{2})-2(x+1)\\arctan x$ 이므로 $=e^{x}f$'] });
+
+add('hard', '부분적분', 'asin(x)^2', 'x*asin(x)^2+2*sqrt(1-x^2)*asin(x)-2*x',
+  { domain: D.unit,
+  hints: ['$u=\\arcsin^{2}x,\\ dv=dx$ 로 부분적분한다.',
+          '남는 적분에 한 번 더 부분적분을 쓴다.'],
+  steps: ['$x\\arcsin^{2}x-\\displaystyle\\int\\dfrac{2x\\arcsin x}{\\sqrt{1-x^{2}}}dx$',
+          '두 번째 적분도 부분적분한다',
+          '$=x\\arcsin^{2}x+2\\sqrt{1-x^{2}}\\arcsin x-2x$'] });
+
+add('hard', '삼각 치환', 'sqrt(x^2-1)/x', 'sqrt(x^2-1)-acos(1/x)',
+  { domain: D.gt1,
+  hints: ['$x=\\sec\\theta$ 로 두면 $\\int\\tan^{2}\\theta\\,d\\theta$ 가 된다.',
+          '$\\int\\tan^{2}\\theta\\,d\\theta=\\tan\\theta-\\theta$'],
+  steps: ['$x=\\sec\\theta$ 치환',
+          '$\\tan\\theta=\\sqrt{x^{2}-1},\\ \\theta=\\operatorname{arcsec}x$',
+          '$=\\sqrt{x^{2}-1}-\\arccos\\dfrac1x$'] });
+
+add('hard', '부분적분', 'x*sec(4*x)^2', 'x*tan(4*x)/4+ln(cos(4*x))/16',
+  { domain: [0.05, 0.35], lnAbs: true,
+  hints: ['$u=x,\\ dv=\\sec^{2}(4x)dx$ 로 두면 $v=\\dfrac{\\tan4x}{4}$ 다.',
+          '$\\int\\tan4x\\,dx=-\\dfrac{\\ln|\\cos4x|}{4}$'],
+  steps: ['부분적분 $\\Rightarrow\\dfrac{x\\tan4x}{4}-\\dfrac14\\displaystyle\\int\\tan4x\\,dx$',
+          '$=\\dfrac{x\\tan4x}{4}+\\dfrac{\\ln|\\cos4x|}{16}$'] });
+
+add('hard', '부분분수', '2/(6-11*x+6*x^2-x^3)', '-ln(x-1)+2*ln(x-2)-ln(x-3)',
+  { domain: [3.4, 6.0], lnAbs: true,
+  hints: ['$x^{3}-6x^{2}+11x-6=(x-1)(x-2)(x-3)$ 이다.',
+          '부호에 주의하라 — 분모는 그 값의 $-1$ 배다.'],
+  steps: ['$6-11x+6x^{2}-x^{3}=-(x-1)(x-2)(x-3)$',
+          '부분분수로 $-\\dfrac{1}{x-1}+\\dfrac{2}{x-2}-\\dfrac{1}{x-3}$',
+          '항마다 로그로 적분한다'] });
+
+addDef('monster', '쌍곡선 치환', 'sqrt(x+sqrt(x^2+1))', '2/3',
+  { lo: '0', hi: '1/sqrt(3)',
+  hints: ['$x=\\sinh t$ 로 두면 $x+\\sqrt{x^{2}+1}=e^{t}$ 다.',
+          '피적분함수가 $e^{t/2}$, $dx=\\cosh t\\,dt$ 가 된다.'],
+  steps: ['$u=x+\\sqrt{x^{2}+1}$ 로 두면 원시함수가 $\\dfrac{u^{3/2}}{3}-u^{-1/2}$',
+          '$x=\\dfrac{1}{\\sqrt3}$ 에서 $u=\\sqrt3$ 이라 값이 $0$',
+          '$x=0$ 에서 $u=1$ 이라 $-\\dfrac23$, 따라서 $\\dfrac23$'] });
+
+addDef('hard', '주기 나누기', '1/(2+cos(x))', '7*pi/(3*sqrt(3))',
+  { lo: '0', hi: '5*pi/2',
+  hints: ['주기가 $2\\pi$ 이므로 $\\int_{0}^{2\\pi}$ 와 $\\int_{0}^{\\pi/2}$ 로 나눈다.',
+          '$\\int\\dfrac{dx}{2+\\cos x}=\\dfrac{2}{\\sqrt3}\\arctan\\dfrac{\\tan(x/2)}{\\sqrt3}$'],
+  steps: ['$\\int_{0}^{2\\pi}=\\dfrac{2\\pi}{\\sqrt3}$',
+          '$\\int_{0}^{\\pi/2}=\\dfrac{\\pi}{3\\sqrt3}$',
+          '합하면 $\\dfrac{7\\pi}{3\\sqrt3}$'] });
+
+
+// --- 2015 -----------------------------------------------------------
+
+add('medium', '항등식 정리', 'cos(x)^4-sin(x)^4', 'sin(2*x)/2',
+  { domain: D.trigW,
+  hints: ['$a^{2}-b^{2}=(a-b)(a+b)$ 를 $a=\\cos^{2}x,\\ b=\\sin^{2}x$ 에 쓴다.',
+          '$\\cos^{2}x+\\sin^{2}x=1$ 이므로 $\\cos2x$ 만 남는다.'],
+  steps: ['$\\cos^{4}x-\\sin^{4}x=\\cos^{2}x-\\sin^{2}x=\\cos2x$',
+          '$=\\dfrac{\\sin2x}{2}$'] });
+
+add('medium', '치환적분', 'x/sqrt(2+4*x)', '(2+4*x)^(3/2)/24-sqrt(2+4*x)/4',
+  { domain: D.poly,
+  hints: ['$u=2+4x$ 로 두면 $x=\\dfrac{u-2}{4}$ 다.',
+          '$\\dfrac{1}{16}\\displaystyle\\int\\left(u^{1/2}-2u^{-1/2}\\right)du$'],
+  steps: ['$u=2+4x$ 치환',
+          '$=\\dfrac{u^{3/2}}{24}-\\dfrac{u^{1/2}}{4}$'] });
+
+addDef('medium', '치환적분', 'cos(sqrt(x))/sqrt(x)', '2*sin(2*sqrt(2))',
+  { lo: '0', hi: '8',
+  hints: ['$u=\\sqrt x$ 로 두면 $\\dfrac{dx}{\\sqrt x}=2\\,du$ 다.',
+          '$\\sqrt8=2\\sqrt2$'],
+  steps: ['$u=\\sqrt x\\Rightarrow2\\displaystyle\\int_{0}^{2\\sqrt2}\\cos u\\,du$',
+          '$=2\\sin\\left(2\\sqrt2\\right)$'] });
+
+addDef('medium', '항등식 정리', 'e^sin(x)/(tan(x)*csc(x))', 'e-1',
+  { lo: '0', hi: 'pi/2',
+  hints: ['$\\tan x\\csc x=\\dfrac{\\sin x}{\\cos x}\\cdot\\dfrac{1}{\\sin x}=\\sec x$ 다.',
+          '남는 것은 $e^{\\sin x}\\cos x$ 다.'],
+  steps: ['$\\dfrac{e^{\\sin x}}{\\sec x}=e^{\\sin x}\\cos x$',
+          '$\\left[e^{\\sin x}\\right]_{0}^{\\pi/2}=e-1$'] });
+
+addDef('medium', '부분적분', 'x*ln(x)^2', '(e^2-1)/4',
+  { lo: '1', hi: 'e',
+  hints: ['$u=\\ln^{2}x,\\ dv=x\\,dx$ 로 부분적분한다.',
+          '남는 $\\int x\\ln x\\,dx$ 도 부분적분이다.'],
+  steps: ['$\\dfrac{x^{2}}{2}\\ln^{2}x-\\displaystyle\\int x\\ln x\\,dx$',
+          '$=\\dfrac{x^{2}}{2}\\ln^{2}x-\\dfrac{x^{2}}{2}\\ln x+\\dfrac{x^{2}}{4}$',
+          '$=\\dfrac{e^{2}-1}{4}$'] });
+
+add('hard', '거듭제곱근 치환', '1/(5+4*sqrt(x)+x)',
+    'ln((sqrt(x)+2)^2+1)-4*atan(sqrt(x)+2)',
+  { domain: D.pos,
+  hints: ['$u=\\sqrt x$ 로 두면 분모가 $u^{2}+4u+5=(u+2)^{2}+1$ 이다.',
+          '분자 $2u$ 를 $2(u+2)-4$ 로 쪼갠다.'],
+  steps: ['$u=\\sqrt x\\Rightarrow\\displaystyle\\int\\dfrac{2u\\,du}{(u+2)^{2}+1}$',
+          '$=\\ln\\left((u+2)^{2}+1\\right)-4\\arctan(u+2)$'] });
+
+add('easy', '지수함수', '2015^x', '2015^x/ln(2015)',
+  { domain: [-1.0, 1.5],
+  hints: ['$a^{x}=e^{x\\ln a}$ 로 고쳐 쓴다.',
+          '$\\int a^{x}dx=\\dfrac{a^{x}}{\\ln a}$'],
+  steps: ['$2015^{x}=e^{x\\ln2015}$', '$=\\dfrac{2015^{x}}{\\ln2015}$'] });
+
+addDef('hard', '부분분수', 'x/((x-3)*(x+5)^2)', '1/28-3*ln(21/5)/64',
+  { lo: '0', hi: '2',
+  hints: ['중근이 있으므로 $\\dfrac{A}{x-3}+\\dfrac{B}{x+5}+\\dfrac{C}{(x+5)^{2}}$ 로 둔다.',
+          '$A=\\dfrac{3}{64},\\ B=-\\dfrac{3}{64},\\ C=\\dfrac58$'],
+  steps: ['부분분수로 쪼갠다',
+          '$\\left[\\dfrac{3}{64}\\ln\\left|\\dfrac{x-3}{x+5}\\right|-\\dfrac{5}{8(x+5)}\\right]_{0}^{2}$',
+          '$=\\dfrac{1}{28}-\\dfrac{3}{64}\\ln\\dfrac{21}{5}$'] });
+
+add('hard', '로그 치환', 'ln(1+ln(x))/x', '(1+ln(x))*ln(1+ln(x))-(1+ln(x))',
+  { domain: [0.6, 3.0],
+  hints: ['$u=1+\\ln x$ 로 두면 $du=\\dfrac{dx}{x}$ 다.',
+          '$\\int\\ln u\\,du=u\\ln u-u$'],
+  steps: ['$u=1+\\ln x$ 치환',
+          '$=u\\ln u-u=(1+\\ln x)\\ln(1+\\ln x)-(1+\\ln x)$'] });
+
+add('medium', '쌍곡역함수', '1/sqrt(x^2+25)', 'asinh(x/5)',
+  { domain: D.all,
+  hints: ['$\\int\\dfrac{dx}{\\sqrt{x^{2}+a^{2}}}=\\operatorname{arsinh}\\dfrac xa$ 다.',
+          '$=\\ln\\left(x+\\sqrt{x^{2}+a^{2}}\\right)$ 로 써도 같다.'],
+  steps: ['$x=5\\sinh t$ 치환', '$=\\operatorname{arsinh}\\dfrac x5$'] });
+
+addDef('hard', '미분 되짚기', '(ln(x)^2-1)/(x*ln(x)^2)', '2-ln(2)-1/ln(2)',
+  { lo: '2', hi: 'e',
+  hints: ['$\\dfrac{\\ln^{2}x-1}{x\\ln^{2}x}=\\dfrac1x-\\dfrac{1}{x\\ln^{2}x}$ 로 쪼갠다.',
+          '뒤쪽은 $u=\\ln x$ 로 두면 $\\int u^{-2}du$ 다.'],
+  steps: ['원시함수는 $\\ln x+\\dfrac{1}{\\ln x}$',
+          '$\\left[\\ln x+\\dfrac{1}{\\ln x}\\right]_{2}^{e}=2-\\ln2-\\dfrac{1}{\\ln2}$'] });
+
+add('monster', '부분적분', 'e^(3*x)*atan(e^x)',
+    'e^(3*x)*atan(e^x)/3-e^(2*x)/6+ln(1+e^(2*x))/6',
+  { domain: [-1.0, 1.5],
+  hints: ['$u=e^{x}$ 로 두면 $\\displaystyle\\int u^{2}\\arctan u\\,du$ 가 된다.',
+          '부분적분 뒤 남는 $\\displaystyle\\int\\dfrac{u^{3}}{1+u^{2}}du$ 는 나눗셈으로 푼다.'],
+  steps: ['$u=e^{x}$ 치환 후 부분적분',
+          '$\\dfrac{u^{3}}{3}\\arctan u-\\dfrac13\\displaystyle\\int\\dfrac{u^{3}}{1+u^{2}}du$',
+          '$=\\dfrac{e^{3x}\\arctan(e^{x})}{3}-\\dfrac{e^{2x}}{6}+\\dfrac{\\ln(1+e^{2x})}{6}$'] });
+
+addDef('monster', '절댓값 나누기', '|x-1|/(|x-2|+|x-3|)', '2+3*ln(27/5)/4',
+  { lo: '0', hi: '4',
+  hints: ['$x=1,2,3$ 에서 절댓값의 부호가 바뀐다 — 네 구간으로 쪼갠다.',
+          '$[2,3]$ 에서는 분모가 $1$ 로 딱 떨어진다.'],
+  steps: ['$[0,1],[1,2]$ 에서 분모는 $5-2x$, $[2,3]$ 에서는 $1$, $[3,4]$ 에서는 $2x-5$',
+          '조각마다 적분해 더한다',
+          '$=2+\\dfrac{3}{4}\\ln\\dfrac{27}{5}$'] });
+
+addDef('monster', '주기 대칭', '1/(sin(x)^4+cos(x)^4)', '2*pi*sqrt(2)',
+  { lo: '0', hi: '2*pi',
+  hints: ['$\\sin^{4}x+\\cos^{4}x=1-\\dfrac{\\sin^{2}2x}{2}$ 다.',
+          '주기가 $\\dfrac\\pi2$ 이므로 $4\\displaystyle\\int_{0}^{\\pi/2}$ 로 줄인다.'],
+  steps: ['$1-\\dfrac{\\sin^{2}2x}{2}$ 로 고친다',
+          '$\\int_{0}^{\\pi/2}\\dfrac{d\\theta}{1-k\\sin^{2}\\theta}=\\dfrac{\\pi}{2\\sqrt{1-k}}$ 에 $k=\\dfrac12$',
+          '$=2\\sqrt2\\,\\pi$'] });
+
+add('hard', '지수 유리식', '(1+e^x)/(1-e^x)', 'x-2*ln(1-e^x)',
+  { domain: [-2.2, -0.25], lnAbs: true,
+  hints: ['$\\dfrac{1+e^{x}}{1-e^{x}}=-1+\\dfrac{2}{1-e^{x}}$ 로 쪼갠다.',
+          '$\\dfrac{1}{1-e^{x}}=1+\\dfrac{e^{x}}{1-e^{x}}$'],
+  steps: ['두 번 쪼갠다',
+          '$\\int\\dfrac{dx}{1-e^{x}}=x-\\ln\\left|1-e^{x}\\right|$',
+          '$=x-2\\ln\\left|1-e^{x}\\right|$'] });
+
+add('medium', '점화식', 'tan(x)^4', 'tan(x)^3/3-tan(x)+x',
+  { domain: D.trig,
+  hints: ['$\\tan^{4}x=\\tan^{2}x(\\sec^{2}x-1)$ 로 쪼갠다.',
+          '$\\int\\tan^{2}x\\,dx=\\tan x-x$'],
+  steps: ['$\\tan^{2}x\\sec^{2}x-\\tan^{2}x$',
+          '$=\\dfrac{\\tan^{3}x}{3}-(\\tan x-x)$'] });
+
+add('medium', '항등식 정리', 'sin(x)*tan(x)^2', '1/cos(x)+cos(x)',
+  { domain: D.trig,
+  hints: ['$\\tan^{2}x=\\sec^{2}x-1$ 로 바꾼다.',
+          '$\\displaystyle\\int\\dfrac{\\sin x}{\\cos^{2}x}dx=\\sec x$'],
+  steps: ['$\\sin x\\sec^{2}x-\\sin x$',
+          '$=\\sec x+\\cos x$'] });
+
+add('medium', '치환적분', '(x+1)/(x^2+2*x+3)', 'ln(x^2+2*x+3)/2',
+  { domain: D.all,
+  hints: ['분모의 도함수가 $2x+2$ 다.',
+          '분자는 그 절반이다.'],
+  steps: ['$u=x^{2}+2x+3$ 치환', '$=\\dfrac{\\ln(x^{2}+2x+3)}{2}$'] });
+
+
+// --- 2016 -----------------------------------------------------------
+
+add('medium', '쌍곡선함수', 'tanh(x)', 'ln(cosh(x))',
+  { domain: D.hyp,
+  hints: ['$\\tanh x=\\dfrac{\\sinh x}{\\cosh x}$ 이고 분모의 도함수가 분자다.',
+          '$\\int\\tanh x\\,dx=\\ln\\cosh x$'],
+  steps: ['$u=\\cosh x$ 치환', '$=\\ln\\cosh x$'] });
+
+addDef('hard', '절댓값 나누기', '|x^3-x|', '113',
+  { lo: '-4', hi: '4',
+  hints: ['$x^{3}-x$ 는 홀함수라 $|x^{3}-x|$ 는 짝함수다 — 절반만 계산하면 된다.',
+          '$[0,1]$ 에서는 음수, $[1,4]$ 에서는 양수다.'],
+  steps: ['$2\\left(\\int_{0}^{1}(x-x^{3})dx+\\int_{1}^{4}(x^{3}-x)dx\\right)$',
+          '$=2\\left(\\dfrac14+\\dfrac{225}{4}\\right)$',
+          '$=113$'] });
+
+addDef('easy', '로그 법칙', 'ln(sqrt(x))', '1/2',
+  { lo: '1', hi: 'e',
+  hints: ['$\\ln\\sqrt x=\\dfrac{\\ln x}{2}$ 다.',
+          '$\\int_{1}^{e}\\ln x\\,dx=1$'],
+  steps: ['$\\dfrac12\\displaystyle\\int_{1}^{e}\\ln x\\,dx$', '$=\\dfrac12$'] });
+
+add('hard', '치환적분', 'e^(e^x+e^(-x)+x)-e^(e^x+e^(-x)-x)', 'e^(e^x+e^(-x))',
+  { domain: [-1.2, 1.2],
+  hints: ['$e^{x}$ 를 공통으로 묶으면 $e^{e^{x}+e^{-x}}\\left(e^{x}-e^{-x}\\right)$ 다.',
+          '$u=e^{x}+e^{-x}$ 로 두면 $du=(e^{x}-e^{-x})dx$ 다.'],
+  steps: ['공통 인수로 묶는다',
+          '$u=e^{x}+e^{-x}$ 치환 $\\Rightarrow\\int e^{u}du$',
+          '$=e^{e^{x}+e^{-x}}$'] });
+
+add('medium', '이중 로그 치환', 'ln(ln(x))/(x*ln(x))', 'ln(ln(x))^2/2',
+  { domain: D.lnln,
+  hints: ['$u=\\ln(\\ln x)$ 로 두면 $du=\\dfrac{dx}{x\\ln x}$ 다.',
+          '$\\int u\\,du=\\dfrac{u^{2}}{2}$'],
+  steps: ['$u=\\ln(\\ln x)$ 치환', '$=\\dfrac{\\ln^{2}(\\ln x)}{2}$'] });
+
+addDef('medium', '항등식 정리', '1/(1+tan(x)^2)', 'pi/6+sqrt(3)/8',
+  { lo: '0', hi: 'pi/3',
+  hints: ['$1+\\tan^{2}x=\\sec^{2}x$ 이므로 피적분함수는 $\\cos^{2}x$ 다.',
+          '$\\int\\cos^{2}x\\,dx=\\dfrac x2+\\dfrac{\\sin2x}{4}$'],
+  steps: ['$\\cos^{2}x$ 로 정리',
+          '$\\left[\\dfrac x2+\\dfrac{\\sin2x}{4}\\right]_{0}^{\\pi/3}=\\dfrac{\\pi}{6}+\\dfrac{\\sqrt3}{8}$'] });
+
+add('medium', '곱의 미분 되짚기', 'e^x*cos(x)-e^x*sin(x)', 'e^x*cos(x)',
+  { domain: D.all,
+  hints: ['$(e^{x}\\cos x)\'$ 를 곱의 미분법으로 계산해 보라.',
+          '$e^{x}\\cos x-e^{x}\\sin x$ 가 그대로 나온다.'],
+  steps: ['$(e^{x}\\cos x)\'=e^{x}\\cos x-e^{x}\\sin x$', '$=e^{x}\\cos x$'] });
+
+addDef('medium', '치환 후 부분적분', 'x^3*e^(-x^2)', '1/2',
+  { lo: '0', hi: 'inf',
+  hints: ['$u=x^{2}$ 로 두면 $\\dfrac12\\displaystyle\\int_{0}^{\\infty}ue^{-u}du$ 다.',
+          '$\\int_{0}^{\\infty}ue^{-u}du=\\Gamma(2)=1$'],
+  steps: ['$u=x^{2}$ 치환', '$=\\dfrac12\\Gamma(2)=\\dfrac12$'] });
+
+add('hard', '곱의 미분 되짚기', '(2*x*e^(x^2)+1)*cos(x)-(e^(x^2)+x)*sin(x)',
+    '(e^(x^2)+x)*cos(x)',
+  { domain: [-1.2, 1.2],
+  hints: ['$f=e^{x^{2}}+x$ 로 두면 $f\'=2xe^{x^{2}}+1$ 이다.',
+          '$f\'\\cos x-f\\sin x=(f\\cos x)\'$'],
+  steps: ['$f=e^{x^{2}}+x$ 로 두면 피적분함수는 $f\'\\cos x-f\\sin x$',
+          '$=(f\\cos x)\'$',
+          '$=\\left(e^{x^{2}}+x\\right)\\cos x$'] });
+
+add('hard', '전개', '(1+x^(1/2)+x^(1/3))*(1+x^(-1/2)+x^(-1/3))',
+    '3*x+2*sqrt(x)+(3/2)*x^(2/3)+(2/3)*x^(3/2)+(3/4)*x^(4/3)+(6/7)*x^(7/6)+(6/5)*x^(5/6)',
+  { domain: D.pos,
+  hints: ['괄호를 그냥 전개하면 지수가 $\\pm\\frac12,\\pm\\frac13,\\pm\\frac16$ 인 항들이 나온다.',
+          '상수항은 $1$ 이 세 번 나와 $3$ 이다.'],
+  steps: ['전개하면 $3+x^{1/2}+x^{1/3}+x^{1/6}+x^{-1/2}+x^{-1/3}+x^{-1/6}$',
+          '항마다 거듭제곱 법칙을 쓴다'] });
+
+add('medium', '이중 치환', 'sin(sin(x))*cos(sin(x))*cos(x)', 'sin(sin(x))^2/2',
+  { domain: D.trigW,
+  hints: ['$u=\\sin x$ 로 두면 $\\int\\sin u\\cos u\\,du$ 다.',
+          '다시 $v=\\sin u$ 로 두면 끝난다.'],
+  steps: ['$u=\\sin x$ 치환', '$\\int\\sin u\\cos u\\,du=\\dfrac{\\sin^{2}u}{2}$',
+          '$=\\dfrac{\\sin^{2}(\\sin x)}{2}$'] });
+
+add('hard', '몫의 미분 되짚기', '(cos(x)+sin(x))/x^2+(sin(x)-cos(x))/x',
+    '-(cos(x)+sin(x))/x',
+  { domain: [0.4, 2.6],
+  hints: ['답이 $\\dfrac{f}{x}$ 꼴이라고 짐작하고 몫의 미분법을 써 보라.',
+          '$\\left(-\\dfrac{\\cos x+\\sin x}{x}\\right)\'$ 를 계산해 보라.'],
+  steps: ['$\\left(-\\dfrac{\\cos x+\\sin x}{x}\\right)\'=\\dfrac{\\cos x+\\sin x}{x^{2}}-\\dfrac{\\cos x-\\sin x}{x}$',
+          '피적분함수와 같다'] });
+
+add('medium', '치환적분', 'x^3*sqrt(x^2+1)', '(x^2+1)^(5/2)/5-(x^2+1)^(3/2)/3',
+  { domain: D.all,
+  hints: ['$u=x^{2}+1$ 로 두면 $x^{2}=u-1$ 이다.',
+          '$x^{3}dx=x^{2}\\cdot x\\,dx=\\dfrac{(u-1)du}{2}$'],
+  steps: ['$u=x^{2}+1$ 치환',
+          '$\\dfrac12\\int\\left(u^{3/2}-u^{1/2}\\right)du$',
+          '$=\\dfrac{u^{5/2}}{5}-\\dfrac{u^{3/2}}{3}$'] });
+
+add('hard', '완전제곱', 'x/(x^4+x^2+1)', 'atan((2*x^2+1)/sqrt(3))/sqrt(3)',
+  { domain: D.poly,
+  hints: ['$u=x^{2}$ 로 두면 $\\dfrac12\\displaystyle\\int\\dfrac{du}{u^{2}+u+1}$ 다.',
+          '$u^{2}+u+1=\\left(u+\\dfrac12\\right)^{2}+\\dfrac34$'],
+  steps: ['$u=x^{2}$ 치환 후 완전제곱',
+          '$=\\dfrac{1}{\\sqrt3}\\arctan\\dfrac{2x^{2}+1}{\\sqrt3}$'] });
+
+add('monster', '이중 지수', 'e^(e^(2016*x)+6048*x)',
+    'e^(e^(2016*x))*(e^(4032*x)-2*e^(2016*x)+2)/2016',
+  { domain: [-0.001, 0.0005],
+  hints: ['$e^{6048x}=\\left(e^{2016x}\\right)^{3}$ 임을 먼저 알아채라.',
+          '$u=e^{2016x}$ 로 두면 $\\dfrac{1}{2016}\\displaystyle\\int u^{2}e^{u}du$ 가 된다.'],
+  steps: ['$u=e^{2016x},\\ du=2016u\\,dx$',
+          '$\\dfrac{1}{2016}\\int u^{2}e^{u}du=\\dfrac{e^{u}(u^{2}-2u+2)}{2016}$',
+          '$u=e^{2016x}$ 를 되돌린다'] });
+
+addDef('medium', '반각 공식', '(1-cos(x))/sin(x)', 'ln(3/2)',
+  { lo: 'pi/3', hi: 'pi/2',
+  hints: ['$\\dfrac{1-\\cos x}{\\sin x}=\\tan\\dfrac x2$ 다.',
+          '$\\int\\tan\\dfrac x2dx=-2\\ln\\left|\\cos\\dfrac x2\\right|$'],
+  steps: ['반각 공식으로 $\\tan\\dfrac x2$',
+          '$\\left[-2\\ln\\cos\\dfrac x2\\right]_{\\pi/3}^{\\pi/2}=\\ln2-\\ln\\dfrac43$',
+          '$=\\ln\\dfrac32$'] });
+
+add('hard', '부분분수', '1/(1-x+x^2-x^3)', '-ln(1-x)/2+ln(1+x^2)/4+atan(x)/2',
+  { domain: [-1.5, 0.7], lnAbs: true,
+  hints: ['분모를 묶어 보라: $(1-x)(1+x^{2})$ 다.',
+          '$\\dfrac{1}{(1-x)(1+x^{2})}=\\dfrac{1}{2(1-x)}+\\dfrac{x+1}{2(1+x^{2})}$'],
+  steps: ['$1-x+x^{2}-x^{3}=(1-x)(1+x^{2})$',
+          '부분분수로 쪼갠다',
+          '$=-\\dfrac{\\ln|1-x|}{2}+\\dfrac{\\ln(1+x^{2})}{4}+\\dfrac{\\arctan x}{2}$'] });
+
+addDef('hard', '지수 치환', '1/(2+cosh(x))', 'ln(2+sqrt(3))/sqrt(3)',
+  { lo: '0', hi: 'inf',
+  hints: ['$t=e^{x}$ 로 두면 $\\displaystyle\\int_{1}^{\\infty}\\dfrac{2\\,dt}{t^{2}+4t+1}$ 다.',
+          '$t^{2}+4t+1=(t+2)^{2}-3$'],
+  steps: ['$t=e^{x}$ 치환 후 완전제곱',
+          '$\\dfrac{1}{\\sqrt3}\\ln\\dfrac{t+2-\\sqrt3}{t+2+\\sqrt3}$ 가 원시함수',
+          '$=\\dfrac{\\ln(2+\\sqrt3)}{\\sqrt3}$'] });
+
+// --- 2017 -----------------------------------------------------------
+
+add('easy', '치환적분', 'x^2/sqrt(x^3+2)', '(2/3)*sqrt(x^3+2)',
+  { domain: D.poly,
+  hints: ['$u=x^{3}+2$ 로 두면 $du=3x^{2}dx$ 다.',
+          '$\\int u^{-1/2}du=2\\sqrt u$'],
+  steps: ['$u=x^{3}+2$ 치환', '$=\\dfrac23\\sqrt{x^{3}+2}$'] });
+
+addDef('medium', '부분적분', 'ln(x)/x^2', '1',
+  { lo: '1', hi: 'inf',
+  hints: ['$u=\\ln x,\\ dv=x^{-2}dx$ 로 부분적분한다.',
+          '원시함수는 $-\\dfrac{\\ln x+1}{x}$ 다.'],
+  steps: ['부분적분 $\\Rightarrow-\\dfrac{\\ln x}{x}-\\displaystyle\\int-\\dfrac{1}{x^{2}}dx$',
+          '$=-\\dfrac{\\ln x+1}{x}$, 위끝은 $0$',
+          '$=1$'] });
+
+add('medium', '치환 후 부분적분', 'x^3*e^(x^2)', '(x^2-1)*e^(x^2)/2',
+  { domain: [-1.4, 1.4],
+  hints: ['$u=x^{2}$ 로 두면 $\\dfrac12\\displaystyle\\int ue^{u}du$ 다.',
+          '$\\int ue^{u}du=(u-1)e^{u}$'],
+  steps: ['$u=x^{2}$ 치환', '$=\\dfrac{(x^{2}-1)e^{x^{2}}}{2}$'] });
+
+addDef('medium', '역삼각 치환', '1/(x*sqrt(x^2-1))', 'pi/3',
+  { lo: '1', hi: '2',
+  hints: ['$\\int\\dfrac{dx}{x\\sqrt{x^{2}-1}}=\\operatorname{arcsec}x$ 다.',
+          '$\\operatorname{arcsec}2=\\dfrac{\\pi}{3}$'],
+  steps: ['$\\left[\\operatorname{arcsec}x\\right]_{1}^{2}$', '$=\\dfrac{\\pi}{3}-0=\\dfrac{\\pi}{3}$'] });
+
+addDef('medium', '부분분수', '1/(x*(x^2+1))', 'ln(2)/2',
+  { lo: '1', hi: 'inf',
+  hints: ['$\\dfrac{1}{x(x^{2}+1)}=\\dfrac1x-\\dfrac{x}{x^{2}+1}$ 이다.',
+          '원시함수는 $\\ln\\dfrac{x}{\\sqrt{x^{2}+1}}$ 다.'],
+  steps: ['부분분수로 쪼갠다',
+          '$\\left[\\ln\\dfrac{x}{\\sqrt{x^{2}+1}}\\right]_{1}^{\\infty}$',
+          '$=0-\\ln\\dfrac{1}{\\sqrt2}=\\dfrac{\\ln2}{2}$'] });
+
+addDef('hard', '가우스 적분', 'e^(-2*x^2-5*x-3)', 'e^(1/8)*sqrt(pi/2)',
+  { lo: '-inf', hi: 'inf',
+  hints: ['지수를 완전제곱하라: $-2x^{2}-5x-3=-2\\left(x+\\dfrac54\\right)^{2}+\\dfrac18$',
+          '$\\int_{-\\infty}^{\\infty}e^{-au^{2}}du=\\sqrt{\\dfrac{\\pi}{a}}$'],
+  steps: ['지수를 완전제곱한다',
+          '$e^{1/8}\\displaystyle\\int_{-\\infty}^{\\infty}e^{-2u^{2}}du$',
+          '$=e^{1/8}\\sqrt{\\dfrac{\\pi}{2}}$'] });
+
+add('hard', '거듭제곱근 치환', 'sin(sqrt(x))', '2*sin(sqrt(x))-2*sqrt(x)*cos(sqrt(x))',
+  { domain: D.pos,
+  hints: ['$u=\\sqrt x$ 로 두면 $dx=2u\\,du$ 다.',
+          '$2\\displaystyle\\int u\\sin u\\,du$ 는 부분적분이다.'],
+  steps: ['$u=\\sqrt x\\Rightarrow2\\displaystyle\\int u\\sin u\\,du$',
+          '$=2(\\sin u-u\\cos u)$',
+          '$=2\\sin\\sqrt x-2\\sqrt x\\cos\\sqrt x$'] });
+
+addDef('hard', '삼각 치환', '1/(x+1/x)^2', 'pi/4',
+  { lo: '0', hi: 'inf',
+  hints: ['$\\dfrac{1}{(x+1/x)^{2}}=\\dfrac{x^{2}}{(x^{2}+1)^{2}}$ 로 고친다.',
+          '$x=\\tan\\theta$ 로 두면 $\\int\\sin^{2}\\theta\\,d\\theta$ 다.'],
+  steps: ['$\\dfrac{x^{2}}{(x^{2}+1)^{2}}$ 로 정리',
+          '$x=\\tan\\theta\\Rightarrow\\int_{0}^{\\pi/2}\\sin^{2}\\theta\\,d\\theta$',
+          '$=\\dfrac{\\pi}{4}$'] });
+
+add('hard', '몫의 미분 되짚기', '(2+x)*e^(-x)/x^3', '-e^(-x)/x^2',
+  { domain: [0.4, 2.6],
+  hints: ['답이 $\\dfrac{e^{-x}}{x^{2}}$ 꼴이라고 짐작하고 미분해 보라.',
+          '$\\left(-\\dfrac{e^{-x}}{x^{2}}\\right)\'=\\dfrac{e^{-x}}{x^{2}}+\\dfrac{2e^{-x}}{x^{3}}$'],
+  steps: ['$\\left(-e^{-x}x^{-2}\\right)\'=e^{-x}x^{-2}+2e^{-x}x^{-3}$',
+          '$=\\dfrac{(x+2)e^{-x}}{x^{3}}$'] });
+
+addDef('medium', '베타 함수', '1/sqrt(x*(1-x))', 'pi',
+  { lo: '0', hi: '1',
+  hints: ['$x=\\sin^{2}\\theta$ 로 두면 피적분함수가 상수가 된다.',
+          '$\\sqrt{x(1-x)}=\\sin\\theta\\cos\\theta$, $dx=2\\sin\\theta\\cos\\theta\\,d\\theta$'],
+  steps: ['$x=\\sin^{2}\\theta$ 치환',
+          '$\\int_{0}^{\\pi/2}2\\,d\\theta=\\pi$'] });
+
+addDef('hard', '급수 전개', 'tanh(x)/e^x', 'pi/2-1',
+  { lo: '0', hi: 'inf',
+  hints: ['$\\tanh x=1-\\dfrac{2}{e^{2x}+1}$ 로 쪼갠다.',
+          '남는 적분은 $t=e^{-x}$ 로 두면 $2\\displaystyle\\int_{0}^{1}\\dfrac{t^{2}}{1+t^{2}}dt$ 다.'],
+  steps: ['$\\int_{0}^{\\infty}e^{-x}dx=1$',
+          '$\\int_{0}^{\\infty}\\dfrac{2e^{-x}}{e^{2x}+1}dx=2\\left(1-\\dfrac{\\pi}{4}\\right)$',
+          '$=1-\\left(2-\\dfrac{\\pi}{2}\\right)=\\dfrac{\\pi}{2}-1$'] });
+
+addDef('hard', '반각 공식', 'sqrt(1+sin(x))', '2',
+  { lo: '0', hi: 'pi/2',
+  hints: ['$1+\\sin x=\\left(\\sin\\dfrac x2+\\cos\\dfrac x2\\right)^{2}$ 다.',
+          '구간에서 그 합은 양수라 근호가 그대로 벗겨진다.'],
+  steps: ['$\\sqrt{1+\\sin x}=\\sin\\dfrac x2+\\cos\\dfrac x2$',
+          '$\\left[-2\\cos\\dfrac x2+2\\sin\\dfrac x2\\right]_{0}^{\\pi/2}$',
+          '$=0-(-2)=2$'] });
+
+addDef('monster', '가우스 적분', 'sin(x+pi/4)^2/e^(x^2)', 'sqrt(pi)/2',
+  { lo: '-inf', hi: 'inf',
+  hints: ['$\\sin^{2}\\left(x+\\dfrac\\pi4\\right)=\\dfrac{1+\\sin2x}{2}$ 다.',
+          '$e^{-x^{2}}\\sin2x$ 는 홀함수라 대칭 구간에서 사라진다.'],
+  steps: ['$\\dfrac{1+\\sin2x}{2}$ 로 고친다',
+          '홀함수 항은 $0$',
+          '$=\\dfrac12\\sqrt\\pi$'] });
+
+addDef('monster', '완전제곱 치환', '3*x^2*(x^3+1)^2*e^(-x^6-2*x^3)', 'e*sqrt(pi)/2',
+  { lo: '-inf', hi: 'inf',
+  hints: ['지수를 완전제곱하라: $-x^{6}-2x^{3}=-(x^{3}+1)^{2}+1$',
+          '$u=x^{3}+1$ 로 두면 $du=3x^{2}dx$ 다.'],
+  steps: ['$e\\displaystyle\\int_{-\\infty}^{\\infty}u^{2}e^{-u^{2}}du$ 로 바뀐다',
+          '$\\int_{-\\infty}^{\\infty}u^{2}e^{-u^{2}}du=\\dfrac{\\sqrt\\pi}{2}$',
+          '$=\\dfrac{e\\sqrt\\pi}{2}$'] });
+
+addDef('monster', '킹 성질', '1/(1+tan(x)^2017)', 'pi/4',
+  { lo: '0', hi: 'pi/2',
+  hints: ['$x\\to\\dfrac\\pi2-x$ 를 넣으면 $\\tan$ 이 $\\cot$ 으로 바뀐다.',
+          '원래 식과 더하면 $1$ 이 된다 — 지수는 아무 상관이 없다.'],
+  steps: ['$f(x)+f\\left(\\dfrac\\pi2-x\\right)=1$',
+          '$2I=\\dfrac{\\pi}{2}$',
+          '$I=\\dfrac{\\pi}{4}$'] });
+
+add('hard', '순환 부분적분', 'e^(2*x)*cos(3*x)', 'e^(2*x)*(2*cos(3*x)+3*sin(3*x))/13',
+  { domain: [-1.0, 1.5],
+  hints: ['부분적분을 두 번 하면 원래 적분이 다시 나온다.',
+          '$\\int e^{ax}\\cos bx\\,dx=\\dfrac{e^{ax}(a\\cos bx+b\\sin bx)}{a^{2}+b^{2}}$'],
+  steps: ['$a=2,\\ b=3$ 을 공식에 넣는다',
+          '$=\\dfrac{e^{2x}(2\\cos3x+3\\sin3x)}{13}$'] });
+
+add('monster', '지수 탑', 'cos(x)^(cos(x)+1)*tan(x)*(1+ln(cos(x)))', '-cos(x)^cos(x)',
+  { domain: [0.2, 1.3],
+  hints: ['$y=(\\cos x)^{\\cos x}=e^{\\cos x\\ln\\cos x}$ 로 두고 미분해 보라.',
+          '$y\'=-y\\sin x\\left(1+\\ln\\cos x\\right)$ 가 나온다.'],
+  steps: ['$y=(\\cos x)^{\\cos x}$ 로 두면 $y\'=-y\\sin x(1+\\ln\\cos x)$',
+          '피적분함수는 $y\\cos x\\cdot\\dfrac{\\sin x}{\\cos x}(1+\\ln\\cos x)=-y\'$',
+          '$=-(\\cos x)^{\\cos x}$'] });
+
+
+// --- 2018 -----------------------------------------------------------
+
+add('easy', '치환적분', 'e^x/(e^x+2)', 'ln(e^x+2)',
+  { domain: D.all,
+  hints: ['분모의 도함수가 분자다.', '$u=e^{x}+2$ 치환'],
+  steps: ['$u=e^{x}+2$ 치환', '$=\\ln(e^{x}+2)$'] });
+
+add('monster', '무한 중첩 근', 'x^(e-2)', 'x^(e-1)/(e-1)',
+  { domain: D.pos,
+  hints: ['$\\sqrt{x\\sqrt[3]{x\\sqrt[4]{x\\cdots}}}$ 의 지수를 세어 보라.',
+          '$\\dfrac12+\\dfrac{1}{2\\cdot3}+\\dfrac{1}{2\\cdot3\\cdot4}+\\cdots=\\displaystyle\\sum_{n\\ge2}\\dfrac{1}{n!}=e-2$'],
+  steps: ['지수의 합이 $\\sum_{n\\ge2}\\dfrac{1}{n!}=e-2$',
+          '피적분함수는 $x^{e-2}$',
+          '$=\\dfrac{x^{e-1}}{e-1}$'] });
+
+add('medium', '항등식 정리', '1/(tan(x)+cot(x))', '-cos(2*x)/4',
+  { domain: D.trig,
+  hints: ['$\\tan x+\\cot x=\\dfrac{1}{\\sin x\\cos x}$ 다.',
+          '역수는 $\\sin x\\cos x=\\dfrac{\\sin2x}{2}$'],
+  steps: ['$\\tan x+\\cot x=\\dfrac{\\sin^{2}x+\\cos^{2}x}{\\sin x\\cos x}=\\dfrac{1}{\\sin x\\cos x}$',
+          '$\\int\\dfrac{\\sin2x}{2}dx=-\\dfrac{\\cos2x}{4}$'] });
+
+add('medium', '치환적분', 'x^5/(2+x^12)', 'atan(x^6/sqrt(2))/(6*sqrt(2))',
+  { domain: D.poly,
+  hints: ['$u=x^{6}$ 으로 두면 $du=6x^{5}dx$ 다.',
+          '$x^{12}=u^{2}$'],
+  steps: ['$u=x^{6}$ 치환 $\\Rightarrow\\dfrac16\\displaystyle\\int\\dfrac{du}{2+u^{2}}$',
+          '$=\\dfrac{1}{6\\sqrt2}\\arctan\\dfrac{x^{6}}{\\sqrt2}$'] });
+
+add('medium', '곱의 미분 되짚기', 'cos(x)*cosh(x)+sin(x)*sinh(x)', 'sin(x)*cosh(x)',
+  { domain: [-1.2, 1.4],
+  hints: ['$(\\sin x\\cosh x)\'$ 를 계산해 보라.',
+          '$(\\cosh x)\'=\\sinh x$'],
+  steps: ['$(\\sin x\\cosh x)\'=\\cos x\\cosh x+\\sin x\\sinh x$', '$=\\sin x\\cosh x$'] });
+
+add('hard', '로그 미분', '(e^x+cos(x))/(e^x+sin(x))', 'ln(e^x+sin(x))',
+  { domain: [0.2, 2.4], lnAbs: true,
+  hints: ['분모의 도함수를 계산해 보라.',
+          '$(e^{x}+\\sin x)\'=e^{x}+\\cos x$ — 분자와 같다.'],
+  steps: ['$u=e^{x}+\\sin x$ 치환', '$=\\ln\\left|e^{x}+\\sin x\\right|$'] });
+
+add('hard', '삼중 치환', 'sin(cos(sin(x)))*sin(sin(x))*cos(x)', 'cos(cos(sin(x)))',
+  { domain: D.trigW,
+  hints: ['$u=\\sin x$ 로 두면 $\\int\\sin(\\cos u)\\sin u\\,du$ 다.',
+          '다시 $v=\\cos u$ 로 두면 $-\\int\\sin v\\,dv$ 다.'],
+  steps: ['$u=\\sin x$, 그다음 $v=\\cos u$',
+          '$-\\int\\sin v\\,dv=\\cos v$',
+          '$=\\cos(\\cos(\\sin x))$'] });
+
+add('medium', '유리화', '1/(1+sin(x))', 'tan(x)-1/cos(x)',
+  { domain: D.trig,
+  hints: ['분자·분모에 $1-\\sin x$ 를 곱한다.',
+          '$\\dfrac{1-\\sin x}{\\cos^{2}x}=\\sec^{2}x-\\sec x\\tan x$'],
+  steps: ['유리화한다', '$=\\tan x-\\sec x$'] });
+
+add('medium', '배각 공식', 'cos(x)/(1-cos(2*x))', '-1/(2*sin(x))',
+  { domain: [0.3, 1.5],
+  hints: ['$1-\\cos2x=2\\sin^{2}x$ 다.',
+          '$u=\\sin x$ 로 두면 $\\dfrac12\\displaystyle\\int u^{-2}du$ 다.'],
+  steps: ['$\\dfrac{\\cos x}{2\\sin^{2}x}$ 로 고친다', '$=-\\dfrac{1}{2\\sin x}$'] });
+
+add('medium', '미분 되짚기', 'e^x*(1/x+ln(x))', 'e^x*ln(x)',
+  { domain: D.pos,
+  hints: ['$\\int e^{x}(f+f\')dx=e^{x}f$ 꼴이다.',
+          '$f=\\ln x$ 로 두면 $f\'=\\dfrac1x$ 다.'],
+  steps: ['$f=\\ln x,\\ f\'=\\dfrac1x$', '$=e^{x}\\ln x$'] });
+
+add('medium', '쌍곡선 항등식', 'tanh(x)^2', 'x-tanh(x)',
+  { domain: D.hyp,
+  hints: ['$\\tanh^{2}x=1-\\operatorname{sech}^{2}x$ 다.',
+          '$\\int\\operatorname{sech}^{2}x\\,dx=\\tanh x$'],
+  steps: ['$1-\\operatorname{sech}^{2}x$ 로 고친다', '$=x-\\tanh x$'] });
+
+add('monster', '완전제곱 알아채기', '(2017*x^2016+2018*x^2017)/(1+x^4034+2*x^4035+x^4036)',
+    'atan(x^2017+x^2018)',
+  { domain: [0.998, 1.0005],
+  hints: ['분모의 $x$ 항들을 완전제곱으로 묶어 보라.',
+          '$x^{4034}+2x^{4035}+x^{4036}=\\left(x^{2017}+x^{2018}\\right)^{2}$'],
+  steps: ['$y=x^{2017}+x^{2018}$ 로 두면 분모는 $1+y^{2}$',
+          '$y\'=2017x^{2016}+2018x^{2017}$ — 분자와 같다',
+          '$=\\arctan\\left(x^{2017}+x^{2018}\\right)$'] });
+
+add('hard', '배각 공식', '(sin(2*x)-sin(x)^2)/(cos(2*x)-cos(x)^2)', 'x-2*ln(sin(x))',
+  { domain: [0.3, 1.5], lnAbs: true,
+  hints: ['$\\cos2x-\\cos^{2}x=\\cos^{2}x-1=-\\sin^{2}x$ 다.',
+          '분자는 $\\sin x(2\\cos x-\\sin x)$ 로 묶인다.'],
+  steps: ['분모 $=-\\sin^{2}x$',
+          '$\\dfrac{\\sin x(2\\cos x-\\sin x)}{-\\sin^{2}x}=1-2\\cot x$',
+          '$=x-2\\ln|\\sin x|$'] });
+
+add('monster', '지수 정리', '1/(x^(25/25)*x^(16/25)+x^(9/25))', '(25/16)*atan(x^(16/25))',
+  { domain: D.pos,
+  hints: ['지수를 정리하면 $x^{41/25}+x^{9/25}=x^{9/25}\\left(x^{32/25}+1\\right)$ 이다.',
+          '$u=x^{16/25}$ 로 두면 $du=\\dfrac{16}{25}x^{-9/25}dx$ 다.'],
+  steps: ['$x^{9/25}$ 로 묶는다',
+          '$u=x^{16/25}\\Rightarrow\\dfrac{25}{16}\\displaystyle\\int\\dfrac{du}{u^{2}+1}$',
+          '$=\\dfrac{25}{16}\\arctan\\left(x^{16/25}\\right)$'] });
+
+addDef('medium', '치환적분', 'cos(x)/(2-cos(x)^2)', 'pi/4',
+  { lo: '0', hi: 'pi/2',
+  hints: ['$2-\\cos^{2}x=1+\\sin^{2}x$ 다.',
+          '$u=\\sin x$ 로 두면 $\\displaystyle\\int_{0}^{1}\\dfrac{du}{1+u^{2}}$ 다.'],
+  steps: ['$1+\\sin^{2}x$ 로 고친다', '$=\\arctan1=\\dfrac{\\pi}{4}$'] });
+
+add('medium', '삼각 치환', '1/(1+x^2)^(3/2)', 'x/sqrt(1+x^2)',
+  { domain: D.all,
+  hints: ['$x=\\tan\\theta$ 로 두면 $\\int\\cos\\theta\\,d\\theta$ 다.',
+          '$\\sin\\theta=\\dfrac{x}{\\sqrt{1+x^{2}}}$'],
+  steps: ['$x=\\tan\\theta$ 치환', '$=\\sin\\theta=\\dfrac{x}{\\sqrt{1+x^{2}}}$'] });
+
+add('monster', '거듭제곱근 치환', '1/sqrt(x*sqrt(x)-x^2)', '4*asin(x^(1/4))',
+  { domain: [0.05, 0.85],
+  hints: ['$x\\sqrt x-x^{2}=x^{3/2}\\left(1-\\sqrt x\\right)$ 로 묶는다.',
+          '$u=\\sqrt x$ 로 두면 $2\\displaystyle\\int\\dfrac{du}{\\sqrt{u(1-u)}}$ 다.'],
+  steps: ['$u=\\sqrt x$ 치환',
+          '$\\int\\dfrac{du}{\\sqrt{u(1-u)}}=2\\arcsin\\sqrt u$',
+          '$=4\\arcsin\\left(x^{1/4}\\right)$'] });
+
+add('monster', '로그 미분 되짚기', '(x-1)/(x+x^2*ln(x))', 'ln((1+x*ln(x))/x)',
+  { domain: [0.4, 2.4], lnAbs: true,
+  hints: ['분모를 $x(1+x\\ln x)$ 로 묶는다.',
+          '$\\ln\\dfrac{1+x\\ln x}{x}$ 를 미분해 보라.'],
+  steps: ['$\\left(\\ln\\dfrac{1+x\\ln x}{x}\\right)\'=\\dfrac{\\ln x+1}{1+x\\ln x}-\\dfrac1x$',
+          '통분하면 $\\dfrac{x-1}{x(1+x\\ln x)}$',
+          '$=\\ln\\left|\\dfrac{1+x\\ln x}{x}\\right|$'] });
+
+add('medium', '배각 공식', 'csc(x)*sec(x)', 'ln(tan(x))',
+  { domain: D.trig, lnAbs: true,
+  hints: ['$\\csc x\\sec x=\\dfrac{1}{\\sin x\\cos x}$ 다.',
+          '분자·분모를 $\\cos^{2}x$ 로 나누면 $\\dfrac{\\sec^{2}x}{\\tan x}$ 다.'],
+  steps: ['$\\dfrac{\\sec^{2}x}{\\tan x}$ 로 고친다', '$=\\ln|\\tan x|$'] });
+
+// --- 2019 -----------------------------------------------------------
+
+addDef('hard', '대칭 논법', 'tan(cos(x))', '0',
+  { lo: '0', hi: '2*pi',
+  hints: ['$x\\to x+\\pi$ 를 넣으면 $\\cos$ 의 부호가 뒤집힌다.',
+          '$\\tan$ 은 홀함수다.'],
+  steps: ['$\\cos(x+\\pi)=-\\cos x$ 이므로 $f(x+\\pi)=-f(x)$',
+          '한 주기 위에서 서로 상쇄된다',
+          '$=0$'] });
+
+add('hard', '로그 미분 되짚기', '(x+1)/(x*(x+ln(x)))', 'ln(x+ln(x))',
+  { domain: [0.8, 3.0], lnAbs: true,
+  hints: ['$(x+\\ln x)\'=1+\\dfrac1x=\\dfrac{x+1}{x}$ 다.',
+          '분모의 도함수가 분자의 형태와 맞아떨어진다.'],
+  steps: ['$u=x+\\ln x\\Rightarrow du=\\dfrac{x+1}{x}dx$',
+          '$=\\ln\\left|x+\\ln x\\right|$'] });
+
+add('hard', '이중 지수', 'e^(x+e^x)+e^(x-e^x)', 'e^(e^x)-e^(-e^x)',
+  { domain: [-1.0, 1.2],
+  hints: ['$e^{x}$ 를 묶어 내면 $e^{x}\\left(e^{e^{x}}+e^{-e^{x}}\\right)$ 다.',
+          '$u=e^{x}$ 치환'],
+  steps: ['$u=e^{x}\\Rightarrow\\int\\left(e^{u}+e^{-u}\\right)du$',
+          '$=e^{u}-e^{-u}=e^{e^{x}}-e^{-e^{x}}$'] });
+
+addDef('easy', '부분분수', '1/(1-x^2)', 'ln(3)',
+  { lo: '-1/2', hi: '1/2',
+  hints: ['$\\dfrac{1}{1-x^{2}}=\\dfrac12\\left(\\dfrac{1}{1-x}+\\dfrac{1}{1+x}\\right)$',
+          '원시함수는 $\\dfrac12\\ln\\dfrac{1+x}{1-x}$ 다.'],
+  steps: ['$\\left[\\dfrac12\\ln\\dfrac{1+x}{1-x}\\right]_{-1/2}^{1/2}$',
+          '$=\\dfrac12\\ln3-\\dfrac12\\ln\\dfrac13=\\ln3$'] });
+
+addDef('hard', '지수 정리', '2^ln(x)', '2^(ln(2)+1)/(ln(2)+1)',
+  { lo: '0', hi: '2',
+  hints: ['$2^{\\ln x}=e^{\\ln2\\cdot\\ln x}=x^{\\ln2}$ 다.',
+          '거듭제곱 법칙을 쓰면 된다.'],
+  steps: ['$2^{\\ln x}=x^{\\ln2}$',
+          '$\\left[\\dfrac{x^{\\ln2+1}}{\\ln2+1}\\right]_{0}^{2}$',
+          '$=\\dfrac{2^{\\ln2+1}}{\\ln2+1}$'] });
+
+add('hard', '삼중 치환', 'cos(x)*cos(sin(x))*cos(sin(sin(x)))', 'sin(sin(sin(x)))',
+  { domain: D.trigW,
+  hints: ['$u=\\sin x$ 로 두면 $\\int\\cos u\\cos(\\sin u)du$ 다.',
+          '다시 $v=\\sin u$ 로 두면 $\\int\\cos v\\,dv$ 다.'],
+  steps: ['$u=\\sin x$, 그다음 $v=\\sin u$',
+          '$=\\sin v=\\sin(\\sin(\\sin x))$'] });
+
+addDef('hard', '역수 치환', 'e^(-2019/(4*x^2))/x^2', 'sqrt(pi/2019)',
+  { lo: '0', hi: 'inf',
+  hints: ['$u=\\dfrac1x$ 로 두면 $du=-\\dfrac{dx}{x^{2}}$ 다.',
+          '$\\int_{0}^{\\infty}e^{-au^{2}}du=\\dfrac12\\sqrt{\\dfrac\\pi a}$'],
+  steps: ['$u=\\dfrac1x\\Rightarrow\\displaystyle\\int_{0}^{\\infty}e^{-\\frac{2019}{4}u^{2}}du$',
+          '$=\\dfrac12\\sqrt{\\dfrac{4\\pi}{2019}}=\\sqrt{\\dfrac{\\pi}{2019}}$'] });
+
+addDef('medium', '거듭제곱근 치환', 'sqrt(x)/(1+x)', '2-pi/2',
+  { lo: '0', hi: '1',
+  hints: ['$u=\\sqrt x$ 로 두면 $2\\displaystyle\\int_{0}^{1}\\dfrac{u^{2}}{1+u^{2}}du$ 다.',
+          '$\\dfrac{u^{2}}{1+u^{2}}=1-\\dfrac{1}{1+u^{2}}$'],
+  steps: ['$u=\\sqrt x$ 치환',
+          '$2\\left[u-\\arctan u\\right]_{0}^{1}$',
+          '$=2\\left(1-\\dfrac{\\pi}{4}\\right)=2-\\dfrac{\\pi}{2}$'] });
+
+addDef('hard', '곱-합 공식', 'cos(x)*cos(2*x)*cos(3*x)', 'pi/2',
+  { lo: '0', hi: '2*pi',
+  hints: ['$\\cos x\\cos2x=\\dfrac{\\cos3x+\\cos x}{2}$ 로 먼저 바꾼다.',
+          '$\\cos^{2}3x$ 항만 살아남는다.'],
+  steps: ['$\\dfrac{\\cos^{2}3x}{2}+\\dfrac{\\cos4x+\\cos2x}{4}$',
+          '$\\int_{0}^{2\\pi}\\cos^{2}3x\\,dx=\\pi$, 나머지는 $0$',
+          '$=\\dfrac{\\pi}{2}$'] });
+
+addDef('hard', '합-곱 공식', '(sin(20*x)+sin(19*x))/(cos(20*x)+cos(19*x))',
+    '-2*ln(cos(39*pi/200))/39',
+  { lo: '0', hi: 'pi/100',
+  hints: ['$\\sin A+\\sin B$ 와 $\\cos A+\\cos B$ 를 각각 곱으로 바꾼다.',
+          '$\\cos\\dfrac{A-B}{2}$ 가 약분되어 $\\tan\\dfrac{A+B}{2}$ 만 남는다.'],
+  steps: ['비가 $\\tan\\dfrac{39x}{2}$ 로 정리된다',
+          '$\\left[-\\dfrac{2}{39}\\ln\\left|\\cos\\dfrac{39x}{2}\\right|\\right]_{0}^{\\pi/100}$',
+          '$=-\\dfrac{2}{39}\\ln\\cos\\dfrac{39\\pi}{200}$'] });
+
+add('hard', '곱의 미분 되짚기', 'e^x*cos(x)^2+e^x*sin(x)*cos(x)-e^x*sin(x)^2',
+    'e^x*sin(x)*cos(x)',
+  { domain: [-1.0, 1.5],
+  hints: ['$f=\\sin x\\cos x$ 로 두고 $\\left(e^{x}f\\right)\'$ 를 계산해 보라.',
+          '$f\'=\\cos^{2}x-\\sin^{2}x$'],
+  steps: ['$\\left(e^{x}\\sin x\\cos x\\right)\'=e^{x}\\sin x\\cos x+e^{x}(\\cos^{2}x-\\sin^{2}x)$',
+          '피적분함수와 같다'] });
+
+addDef('monster', '킹 성질', 'sin(x)/sin(x+pi/4)', 'pi*sqrt(2)/4',
+  { lo: '0', hi: 'pi/2',
+  hints: ['$\\sin\\left(x+\\dfrac\\pi4\\right)=\\dfrac{\\sin x+\\cos x}{\\sqrt2}$ 다.',
+          '$\\displaystyle\\int_{0}^{\\pi/2}\\dfrac{\\sin x}{\\sin x+\\cos x}dx=\\dfrac{\\pi}{4}$ 는 $x\\to\\dfrac\\pi2-x$ 로 얻는다.'],
+  steps: ['$\\sqrt2\\displaystyle\\int_{0}^{\\pi/2}\\dfrac{\\sin x}{\\sin x+\\cos x}dx$',
+          '$x\\to\\dfrac\\pi2-x$ 로 더하면 $2I=\\dfrac\\pi2$',
+          '$=\\sqrt2\\cdot\\dfrac{\\pi}{4}$'] });
+
+add('hard', '거듭제곱근 치환', '1/(x+x^(1/3))', '(3/2)*ln(x^(2/3)+1)',
+  { domain: D.pos,
+  hints: ['$u=x^{1/3}$ 로 두면 $dx=3u^{2}du$ 다.',
+          '분모는 $u^{3}+u=u(u^{2}+1)$ 로 묶인다.'],
+  steps: ['$u=x^{1/3}\\Rightarrow3\\displaystyle\\int\\dfrac{u\\,du}{u^{2}+1}$',
+          '$=\\dfrac32\\ln\\left(x^{2/3}+1\\right)$'] });
+
+addDef('monster', '지수 탑', 'x^(x^2+1)*(2*ln(x)+1)', '15',
+  { lo: '0', hi: '2',
+  hints: ['$x^{x^{2}}=e^{x^{2}\\ln x}$ 를 미분해 보라.',
+          '$\\left(x^{x^{2}}\\right)\'=x^{x^{2}}\\left(2x\\ln x+x\\right)=x^{x^{2}+1}(2\\ln x+1)$'],
+  steps: ['원시함수는 $x^{x^{2}}$',
+          '$x\\to0^{+}$ 에서 $x^{x^{2}}\\to1$',
+          '$=2^{4}-1=15$'] });
+
+add('medium', '부분분수', '(2*x^3-1)/(x*(x^3+1))', '-ln(x)+ln(x^3+1)',
+  { domain: [0.35, 2.6], lnAbs: true,
+  hints: ['$\\dfrac{2x^{3}-1}{x(x^{3}+1)}+\\dfrac1x$ 를 통분해 보라.',
+          '$=\\dfrac{3x^{2}}{x^{3}+1}$ 이 된다.'],
+  steps: ['$-\\dfrac1x+\\dfrac{3x^{2}}{x^{3}+1}$ 로 쪼갠다',
+          '$=-\\ln|x|+\\ln\\left|x^{3}+1\\right|$'] });
+
+add('medium', '항등식 정리', 'cos(atan(x))', 'asinh(x)',
+  { domain: D.all,
+  hints: ['$\\cos(\\arctan x)=\\dfrac{1}{\\sqrt{1+x^{2}}}$ 다.',
+          '$\\int\\dfrac{dx}{\\sqrt{1+x^{2}}}=\\operatorname{arsinh}x$'],
+  steps: ['직각삼각형으로 $\\cos(\\arctan x)=\\dfrac{1}{\\sqrt{1+x^{2}}}$',
+          '$=\\operatorname{arsinh}x$'] });
+
+
+// --- 2020 -----------------------------------------------------------
+
+add('hard', '로그 법칙', 'ln(2*x)/(x*ln(x))', 'ln(2)*ln(ln(x))+ln(x)',
+  { domain: D.lnln, lnAbs: true,
+  hints: ['$\\ln(2x)=\\ln2+\\ln x$ 로 쪼갠다.',
+          '$\\dfrac{\\ln2}{x\\ln x}+\\dfrac1x$ 가 된다.'],
+  steps: ['둘로 쪼갠다',
+          '$\\int\\dfrac{dx}{x\\ln x}=\\ln|\\ln x|$',
+          '$=\\ln2\\cdot\\ln|\\ln x|+\\ln|x|$'] });
+
+addDef('medium', '지수 유리식', '1/(e^x+1)', 'ln(2)',
+  { lo: '0', hi: 'inf',
+  hints: ['$\\dfrac{1}{e^{x}+1}=1-\\dfrac{e^{x}}{e^{x}+1}$ 다.',
+          '원시함수는 $x-\\ln(e^{x}+1)=\\ln\\dfrac{e^{x}}{e^{x}+1}$ 다.'],
+  steps: ['$\\left[\\ln\\dfrac{e^{x}}{e^{x}+1}\\right]_{0}^{\\infty}$',
+          '$=0-\\ln\\dfrac12=\\ln2$'] });
+
+addDef('hard', '로그 치환', 'ln(x)*ln(ln(x))/x', '(e^2+1)/4',
+  { lo: 'e', hi: 'e^e',
+  hints: ['$u=\\ln x$ 로 두면 $\\displaystyle\\int_{1}^{e}u\\ln u\\,du$ 다.',
+          '$\\int u\\ln u\\,du=\\dfrac{u^{2}\\ln u}{2}-\\dfrac{u^{2}}{4}$'],
+  steps: ['$u=\\ln x$ 치환',
+          '$\\left[\\dfrac{u^{2}\\ln u}{2}-\\dfrac{u^{2}}{4}\\right]_{1}^{e}$',
+          '$=\\dfrac{e^{2}}{4}+\\dfrac14=\\dfrac{e^{2}+1}{4}$'] });
+
+addDef('medium', '대칭 논법', 'ln((1+x)/(1-x))', '2*ln(2)',
+  { lo: '0', hi: '1',
+  hints: ['$\\ln(1+x)-\\ln(1-x)$ 로 쪼개 각각 적분한다.',
+          '$\\int_{0}^{1}\\ln(1+x)dx=2\\ln2-1$, $\\int_{0}^{1}\\ln(1-x)dx=-1$'],
+  steps: ['원시함수는 $(1+x)\\ln(1+x)+(1-x)\\ln(1-x)$',
+          '$x\\to1^{-}$ 에서 $(1-x)\\ln(1-x)\\to0$',
+          '$=2\\ln2$'] });
+
+add('medium', '완전제곱', '1/(x^2+(x-1)^2)', 'atan(2*x-1)',
+  { domain: D.all,
+  hints: ['분모를 펼치면 $2x^{2}-2x+1$ 이다.',
+          '$=\\dfrac{(2x-1)^{2}+1}{2}$'],
+  steps: ['$2x^{2}-2x+1=\\dfrac{(2x-1)^{2}+1}{2}$',
+          '$\\int\\dfrac{2\\,dx}{(2x-1)^{2}+1}=\\arctan(2x-1)$'] });
+
+add('hard', '배각 공식', 'sin(x)^4*cos(x)^4*(cos(x)+sin(x))*(cos(x)-sin(x))',
+    'sin(2*x)^5/160',
+  { domain: D.trigW,
+  hints: ['$(\\cos x+\\sin x)(\\cos x-\\sin x)=\\cos2x$ 다.',
+          '$\\sin^{4}x\\cos^{4}x=\\dfrac{\\sin^{4}2x}{16}$'],
+  steps: ['$\\dfrac{\\sin^{4}2x\\cos2x}{16}$ 로 정리',
+          '$u=\\sin2x\\Rightarrow\\dfrac{1}{32}\\displaystyle\\int u^{4}du$',
+          '$=\\dfrac{\\sin^{5}2x}{160}$'] });
+
+add('medium', '부분적분', 'ln(1+x^2)', 'x*ln(1+x^2)-2*x+2*atan(x)',
+  { domain: D.all,
+  hints: ['$u=\\ln(1+x^{2}),\\ dv=dx$ 로 부분적분한다.',
+          '남는 $\\displaystyle\\int\\dfrac{2x^{2}}{1+x^{2}}dx$ 는 나눗셈으로 푼다.'],
+  steps: ['$x\\ln(1+x^{2})-\\displaystyle\\int\\dfrac{2x^{2}}{1+x^{2}}dx$',
+          '$=x\\ln(1+x^{2})-2x+2\\arctan x$'] });
+
+add('medium', '치환적분', '(2*x+1)/(2*x^2+2*x+1)', 'ln(2*x^2+2*x+1)/2',
+  { domain: D.all,
+  hints: ['분모의 도함수는 $4x+2$ 다.',
+          '분자는 그 절반이다.'],
+  steps: ['$u=2x^{2}+2x+1$ 치환', '$=\\dfrac{\\ln(2x^{2}+2x+1)}{2}$'] });
+
+addDef('hard', '부분적분', 'asin(x)/x^3', '1/2',
+  { lo: '1/sqrt(2)', hi: '1',
+  hints: ['$u=\\arcsin x,\\ dv=x^{-3}dx$ 로 부분적분한다.',
+          '$\\displaystyle\\int\\dfrac{dx}{x^{2}\\sqrt{1-x^{2}}}=-\\dfrac{\\sqrt{1-x^{2}}}{x}$'],
+  steps: ['원시함수는 $-\\dfrac{\\arcsin x}{2x^{2}}-\\dfrac{\\sqrt{1-x^{2}}}{2x}$',
+          '두 끝을 대입하면 $-\\dfrac{\\pi}{4}-\\left(-\\dfrac{\\pi}{4}-\\dfrac12\\right)$',
+          '$=\\dfrac12$'] });
+
+addDef('hard', '치환 후 부분적분', 'sin(2*x)*cos(cos(x))', '2*sin(1)+2*cos(1)-2',
+  { lo: '0', hi: 'pi/2',
+  hints: ['$\\sin2x=2\\sin x\\cos x$ 로 풀고 $u=\\cos x$ 로 둔다.',
+          '$2\\displaystyle\\int_{0}^{1}u\\cos u\\,du$ 가 된다.'],
+  steps: ['$u=\\cos x$ 치환',
+          '$2\\left[u\\sin u+\\cos u\\right]_{0}^{1}$',
+          '$=2\\sin1+2\\cos1-2$'] });
+
+addDef('hard', '대칭 논법', 'sin(sin(x)-x)', '0',
+  { lo: '0', hi: '2*pi',
+  hints: ['$\\sin(\\sin x-x)=\\sin(\\sin x)\\cos x-\\cos(\\sin x)\\sin x$ 로 전개한다.',
+          '두 항 모두 한 주기 위에서 사라진다.'],
+  steps: ['$\\int_{0}^{2\\pi}\\sin(\\sin x)\\cos x\\,dx=\\left[-\\cos(\\sin x)\\right]_{0}^{2\\pi}=0$',
+          '$\\cos(\\sin x)\\sin x$ 는 $x=\\pi$ 에 대해 홀함수라 $0$',
+          '$=0$'] });
+
+addDef('monster', '킹 성질', '1/(tan(x)^sqrt(2020)+1)', 'pi/4',
+  { lo: '0', hi: 'pi/2',
+  hints: ['$x\\to\\dfrac\\pi2-x$ 를 넣으면 $\\tan$ 이 $\\cot$ 으로 바뀐다.',
+          '지수가 무엇이든 두 식을 더하면 $1$ 이다.'],
+  steps: ['$f(x)+f\\left(\\dfrac\\pi2-x\\right)=1$', '$2I=\\dfrac\\pi2$', '$I=\\dfrac{\\pi}{4}$'] });
+
+add('monster', '치환적분', 'x*(1-x)^2020', '(1-x)^2022/2022-(1-x)^2021/2021',
+  { domain: [-0.0009, 0.0009],
+  hints: ['$u=1-x$ 로 두면 $x=1-u$ 다.',
+          '$\\int\\left(u^{2021}-u^{2020}\\right)du$ 만 남는다.'],
+  steps: ['$u=1-x$ 치환',
+          '$=\\dfrac{(1-x)^{2022}}{2022}-\\dfrac{(1-x)^{2021}}{2021}$'] });
+
+add('hard', '치환적분', 'sec(x)^4*tan(x)/(sec(x)^4+4)', 'ln((1/cos(x))^4+4)/4',
+  { domain: D.trig,
+  hints: ['$u=\\sec^{4}x$ 로 두면 $du=4\\sec^{4}x\\tan x\\,dx$ 다.',
+          '분자가 정확히 $\\dfrac{du}{4}$ 다.'],
+  steps: ['$u=\\sec^{4}x$ 치환',
+          '$\\dfrac14\\int\\dfrac{du}{u+4}=\\dfrac{\\ln(u+4)}{4}$'] });
+
+add('hard', '지수 탑', 'x^(2*x)*(2+2*ln(x))', 'x^(2*x)',
+  { domain: [0.45, 2.0],
+  hints: ['$x^{2x}=e^{2x\\ln x}$ 로 쓰고 미분해 보라.',
+          '$\\left(x^{2x}\\right)\'=x^{2x}(2\\ln x+2)$'],
+  steps: ['$x^{2x}=e^{2x\\ln x}$',
+          '지수의 도함수가 $2\\ln x+2$',
+          '$=x^{2x}$'] });
+
+addDef('monster', '감마 함수', 'x^5*e^(-x^4)', 'sqrt(pi)/8',
+  { lo: '0', hi: 'inf',
+  hints: ['$u=x^{4}$ 로 두면 $x^{5}dx=\\dfrac{u^{1/2}}{4}du$ 다.',
+          '$\\Gamma\\left(\\dfrac32\\right)=\\dfrac{\\sqrt\\pi}{2}$'],
+  steps: ['$u=x^{4}\\Rightarrow\\dfrac14\\displaystyle\\int_{0}^{\\infty}u^{1/2}e^{-u}du$',
+          '$=\\dfrac14\\Gamma\\left(\\dfrac32\\right)=\\dfrac{\\sqrt\\pi}{8}$'] });
+
+// --- 2022 -----------------------------------------------------------
+
+add('medium', '로그 미분', '(1+cos(x))/(x+sin(x))', 'ln(x+sin(x))',
+  { domain: [0.3, 2.6], lnAbs: true,
+  hints: ['$(x+\\sin x)\'=1+\\cos x$ 다.', '분모의 도함수가 분자다.'],
+  steps: ['$u=x+\\sin x$ 치환', '$=\\ln|x+\\sin x|$'] });
+
+addDef('hard', '역삼각 항등식', '(atan(x)+acot(x))/x', 'pi*ln(3)/4',
+  { lo: '1', hi: 'sqrt(3)',
+  hints: ['$\\arctan x+\\operatorname{arccot}x=\\dfrac{\\pi}{2}$ 는 $x$ 와 무관한 상수다.',
+          '남는 것은 $\\dfrac{\\pi}{2}\\displaystyle\\int_{1}^{\\sqrt3}\\dfrac{dx}{x}$ 다.'],
+  steps: ['분자가 상수 $\\dfrac{\\pi}{2}$',
+          '$\\dfrac{\\pi}{2}\\ln\\sqrt3=\\dfrac{\\pi\\ln3}{4}$'] });
+
+add('medium', '쌍곡선 항등식', 'sinh(x)/(cosh(x)-sinh(x))', 'e^(2*x)/4-x/2',
+  { domain: [-1.0, 1.5],
+  hints: ['$\\cosh x-\\sinh x=e^{-x}$ 다.',
+          '$e^{x}\\sinh x=\\dfrac{e^{2x}-1}{2}$'],
+  steps: ['$\\dfrac{\\sinh x}{e^{-x}}=e^{x}\\sinh x=\\dfrac{e^{2x}-1}{2}$',
+          '$=\\dfrac{e^{2x}}{4}-\\dfrac{x}{2}$'] });
+
+add('hard', '유리화', 'x/(sqrt(x-1)+sqrt(x+1))',
+    '(x+1)^(5/2)/5-(x+1)^(3/2)/3-(x-1)^(5/2)/5-(x-1)^(3/2)/3',
+  { domain: [1.4, 3.4],
+  hints: ['분모를 유리화하면 $\\dfrac{x\\left(\\sqrt{x+1}-\\sqrt{x-1}\\right)}{2}$ 다.',
+          '$\\int x\\sqrt{x\\pm1}\\,dx$ 는 $u=x\\pm1$ 치환이다.'],
+  steps: ['유리화한다',
+          '$\\int x\\sqrt{x+1}dx=\\dfrac{2(x+1)^{5/2}}{5}-\\dfrac{2(x+1)^{3/2}}{3}$',
+          '$\\int x\\sqrt{x-1}dx=\\dfrac{2(x-1)^{5/2}}{5}+\\dfrac{2(x-1)^{3/2}}{3}$'] });
+
+add('medium', '치환 후 부분적분', 'x^3*sin(x^2)', '(sin(x^2)-x^2*cos(x^2))/2',
+  { domain: D.poly,
+  hints: ['$u=x^{2}$ 로 두면 $\\dfrac12\\displaystyle\\int u\\sin u\\,du$ 다.',
+          '$\\int u\\sin u\\,du=\\sin u-u\\cos u$'],
+  steps: ['$u=x^{2}$ 치환', '$=\\dfrac{\\sin(x^{2})-x^{2}\\cos(x^{2})}{2}$'] });
+
+add('easy', '쌍곡선함수', '1/cosh(x)^2', 'tanh(x)',
+  { domain: D.hyp,
+  hints: ['$\\operatorname{sech}^{2}x$ 의 원시함수는 $\\tanh x$ 다.',
+          '$(\\tanh x)\'=\\operatorname{sech}^{2}x$'],
+  steps: ['$(\\tanh x)\'=\\dfrac{1}{\\cosh^{2}x}$', '$=\\tanh x$'] });
+
+addDef('monster', '미분 되짚기', 'e^(e^x)-e^(e^x-x)', 'e^(e-1)-e',
+  { lo: '0', hi: '1',
+  hints: ['$e^{e^{x}}\\left(1-e^{-x}\\right)$ 로 묶는다.',
+          '$\\left(e^{e^{x}-x}\\right)\'=e^{e^{x}-x}\\left(e^{x}-1\\right)$ 를 계산해 보라.'],
+  steps: ['$\\left(e^{e^{x}-x}\\right)\'=e^{e^{x}}e^{-x}(e^{x}-1)=e^{e^{x}}\\left(1-e^{-x}\\right)$',
+          '$\\left[e^{e^{x}-x}\\right]_{0}^{1}$',
+          '$=e^{e-1}-e$'] });
+
+addDef('medium', '거듭제곱근 치환', 'sqrt(1-sqrt(x))', '8/15',
+  { lo: '0', hi: '1',
+  hints: ['$u=\\sqrt x$ 로 두면 $2\\displaystyle\\int_{0}^{1}u\\sqrt{1-u}\\,du$ 다.',
+          '다시 $w=1-u$ 로 두면 거듭제곱만 남는다.'],
+  steps: ['$u=\\sqrt x$, 그다음 $w=1-u$',
+          '$2\\displaystyle\\int_{0}^{1}\\left(w^{1/2}-w^{3/2}\\right)dw$',
+          '$=2\\left(\\dfrac23-\\dfrac25\\right)=\\dfrac{8}{15}$'] });
+
+add('monster', '로그 미분', 'x^3/(1+x+x^2/2+x^3/6)',
+    '6*x-6*ln(x^3+3*x^2+6*x+6)',
+  { domain: D.poly, lnAbs: true,
+  hints: ['분모에 $6$ 을 곱해 $\\dfrac{6x^{3}}{x^{3}+3x^{2}+6x+6}$ 으로 만든다.',
+          '$\\left(x^{3}+3x^{2}+6x+6\\right)\'=3x^{2}+6x+6$ 임을 눈여겨보라.'],
+  steps: ['$6x^{3}=6\\left(x^{3}+3x^{2}+6x+6\\right)-6\\left(3x^{2}+6x+6\\right)$',
+          '뒤 항은 분모의 도함수 꼴이다',
+          '$=6x-6\\ln\\left|x^{3}+3x^{2}+6x+6\\right|$'] });
+
+add('hard', '합-곱 공식', 'sin(x+sin(x))-sin(x-sin(x))', '-2*cos(sin(x))',
+  { domain: D.trigW,
+  hints: ['$\\sin A-\\sin B=2\\cos\\dfrac{A+B}{2}\\sin\\dfrac{A-B}{2}$',
+          '$=2\\cos x\\sin(\\sin x)$ 가 된다.'],
+  steps: ['합을 곱으로 바꾼다',
+          '$u=\\sin x\\Rightarrow2\\displaystyle\\int\\sin u\\,du$',
+          '$=-2\\cos(\\sin x)$'] });
+
+add('monster', '곱의 미분 되짚기', 'tan(x)^4*sec(x)^3+tan(x)^2*sec(x)^5',
+    'tan(x)^3/(3*cos(x)^3)',
+  { domain: D.trig,
+  hints: ['$\\left(\\tan^{3}x\\sec^{3}x\\right)\'$ 를 계산해 보라.',
+          '$3\\tan^{2}x\\sec^{5}x+3\\tan^{4}x\\sec^{3}x$ 가 나온다.'],
+  steps: ['$\\left(\\tan^{3}x\\sec^{3}x\\right)\'=3\\tan^{2}x\\sec^{5}x+3\\tan^{4}x\\sec^{3}x$',
+          '피적분함수의 $3$ 배다',
+          '$=\\dfrac{\\tan^{3}x\\sec^{3}x}{3}$'] });
+
+add('monster', '부분적분', '(1+ln(x))*ln(ln(x))', 'x*ln(x)*ln(ln(x))-x',
+  { domain: D.lnln,
+  hints: ['$\\left(x\\ln x\\ln(\\ln x)\\right)\'$ 를 계산해 보라.',
+          '$(x\\ln x)\'=1+\\ln x$ 이고 $\\left(\\ln(\\ln x)\\right)\'=\\dfrac{1}{x\\ln x}$ 다.'],
+  steps: ['$\\left(x\\ln x\\ln(\\ln x)\\right)\'=(1+\\ln x)\\ln(\\ln x)+1$',
+          '남는 $1$ 을 없애려면 $-x$ 를 더한다',
+          '$=x\\ln x\\ln(\\ln x)-x$'] });
+
+add('monster', '항등식 정리',
+    '1/(1+sin(x))+1/(1+cos(x))+1/(1+tan(x))+1/(1+cot(x))+1/(1+sec(x))+1/(1+csc(x))',
+    '3*x',
+  { domain: D.trig,
+  hints: ['$\\dfrac{1}{1+\\tan x}+\\dfrac{1}{1+\\cot x}=1$ 을 먼저 확인하라.',
+          '$\\dfrac{1}{1+\\sec x}=\\dfrac{\\cos x}{1+\\cos x}$, $\\dfrac{1}{1+\\csc x}=\\dfrac{\\sin x}{1+\\sin x}$'],
+  steps: ['$\\tan$ 짝은 합이 $1$',
+          '나머지 넷은 $\\dfrac{1+\\sin x}{1+\\sin x}+\\dfrac{1+\\cos x}{1+\\cos x}=2$',
+          '피적분함수는 상수 $3$ 이므로 $=3x$'] });
+
+add('medium', '완전제곱', '1/sqrt(x-x^2)', 'asin(2*x-1)',
+  { domain: [0.1, 0.9],
+  hints: ['$x-x^{2}=\\dfrac14-\\left(x-\\dfrac12\\right)^{2}$ 로 완전제곱한다.',
+          '$\\int\\dfrac{du}{\\sqrt{a^{2}-u^{2}}}=\\arcsin\\dfrac ua$'],
+  steps: ['완전제곱 후 $u=x-\\dfrac12,\\ a=\\dfrac12$',
+          '$=\\arcsin(2x-1)$'] });
+
+addDef('easy', '거듭제곱 법칙', '1/(1-x)^4', '7/3',
+  { lo: '0', hi: '1/2',
+  hints: ['$u=1-x$ 로 두면 $\\int u^{-4}du$ 다.',
+          '원시함수는 $\\dfrac{1}{3(1-x)^{3}}$ 이다.'],
+  steps: ['$\\left[\\dfrac{1}{3(1-x)^{3}}\\right]_{0}^{1/2}$',
+          '$=\\dfrac83-\\dfrac13=\\dfrac73$'] });
+
+add('hard', '탄젠트 치환', '1/(1+cos(x)^2)', 'atan(tan(x)/sqrt(2))/sqrt(2)',
+  { domain: D.trig,
+  hints: ['분자·분모를 $\\cos^{2}x$ 로 나눈다.',
+          '$\\dfrac{\\sec^{2}x}{\\tan^{2}x+2}$ 에서 $u=\\tan x$'],
+  steps: ['$u=\\tan x$ 치환 $\\Rightarrow\\displaystyle\\int\\dfrac{du}{u^{2}+2}$',
+          '$=\\dfrac{1}{\\sqrt2}\\arctan\\dfrac{\\tan x}{\\sqrt2}$'] });
+
+
+// --- 2023 -----------------------------------------------------------
+
+add('hard', '지수 정리', 'x^(1/ln(x))', 'e*x',
+  { domain: D.lnln,
+  hints: ['$x^{1/\\ln x}=e^{\\frac{\\ln x}{\\ln x}}$ 다.',
+          '지수가 $1$ 로 딱 떨어져 피적분함수가 상수 $e$ 가 된다.'],
+  steps: ['$x^{1/\\ln x}=e^{\\ln x\\cdot\\frac{1}{\\ln x}}=e$',
+          '상수의 적분이므로 $=ex$'] });
+
+add('hard', '이중 로그 치환', 'e^x/((1+e^x)*ln(1+e^x))', 'ln(ln(1+e^x))',
+  { domain: D.all,
+  hints: ['$u=\\ln(1+e^{x})$ 로 두면 $du=\\dfrac{e^{x}}{1+e^{x}}dx$ 다.',
+          '$\\int\\dfrac{du}{u}=\\ln|u|$'],
+  steps: ['$u=\\ln(1+e^{x})$ 치환', '$=\\ln\\left(\\ln(1+e^{x})\\right)$'] });
+
+add('hard', '인수분해', '(1+x+x^2+x^3+x^4)*(1-x+x^2-x^3+x^4)',
+    'x+x^3/3+x^5/5+x^7/7+x^9/9',
+  { domain: D.poly,
+  hints: ['$1+x+\\cdots+x^{4}=\\dfrac{x^{5}-1}{x-1}$, $1-x+\\cdots+x^{4}=\\dfrac{x^{5}+1}{x+1}$',
+          '곱하면 $\\dfrac{x^{10}-1}{x^{2}-1}$ 이다.'],
+  steps: ['$\\dfrac{x^{10}-1}{x^{2}-1}=1+x^{2}+x^{4}+x^{6}+x^{8}$',
+          '항마다 거듭제곱 법칙을 쓴다'] });
+
+addDef('hard', '대칭 논법', 'x*(x-1)*(x-2)*(x-3)*(x-4)/120', '0',
+  { lo: '0', hi: '4',
+  hints: ['구간의 한가운데는 $x=2$ 다.',
+          '$t=x-2$ 로 옮기면 $\\dfrac{t(t^{2}-1)(t^{2}-4)}{120}$ 이 된다.'],
+  steps: ['$t=x-2$ 로 평행이동',
+          '$t\\left(t^{2}-1\\right)\\left(t^{2}-4\\right)$ 는 홀함수',
+          '대칭 구간 $[-2,2]$ 에서 $=0$'] });
+
+add('medium', '항별 적분', 'x+sin(x)+x*cos(x)+sin(x)*cos(x)',
+    'x^2/2+x*sin(x)+sin(x)^2/2',
+  { domain: D.trigW,
+  hints: ['$\\int x\\cos x\\,dx=x\\sin x+\\cos x$ 는 부분적분이다.',
+          '$\\cos x$ 가 $-\\cos x$ 와 상쇄된다.'],
+  steps: ['$\\dfrac{x^{2}}{2}-\\cos x+(x\\sin x+\\cos x)+\\dfrac{\\sin^{2}x}{2}$',
+          '$\\cos x$ 가 사라진다',
+          '$=\\dfrac{x^{2}}{2}+x\\sin x+\\dfrac{\\sin^{2}x}{2}$'] });
+
+add('hard', '항등식 정리',
+    'sin(x)^2+cos(x)^2+tan(x)^2+cot(x)^2+sec(x)^2+csc(x)^2',
+    '2*tan(x)-2*cot(x)-x',
+  { domain: D.trig,
+  hints: ['$\\tan^{2}x=\\sec^{2}x-1$, $\\cot^{2}x=\\csc^{2}x-1$ 로 바꾼다.',
+          '$\\sin^{2}+\\cos^{2}=1$ 과 합치면 $2\\sec^{2}x+2\\csc^{2}x-1$ 이다.'],
+  steps: ['$1+(\\sec^{2}-1)+(\\csc^{2}-1)+\\sec^{2}+\\csc^{2}=2\\sec^{2}x+2\\csc^{2}x-1$',
+          '$=2\\tan x-2\\cot x-x$'] });
+
+add('hard', '미분 되짚기', '(1+2*ln(x))*e^(ln(x)^2)', 'x*e^(ln(x)^2)',
+  { domain: D.pos,
+  hints: ['$\\left(xe^{(\\ln x)^{2}}\\right)\'$ 를 곱의 미분법으로 계산해 보라.',
+          '$\\left(e^{(\\ln x)^{2}}\\right)\'=e^{(\\ln x)^{2}}\\cdot\\dfrac{2\\ln x}{x}$'],
+  steps: ['$\\left(xe^{(\\ln x)^{2}}\\right)\'=e^{(\\ln x)^{2}}+2\\ln x\\,e^{(\\ln x)^{2}}$',
+          '$=(1+2\\ln x)e^{(\\ln x)^{2}}$'] });
+
+add('monster', '항등식 정리', 'sin(x)^6+cos(x)^6+3*sin(x)^2*cos(x)^2', 'x',
+  { domain: D.trigW,
+  hints: ['$a^{3}+b^{3}=(a+b)^{3}-3ab(a+b)$ 에 $a=\\sin^{2}x,\\ b=\\cos^{2}x$ 를 넣어 보라.',
+          '$a+b=1$ 이므로 $\\sin^{6}+\\cos^{6}=1-3\\sin^{2}\\cos^{2}$ 다.'],
+  steps: ['$\\sin^{6}x+\\cos^{6}x=1-3\\sin^{2}x\\cos^{2}x$',
+          '더하면 피적분함수는 상수 $1$',
+          '$=x$'] });
+
+add('hard', '곱의 미분 되짚기', '(x+e+1)*x^e*e^x', 'x^(e+1)*e^x',
+  { domain: D.pos,
+  hints: ['$\\left(x^{e+1}e^{x}\\right)\'$ 를 계산해 보라.',
+          '$(e+1)x^{e}e^{x}+x^{e+1}e^{x}=x^{e}e^{x}(e+1+x)$'],
+  steps: ['$\\left(x^{e+1}e^{x}\\right)\'=x^{e}e^{x}(x+e+1)$',
+          '$=x^{e+1}e^{x}$'] });
+
+addDef('monster', '상쇄', 'x^2/(2-x^2)+sqrt(2*x/(x+1))', '1',
+  { lo: '0', hi: '1',
+  hints: ['두 조각을 따로 계산해 보라 — 로그 항이 서로 지워진다.',
+          '앞은 $-1+\\dfrac{\\ln(3+2\\sqrt2)}{\\sqrt2}$, 뒤는 $2-\\dfrac{\\ln(3+2\\sqrt2)}{\\sqrt2}$ 다.'],
+  steps: ['$\\displaystyle\\int_{0}^{1}\\dfrac{x^{2}}{2-x^{2}}dx=-1+\\dfrac{\\ln(3+2\\sqrt2)}{\\sqrt2}$',
+          '$\\displaystyle\\int_{0}^{1}\\sqrt{\\dfrac{2x}{x+1}}dx=2-\\dfrac{\\ln(3+2\\sqrt2)}{\\sqrt2}$',
+          '로그가 상쇄되어 $=1$'] });
+
+add('monster', '부분분수', '(1+2*x^2022)/(x+x^2023)', 'ln(x)+ln(1+x^2022)/2022',
+  { domain: [0.99, 1.003], lnAbs: true,
+  hints: ['분모를 $x\\left(1+x^{2022}\\right)$ 로 묶는다.',
+          '$\\dfrac{1+2x^{2022}}{x(1+x^{2022})}=\\dfrac1x+\\dfrac{x^{2021}}{1+x^{2022}}$'],
+  steps: ['둘로 쪼갠다',
+          '$=\\ln|x|+\\dfrac{\\ln\\left(1+x^{2022}\\right)}{2022}$'] });
+
+add('hard', '곱-합 공식', '3*sin(20*x)*cos(23*x)+20*sin(43*x)',
+    '(cos(3*x)-cos(43*x))/2',
+  { domain: [0.05, 0.35],
+  hints: ['$3\\sin20x\\cos23x=\\dfrac32\\left(\\sin43x-\\sin3x\\right)$',
+          '$\\sin43x$ 항끼리 모으면 계수가 $\\dfrac{43}{2}$ 가 된다.'],
+  steps: ['$\\dfrac{43}{2}\\sin43x-\\dfrac32\\sin3x$ 로 정리',
+          '$=-\\dfrac{\\cos43x}{2}+\\dfrac{\\cos3x}{2}$'] });
+
+add('monster', '로그 미분 되짚기', 'sin(x)/(2*e^x+cos(x)+sin(x))',
+    'x/2-ln(2*e^x+cos(x)+sin(x))/2',
+  { domain: [-0.5, 2.0], lnAbs: true,
+  hints: ['분자·분모에 $e^{-x}$ 를 곱해 보라.',
+          '$\\left(e^{-x}(\\cos x+\\sin x)\\right)\'=-2e^{-x}\\sin x$ 다.'],
+  steps: ['$w=e^{-x}(\\cos x+\\sin x)$ 로 두면 $e^{-x}\\sin x\\,dx=-\\dfrac{dw}{2}$',
+          '$-\\dfrac12\\displaystyle\\int\\dfrac{dw}{2+w}=-\\dfrac{\\ln|2+w|}{2}$',
+          '$=\\dfrac x2-\\dfrac{\\ln\\left|2e^{x}+\\cos x+\\sin x\\right|}{2}$'] });
+
+add('monster', '지수 정리', 'ln(x/pi)/ln(x)^ln(e*pi)', 'x/ln(x)^ln(pi)',
+  { domain: D.lnln,
+  hints: ['$\\ln(e\\pi)=1+\\ln\\pi$ 이고 $\\ln\\dfrac x\\pi=\\ln x-\\ln\\pi$ 다.',
+          '$\\left(x(\\ln x)^{-\\ln\\pi}\\right)\'$ 를 계산해 보라.'],
+  steps: ['피적분함수는 $(\\ln x)^{-\\ln\\pi}-\\ln\\pi\\,(\\ln x)^{-1-\\ln\\pi}$',
+          '$\\left(x(\\ln x)^{-\\ln\\pi}\\right)\'$ 가 정확히 그 꼴이다',
+          '$=\\dfrac{x}{(\\ln x)^{\\ln\\pi}}$'] });
+
+addDef('hard', '평행이동', 'x^5+5*x^4+10*x^3+8*x^2+x', '5/6',
+  { lo: '-3/2', hi: '-1/2',
+  hints: ['$(x+1)^{5}$ 과 비교해 보라 — 차이가 간단하다.',
+          '$x^{5}+5x^{4}+10x^{3}+8x^{2}+x=(x+1)^{5}-2(x+1)^{2}+1$'],
+  steps: ['$t=x+1$ 로 옮기면 $\\displaystyle\\int_{-1/2}^{1/2}\\left(t^{5}-2t^{2}+1\\right)dt$',
+          '$t^{5}$ 은 홀함수라 사라진다',
+          '$=-\\dfrac16+1=\\dfrac56$'] });
+
 // ================================================================== 검증 + 출력
 
 var LEVELS = ['easy', 'medium', 'hard', 'monster'];

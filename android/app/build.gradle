@@ -5,6 +5,18 @@ plugins {
 // 저장소 루트 (웹 자산이 있는 곳)
 def webRoot = rootProject.file('..')
 
+// CI 는 -PversionCode=<실행번호> -PversionName=1.0.<실행번호> 로 넘긴다.
+// android 블록 밖에서 미리 값을 만들어 둔다 — 안에서 `versionCode (…)` 처럼
+// 쓰면 그루비가 괄호를 보고 메서드 호출로 읽어 버린다.
+def appVersionCode = ((project.findProperty('versionCode') ?: '1') as String).toInteger()
+def appVersionName = (project.findProperty('versionName') ?: '1.0') as String
+
+// 서명 키가 있으면 그걸로, 없으면 디버그 키로 서명한다.
+// 서명이 아예 없는 APK 는 기기에 설치가 안 되기 때문에, 비밀값 없이도
+// 바로 깔아볼 수 있는 결과물이 나오도록 이렇게 둔다.
+def ksPath = System.getenv('ANDROID_KEYSTORE_PATH')
+def hasKeystore = ksPath != null && !ksPath.isEmpty() && file(ksPath).exists()
+
 android {
     namespace 'kr.tshs.dailyintegral'
     compileSdk 34
@@ -13,24 +25,17 @@ android {
         applicationId 'kr.tshs.dailyintegral'
         minSdk 24                       // Android 7.0
         targetSdk 34
-        // CI 는 -PversionCode=<실행번호> 로 넘긴다
-        versionCode (project.findProperty('versionCode') ?: '1').toString().toInteger()
-        versionName (project.findProperty('versionName') ?: '1.0').toString()
+        versionCode = appVersionCode
+        versionName = appVersionName
     }
-
-    // 서명 키가 있으면 그걸로, 없으면 디버그 키로 서명한다.
-    // 서명이 아예 없는 APK 는 기기에 설치가 안 되기 때문에, 비밀값 없이도
-    // 바로 깔아볼 수 있는 결과물이 나오도록 이렇게 둔다.
-    def ksPath = System.getenv('ANDROID_KEYSTORE_PATH')
-    def hasKeystore = ksPath != null && !ksPath.isEmpty() && file(ksPath).exists()
 
     signingConfigs {
         if (hasKeystore) {
             release {
-                storeFile file(ksPath)
-                storePassword System.getenv('ANDROID_KEYSTORE_PASSWORD')
-                keyAlias System.getenv('ANDROID_KEY_ALIAS')
-                keyPassword System.getenv('ANDROID_KEY_PASSWORD')
+                storeFile = file(ksPath)
+                storePassword = System.getenv('ANDROID_KEYSTORE_PASSWORD')
+                keyAlias = System.getenv('ANDROID_KEY_ALIAS')
+                keyPassword = System.getenv('ANDROID_KEY_PASSWORD')
             }
         }
     }
@@ -38,7 +43,7 @@ android {
     buildTypes {
         release {
             minifyEnabled false          // 웹뷰 껍데기라 줄일 자바 코드가 거의 없다
-            signingConfig hasKeystore ? signingConfigs.release : signingConfigs.debug
+            signingConfig = hasKeystore ? signingConfigs.release : signingConfigs.debug
         }
     }
 
@@ -49,6 +54,11 @@ android {
 }
 
 dependencies {
+    // 의존성들이 kotlin-stdlib 를 1.8.22 로, kotlin-stdlib-jdk7/jdk8 를 1.6.21 로
+    // 끌고 와서 클래스가 겹친다(1.8 부터 jdk7/jdk8 내용이 본체로 합쳐졌다).
+    // BOM 으로 버전을 맞춰 주면 겹치는 클래스가 사라진다.
+    implementation platform('org.jetbrains.kotlin:kotlin-bom:1.8.22')
+
     // 앱 자산을 https 출처로 내보내는 WebViewAssetLoader.
     // file:// 로 열면 localStorage 가 막히는 기기가 있어 이걸 쓴다.
     implementation 'androidx.webkit:webkit:1.11.0'

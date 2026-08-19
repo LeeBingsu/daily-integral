@@ -146,21 +146,23 @@ body[data-view="hub"] header.top { justify-content: flex-end; }
   --r: 172px;
   --orb: 78px;
 }
-/* 구슬과 점선 웹을 통째로 담아 천천히 돌리는 고리.
-   구슬 안쪽 .spin 이 같은 키프레임을 reverse 로 되감아 글자는 늘 똑바로 선다. */
+/* 구슬과 점선 웹을 담는 고리. 평소엔 멈춰 있다가 구슬을 누르면
+   그 구슬이 맨 위로 오도록 돈다. 회전각은 JS 가 인라인 transform 으로 넣는다.
+   구슬 안쪽 .spin 이 같은 각을 반대로 되감아 글자·라벨은 늘 똑바로 선다. */
 .hub-ring {
   position: absolute; inset: 0;
-  animation: hub-orbit 36s linear infinite;
+  transition: transform var(--turn, .62s) cubic-bezier(.22, .61, .36, 1);
 }
 .orb .spin {
   position: relative; display: block; width: 100%; height: 100%;
-  animation: hub-orbit 36s linear infinite reverse;
+  transition: transform var(--turn, .62s) cubic-bezier(.22, .61, .36, 1);
 }
-@keyframes hub-orbit { to { transform: rotate(360deg); } }
 
-/* 고르려고 가져다 대면 멈춘다 */
-.hub:hover .hub-ring, .hub:hover .orb .spin,
-.hub:focus-within .hub-ring, .hub:focus-within .orb .spin { animation-play-state: paused; }
+/* 맨 위에 올라온 구슬을 살짝 강조한다 */
+.orb.top .ball {
+  box-shadow: var(--lift-lg), 0 0 0 12px color-mix(in srgb, var(--c) 11%, transparent);
+  border-color: color-mix(in srgb, var(--c) 62%, transparent);
+}
 
 .hub-web { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
 .hub-web line, .hub-web polygon {
@@ -250,6 +252,51 @@ body:not([data-view="hub"]) .backwrap { display: flex; }
 .levels button[data-level="hard"][aria-selected="true"] { border-color: var(--lv-hard); box-shadow: var(--lift), 0 0 0 4px color-mix(in srgb, var(--lv-hard) 12%, transparent); }
 .levels button[data-level="monster"][aria-selected="true"] { border-color: var(--lv-monster); box-shadow: var(--lift), 0 0 0 4px color-mix(in srgb, var(--lv-monster) 12%, transparent); }
 .levels .check { color: var(--ok); font-size: 12px; }
+
+/* ------------------------------------------------------- 연습 모드 하루 몫 */
+.quota {
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  justify-content: center; margin: -6px 0 18px;
+}
+.quota-info { font-size: 12px; color: var(--ink-3); letter-spacing: .04em; }
+.quota-info b { color: var(--ink-2); font-family: var(--serif); font-size: 13.5px; }
+.quota-info i { font-style: normal; opacity: .45; margin: 0 7px; }
+
+.levels .left {
+  min-width: 18px; height: 18px; padding: 0 5px; border-radius: 999px;
+  background: var(--panel-2); border: 1px solid var(--line-soft);
+  font-family: var(--serif); font-size: 11px; color: var(--ink-3);
+  display: inline-grid; place-items: center;
+}
+.levels .left.out { color: var(--bad); border-color: color-mix(in srgb, var(--bad) 35%, transparent); }
+
+.card.lock { text-align: center; }
+.card.lock .card-head { justify-content: center; }
+.lock-msg { font-size: 15px; margin: 0 0 6px; color: var(--ink-2); }
+.lock-msg b { color: var(--ink); }
+.card.lock .muted { margin: 0 0 6px; }
+
+/* Touch Grass — 한도에 부딪히면 나오는 잔디밭 */
+.grass {
+  position: relative; overflow: hidden;
+  margin: 16px 0 18px; border-radius: 14px;
+  aspect-ratio: 20 / 9; min-height: 150px;
+  border: 1px solid var(--line-soft);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .18);
+  display: grid; place-items: center;
+}
+.grass-svg, .grass-photo {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; display: block;
+}
+.grass-photo { z-index: 1; }
+.grass-cap {
+  position: relative; z-index: 2;
+  font-family: var(--serif); font-weight: 700;
+  font-size: clamp(30px, 8vw, 52px); line-height: 1;
+  color: #fff; letter-spacing: -.01em;
+  text-shadow: 0 2px 3px rgba(20, 45, 15, .45), 0 10px 30px rgba(20, 45, 15, .5);
+}
 
 /* ---------------------------------------------------------------- 카드 */
 .card {
@@ -414,5 +461,5 @@ footer b { font-family: var(--serif); }
 
 @media (prefers-reduced-motion: reduce) {
   .orb .ball, .btn, .day, .icon-btn, .levels button, .palette button, .orb-back { transition: none; }
-  .hub-ring, .orb .spin { animation: none; }
+  .hub-ring, .orb .spin { transition: none; }
 }

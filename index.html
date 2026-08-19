@@ -47,8 +47,19 @@
   <!-- ------------------------------------------------------ 문제 화면 -->
   <section id="playView" class="hidden">
     <div class="levels" id="levelBar"></div>
+    <div class="quota hidden" id="quotaBar"></div>
 
-    <div class="card">
+    <div class="card lock hidden" id="lockCard">
+      <div class="card-head"><span class="chip">오늘 몫 소진</span></div>
+      <div class="grass" id="grassArt">
+        <svg class="grass-svg" id="grassSvg" viewBox="0 0 600 260" preserveAspectRatio="xMidYMax slice" aria-hidden="true"></svg>
+        <div class="grass-cap">Touch Grass</div>
+      </div>
+      <p class="lock-msg" id="lockMsg"></p>
+      <p class="muted" id="lockSub"></p>
+    </div>
+
+    <div class="card" id="playCard">
       <div class="card-head">
         <span class="chip" id="dateChip"></span>
         <span class="chip mode hidden" id="modeChip"></span>
@@ -84,7 +95,7 @@
       </div>
     </div>
 
-    <div class="card">
+    <div class="card" id="rulesCard">
       <div class="card-head"><span class="chip">입력 규칙</span></div>
       <p class="muted" style="margin:8px 0 0">
         치기 쉬운 대로 쓰면 화면에는 예쁘게 바뀝니다 &mdash;
@@ -136,7 +147,7 @@
   </section>
 
   <footer>
-    You do 적분 You get stronger &middot; 문제 <b id="bankCount">0</b>개 수록
+    Road to Juckboon master &middot; 문제 <b id="bankCount">0</b>개 수록
   </footer>
 </div>
 

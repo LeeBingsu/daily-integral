@@ -20,7 +20,8 @@
       best: 0,
       lastSolvedDay: null,
       days: {},                       // '2026-08-18': { easy: {solved, attempts, hints, revealed} }
-      practice: { solved: 0, attempts: 0 }
+      practice: { solved: 0, attempts: 0, day: null, used: {} },
+      admin: false
     };
   }
 
@@ -33,6 +34,9 @@
       var s = JSON.parse(raw);
       var base = blankStore();
       Object.keys(base).forEach(function (k) { if (s[k] === undefined) s[k] = base[k]; });
+      Object.keys(base.practice).forEach(function (k) {
+        if (s.practice[k] === undefined) s.practice[k] = base.practice[k];
+      });
       return s;
     } catch (e) { return blankStore(); }
   }
@@ -104,6 +108,222 @@
     var p, guard = 0;
     do { p = bank[Math.floor(Math.random() * bank.length)]; } while (p.id === avoidId && ++guard < 20);
     return p;
+  }
+
+  // ------------------------------------------------------------- 연습 모드 하루 몫
+
+  // 무한 연습이 정말 무한해지지 않도록 난이도별로 하루 배당을 둔다.
+  // Infinity 는 저장하지 않고 상수로만 쓰므로 JSON 직렬화에 걸리지 않는다.
+  var PRACTICE_QUOTA = { easy: Infinity, medium: 3, hard: 7, monster: 1 };
+
+  // 관리자 키의 해시(FNV-1a). 소스에 키를 그대로 적어두지 않으려는 것뿐이고,
+  // 브라우저 콘솔로 store 를 고치면 뚫린다 — 자기 절제용 장치이지 접근 통제가 아니다.
+  var ADMIN_HASH = '4cde032d';
+
+  function fnv1a(str) {
+    var h = 0x811c9dc5;
+    for (var i = 0; i < str.length; i++) {
+      h ^= str.charCodeAt(i);
+      h = (h + ((h << 1) + (h << 4) + (h << 7) + (h << 8) + (h << 24))) >>> 0;
+    }
+    return h.toString(16);
+  }
+
+  // 날짜가 바뀌면 사용량을 턴다
+  function rollPracticeDay() {
+    if (store.practice.day === TODAY_KEY) return;
+    store.practice.day = TODAY_KEY;
+    store.practice.used = {};
+    save();
+  }
+
+  function practiceUsed(level) {
+    rollPracticeDay();
+    return store.practice.used[level] || 0;
+  }
+
+  function practiceLeft(level) {
+    if (store.admin) return Infinity;
+    var q = PRACTICE_QUOTA[level];
+    if (q === Infinity) return Infinity;
+    return Math.max(0, q - practiceUsed(level));
+  }
+
+  function consumePractice(level) {
+    if (store.admin || PRACTICE_QUOTA[level] === Infinity) return;
+    store.practice.used[level] = practiceUsed(level) + 1;
+    save();
+  }
+
+  // 연습 문제 한 개를 꺼낸다. 몫이 없으면 자물쇠 화면을 띄운다.
+  function startPractice(level, avoidId) {
+    session.mode = 'practice';
+    session.level = level;
+    if (practiceLeft(level) <= 0) {
+      showLock(level);
+      renderLevels();
+      renderQuota();
+      return false;
+    }
+    consumePractice(level);
+    showLock(null);
+    loadProblem(randomProblem(level, avoidId));
+    renderQuota();
+    return true;
+  }
+
+  function showLock(level) {
+    var locked = !!level;
+    $('lockCard').classList.toggle('hidden', !locked);
+    $('playCard').classList.toggle('hidden', locked);
+    $('rulesCard').classList.toggle('hidden', locked);
+    if (!locked) return;
+    buildGrass();
+    var q = PRACTICE_QUOTA[level];
+    $('lockMsg').innerHTML = '<b>' + PROBLEMS.labels[level] + '</b> 연습은 하루 ' + q +
+      '문제까지입니다. 오늘 몫을 다 썼어요.';
+    $('lockSub').textContent = '자정에 다시 채워집니다. 다른 난이도를 고르거나, ' +
+      '오늘의 문제를 풀어 보세요.';
+  }
+
+  // ------------------------------------------------------------- Touch Grass
+
+  // 잔디밭은 SVG 로 직접 그린다. 직접 찍었거나 사용 허락을 받은 사진이 있으면
+  // 파일을 넣고 아래 경로만 채우면 그 사진이 대신 깔린다. 비워 두면 SVG 를 쓴다.
+  var GRASS_PHOTO = '';
+
+  var grassDrawn = false;
+
+  function buildGrass() {
+    if (grassDrawn) return;
+    grassDrawn = true;
+
+    if (GRASS_PHOTO) {
+      var art = $('grassArt');
+      var img = document.createElement('img');
+      img.className = 'grass-photo';
+      img.alt = '';
+      img.onerror = function () { img.remove(); };
+      img.src = GRASS_PHOTO;
+      art.insertBefore(img, art.firstChild);
+    }
+
+    var NS = 'http://www.w3.org/2000/svg';
+    var svg = $('grassSvg');
+    var W = 600, H = 260;
+
+    // 씨앗 고정 난수 — 볼 때마다 잔디가 달라지지 않게 한다
+    var seed = 20260819;
+    function rnd() {
+      seed = (seed * 1103515245 + 12345) & 0x7fffffff;
+      return seed / 0x7fffffff;
+    }
+
+    var defs = document.createElementNS(NS, 'defs');
+    defs.innerHTML =
+      '<linearGradient id="grassSky" x1="0" y1="0" x2="0" y2="1">' +
+        '<stop offset="0" stop-color="#cfe89a"/><stop offset="1" stop-color="#5aa03a"/>' +
+      '</linearGradient>' +
+      '<radialGradient id="grassSun" cx="0.82" cy="0.12" r="0.75">' +
+        '<stop offset="0" stop-color="#fff8c8" stop-opacity=".85"/>' +
+        '<stop offset="1" stop-color="#fff8c8" stop-opacity="0"/>' +
+      '</radialGradient>';
+    svg.appendChild(defs);
+
+    var bg = document.createElementNS(NS, 'rect');
+    bg.setAttribute('width', W); bg.setAttribute('height', H);
+    bg.setAttribute('fill', 'url(#grassSky)');
+    svg.appendChild(bg);
+
+    // 아래쪽은 빽빽한 뗏장으로 깔아 밑동이 비지 않게 한다
+    var turf = document.createElementNS(NS, 'rect');
+    turf.setAttribute('y', H - 70); turf.setAttribute('width', W); turf.setAttribute('height', 70);
+    turf.setAttribute('fill', '#4b8a2e'); turf.setAttribute('opacity', '.55');
+    svg.appendChild(turf);
+
+    // 뒤에서 앞으로 네 겹 — 뒤는 흐리고 짧게, 앞은 진하고 길게
+    [[240, 40, 88, 1.7, .5], [230, 70, 130, 2.4, .72], [210, 105, 180, 3.2, .9],
+     [150, 150, 245, 4.4, 1]]
+      .forEach(function (layer) {
+        var n = layer[0], hMin = layer[1], hMax = layer[2], wMax = layer[3], op = layer[4];
+        for (var i = 0; i < n; i++) {
+          var x = rnd() * (W + 40) - 20;
+          var h = hMin + rnd() * (hMax - hMin);
+          var lean = (rnd() - 0.5) * h * 0.55;
+          var w = 1.1 + rnd() * wMax;
+          var hue = 74 + rnd() * 34;
+          var light = 24 + rnd() * 26 + (1 - op) * 14;
+          var d = 'M' + x.toFixed(1) + ',' + H +
+                  ' Q' + (x + lean * 0.3).toFixed(1) + ',' + (H - h * 0.58).toFixed(1) +
+                  ' ' + (x + lean).toFixed(1) + ',' + (H - h).toFixed(1);
+          var p = document.createElementNS(NS, 'path');
+          p.setAttribute('d', d);
+          p.setAttribute('stroke', 'hsl(' + hue.toFixed(0) + ',' + (44 + rnd() * 26).toFixed(0) +
+                         '%,' + light.toFixed(0) + '%)');
+          p.setAttribute('stroke-width', w.toFixed(2));
+          p.setAttribute('stroke-linecap', 'round');
+          p.setAttribute('fill', 'none');
+          p.setAttribute('opacity', op.toFixed(2));
+          svg.appendChild(p);
+        }
+      });
+
+    var sun = document.createElementNS(NS, 'rect');
+    sun.setAttribute('width', W); sun.setAttribute('height', H);
+    sun.setAttribute('fill', 'url(#grassSun)');
+    svg.appendChild(sun);
+  }
+
+  function renderQuota() {
+    var bar = $('quotaBar');
+    bar.classList.toggle('hidden', session.mode !== 'practice');
+    if (session.mode !== 'practice') return;
+    bar.innerHTML = '';
+
+    var info = document.createElement('span');
+    info.className = 'quota-info';
+    if (store.admin) {
+      info.innerHTML = '<b>관리자</b> · 하루 제한 없음';
+    } else {
+      info.innerHTML = PROBLEMS.levels.map(function (lv) {
+        var q = PRACTICE_QUOTA[lv];
+        if (q === Infinity) return PROBLEMS.labels[lv] + ' <b>\u221e</b>';
+        return PROBLEMS.labels[lv] + ' <b>' + practiceLeft(lv) + '</b>/' + q;
+      }).join('<i>\u00b7</i>');
+    }
+    bar.appendChild(info);
+
+    var btn = document.createElement('button');
+    btn.className = 'btn ghost sm';
+    btn.textContent = store.admin ? '잠그기' : '관리자 키';
+    btn.onclick = store.admin ? lockAdmin : askAdminKey;
+    bar.appendChild(btn);
+  }
+
+  function askAdminKey() {
+    var v = window.prompt('관리자 키를 입력하면 하루 제한이 풀립니다.');
+    if (v === null) return;
+    if (fnv1a(v.trim()) !== ADMIN_HASH) {
+      showFeedback('bad', '관리자 키가 맞지 않습니다.');
+      return;
+    }
+    store.admin = true;
+    save();
+    renderQuota();
+    renderLevels();
+    if ($('lockCard').classList.contains('hidden')) {
+      showFeedback('ok', '관리자 모드입니다. 하루 제한이 풀렸습니다.');
+    } else {
+      startPractice(session.level, session.problem && session.problem.id);
+    }
+  }
+
+  function lockAdmin() {
+    store.admin = false;
+    save();
+    renderQuota();
+    renderLevels();
+    if (practiceLeft(session.level) <= 0) showLock(session.level);
   }
 
   // ------------------------------------------------------------- 수식 렌더
@@ -479,10 +699,39 @@
   ];
 
   var WEB_R = 36.5;   // viewBox(100×100) 기준 반지름 — CSS 의 --r 비율과 맞춰 둔 값
+  var TURN_MS = 620;  // styles.css 의 --turn 과 같은 값
+
+  var orbEls = [];        // 구슬 버튼
+  var spinEls = [];       // 구슬 안쪽 회전 보정 래퍼
+  var ringAngle = 0;      // 고리의 누적 회전각(도). 360 을 넘어도 되감지 않는다
+  var topIndex = 0;
+
+  function reducedMotion() {
+    return !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  }
+
+  // 고리를 돌려 i 번 구슬을 맨 위로 올린다. 항상 가까운 쪽으로 돈다.
+  function spinToTop(i, done) {
+    var target = -360 * i / ORBS.length;
+    var delta = ((target - ringAngle) % 360 + 540) % 360 - 180;
+    ringAngle += delta;
+
+    $('hubRing').style.transform = 'rotate(' + ringAngle + 'deg)';
+    spinEls.forEach(function (el) { el.style.transform = 'rotate(' + (-ringAngle) + 'deg)'; });
+
+    orbEls.forEach(function (el, k) { el.classList.toggle('top', k === i); });
+    topIndex = i;
+
+    if (!done) return;
+    var moving = Math.abs(delta) > 0.5 && !reducedMotion();
+    if (moving) setTimeout(done, TURN_MS);
+    else done();
+  }
 
   function renderHub() {
     var ring = $('hubRing');
     ring.querySelectorAll('.orb').forEach(function (n) { n.remove(); });
+    orbEls = []; spinEls = [];
 
     var n = ORBS.length, pts = [];
     ORBS.forEach(function (o, i) {
@@ -519,17 +768,28 @@
       }
 
       b.onclick = function () {
-        if (o.key === 'practice' || o.key === 'archive' || o.key === 'stats') {
-          switchView(o.key);
-        } else {
-          session.level = o.key;
-          switchView('daily');
-        }
+        spinToTop(i, function () {
+          if (o.key === 'practice' || o.key === 'archive' || o.key === 'stats') {
+            switchView(o.key);
+          } else {
+            session.level = o.key;
+            switchView('daily');
+          }
+        });
       };
+      orbEls.push(b);
+      spinEls.push(spin);
       ring.appendChild(b);
     });
 
     drawWeb(pts);
+
+    // 다시 그려도 직전 회전 상태를 그대로 이어받는다 — 이때는 굴러가지 않게 한다
+    var frozen = [ring].concat(spinEls);
+    frozen.forEach(function (el) { el.style.transition = 'none'; });
+    spinToTop(topIndex);
+    void ring.offsetWidth;
+    frozen.forEach(function (el) { el.style.transition = ''; });
   }
 
   // 구슬 사이를 잇는 점선 — 바깥 다각형과 별 모양 대각선
@@ -572,10 +832,18 @@
           c.textContent = '✓';
           b.appendChild(c);
         }
+      } else {
+        var left = practiceLeft(lv);
+        if (left !== Infinity) {
+          var n = document.createElement('span');
+          n.className = 'left' + (left === 0 ? ' out' : '');
+          n.textContent = left === 0 ? '\u00d7' : String(left);
+          b.appendChild(n);
+        }
       }
       b.onclick = function () {
         session.level = lv;
-        if (session.mode === 'practice') loadProblem(randomProblem(lv, null));
+        if (session.mode === 'practice') startPractice(lv, null);
         else loadProblem(problemForDay(lv, dayNumberOf(dateFromKey(session.dateKey))));
       };
       bar.appendChild(b);
@@ -694,10 +962,11 @@
     if (view === 'daily') {
       session.mode = 'daily';
       session.dateKey = TODAY_KEY;
+      showLock(null);
+      renderQuota();
       loadProblem(problemForDay(session.level, dayNumberOf(new Date())));
     } else if (view === 'practice') {
-      session.mode = 'practice';
-      loadProblem(randomProblem(session.level, session.problem && session.problem.id));
+      startPractice(session.level, session.problem && session.problem.id);
     }
   }
 
@@ -786,7 +1055,7 @@
     $('revealBtn').onclick = function () { revealSolution(false); };
 
     $('nextBtn').onclick = function () {
-      loadProblem(randomProblem(session.level, session.problem && session.problem.id));
+      startPractice(session.level, session.problem && session.problem.id);
     };
 
     $('resetDataBtn').onclick = function () {

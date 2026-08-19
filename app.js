@@ -126,7 +126,7 @@
 
   // 무한 연습이 정말 무한해지지 않도록 난이도별로 하루 배당을 둔다.
   // Infinity 는 저장하지 않고 상수로만 쓰므로 JSON 직렬화에 걸리지 않는다.
-  var PRACTICE_QUOTA = { easy: Infinity, medium: 3, hard: 7, monster: 1 };
+  var PRACTICE_QUOTA = { easy: Infinity, medium: 10, hard: 7, monster: 3 };
 
   // 관리자 키의 해시(FNV-1a). 소스에 키를 그대로 적어두지 않으려는 것뿐이고,
   // 브라우저 콘솔로 store 를 고치면 뚫린다 — 자기 절제용 장치이지 접근 통제가 아니다.

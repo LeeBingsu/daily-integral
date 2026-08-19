@@ -8,6 +8,12 @@
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' font-family='Times New Roman'>&#8747;</text></svg>">
 <link rel="stylesheet" href="vendor/katex/katex.min.css">
 <link rel="stylesheet" href="styles.css">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#eef2f7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0e1319" media="(prefers-color-scheme: dark)">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="매일 적분">
 </head>
 <body>
 <div class="wrap">
@@ -161,5 +167,13 @@
 <script src="parser.js"></script>
 <script src="problems.js"></script>
 <script src="app.js"></script>
+<script>
+  // 오프라인용 서비스 워커. file:// 로 열었을 때는 등록하지 않는다.
+  if ('serviceWorker' in navigator && location.protocol.indexOf('http') === 0) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('sw.js').catch(function () { /* 없으면 그냥 온라인으로 */ });
+    });
+  }
+</script>
 </body>
 </html>

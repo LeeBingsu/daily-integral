@@ -300,17 +300,20 @@
     bar.appendChild(btn);
   }
 
-  function askAdminKey() {
-    var v = window.prompt('관리자 키를 입력하면 하루 제한이 풀립니다.');
+  // onSuccess 를 주면 통과 뒤 그것만 실행한다 (아카이브에서 눌렀을 때 등)
+  function askAdminKey(onSuccess) {
+    var v = window.prompt('관리자 키를 입력하면 연습 하루 제한과 아카이브 잠금이 풀립니다.');
     if (v === null) return;
     if (fnv1a(v.trim()) !== ADMIN_HASH) {
-      showFeedback('bad', '관리자 키가 맞지 않습니다.');
+      window.alert('관리자 키가 맞지 않습니다.');
       return;
     }
     store.admin = true;
     save();
     renderQuota();
     renderLevels();
+    renderArchive();
+    if (onSuccess) { onSuccess(); return; }
     if ($('lockCard').classList.contains('hidden')) {
       showFeedback('ok', '관리자 모드입니다. 하루 제한이 풀렸습니다.');
     } else {
@@ -323,6 +326,7 @@
     save();
     renderQuota();
     renderLevels();
+    renderArchive();
     if (practiceLeft(session.level) <= 0) showLock(session.level);
   }
 
@@ -862,23 +866,37 @@
       var day = store.days[k] || {};
       var solvedCount = PROBLEMS.levels.filter(function (lv) { return day[lv] && day[lv].solved; }).length;
 
+      var shut = !store.admin && k !== TODAY_KEY;
+
       var el = document.createElement('button');
-      el.className = 'day' + (k === TODAY_KEY ? ' today' : '') + (solvedCount ? ' done' : '');
+      el.className = 'day' + (k === TODAY_KEY ? ' today' : '') +
+        (solvedCount ? ' done' : '') + (shut ? ' locked' : '');
       el.innerHTML = '<div class="d">' + d.getDate() + '</div>' +
         '<div class="m">' + (d.getMonth() + 1) + '월</div>' +
-        '<div class="marks">' + PROBLEMS.levels.map(function (lv) {
-          return (day[lv] && day[lv].solved) ? '●' : '○';
-        }).join('') + '</div>';
-      (function (key) {
-        el.onclick = function () {
+        '<div class="marks">' + (shut ? '\u00b7\u00b7\u00b7\u00b7' :
+          PROBLEMS.levels.map(function (lv) {
+            return (day[lv] && day[lv].solved) ? '\u25cf' : '\u25cb';
+          }).join('')) + '</div>';
+      if (shut) el.title = '관리자 키가 있어야 열 수 있습니다';
+
+      (function (key, closed) {
+        function open() {
           session.mode = (key === TODAY_KEY) ? 'daily' : 'archive';
           session.dateKey = key;
           switchView('daily', true);
           loadProblem(problemForDay(session.level, dayNumberOf(dateFromKey(key))));
-        };
-      })(k);
+        }
+        el.onclick = closed ? function () { askAdminKey(open); } : open;
+      })(k, shut);
       grid.appendChild(el);
     }
+
+    $('archiveNote').textContent = store.admin
+      ? '관리자 모드 · 지난 날짜도 열 수 있습니다'
+      : '지난 날짜는 관리자 키가 있어야 열립니다';
+    var kb = $('archiveKeyBtn');
+    kb.textContent = store.admin ? '잠그기' : '관리자 키';
+    kb.onclick = store.admin ? lockAdmin : function () { askAdminKey(); };
   }
 
   // ------------------------------------------------------------- 통계

@@ -434,6 +434,12 @@ body:not([data-view="hub"]) .backwrap { display: flex; }
 .day.today { border-color: var(--accent); box-shadow: var(--lift), 0 0 0 4px var(--accent-soft); }
 .day.done .d { color: var(--ok); }
 
+/* 관리자 키가 없으면 지난 날짜는 잠긴다 */
+.day.locked { background: var(--panel-2); box-shadow: none; border-style: dashed; }
+.day.locked .d, .day.locked .m { color: var(--ink-3); }
+.day.locked .marks { color: var(--ink-3); opacity: .5; }
+.day.locked:hover { border-color: var(--line); transform: none; }
+
 .muted { color: var(--ink-3); font-size: 13px; }
 .hidden { display: none !important; }
 

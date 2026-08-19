@@ -67,10 +67,16 @@ $\int e^{ax}\sinh bx\,dx$, $\int\sinh^{4}x\,dx$ 까지.
 전부 받아 두므로, 그 뒤로는 **네트워크 없이도 기능이 하나도 빠지지 않습니다** —
 출제·채점·힌트·해설·기록이 모두 브라우저 안에서 돌아가기 때문입니다.
 
-`sw.js` 는 `build-sw.js` 가 만듭니다. 자산 내용으로 해시를 만들어 캐시 이름에 넣으므로,
-파일이 하나라도 바뀌면 캐시가 갈리고 방문자에게 새 버전이 전달됩니다.
-자산을 고친 뒤에는 `node build-sw.js` 를 다시 실행해야 하고,
-잊으면 CI 가 `git diff --exit-code sw.js` 에서 잡습니다.
+`sw.js` 는 `build-sw.js` 가 만드는 생성물이라 저장소에 두지 않습니다(`.gitignore`).
+배포할 때 워크플로가 **실제로 올라가는 파일들의 해시**로 만들어 넣으므로,
+파일이 하나라도 바뀌면 캐시 이름이 갈리고 방문자에게 새 버전이 전달됩니다.
+
+로컬에서 오프라인 동작을 확인하려면 먼저 한 번 만들어 주세요.
+
+```sh
+node build-sw.js
+python3 -m http.server 8000
+```
 
 ## 배포
 
@@ -79,7 +85,7 @@ $\int e^{ax}\sinh bx\,dx$, $\int\sinh^{4}x\,dx$ 까지.
 1. `node generate.js` 로 문제 은행을 다시 만들고 커밋된 `problems.js` 와 같은지 확인
 2. `node verify.js` 로 전 문항 수치 검증
 3. `node grade-test.js` 로 채점 엔진 회귀 테스트
-4. `node build-sw.js` 로 서비스 워커가 최신인지 확인
+4. `node build-sw.js` 로 서비스 워커 생성
 5. 실행에 필요한 파일만 추려 GitHub Pages 로 배포
 
 검증이 하나라도 실패하면 배포되지 않습니다. `generate.js` 같은 개발용 파일은
@@ -141,8 +147,7 @@ generate.js     문제 은행 생성기 (유형별 템플릿 + 매개변수)
 problems.js     생성된 문제 은행 898문항 — 직접 고치지 말 것
 app.js          일일 출제, 스트릭, 아카이브, 통계, 입력 처리
 verify.js       배포된 문제 은행 재검증 (node verify.js)
-build-sw.js     서비스 워커 생성기 (node build-sw.js)
-sw.js           생성된 서비스 워커 — 직접 고치지 말 것
+build-sw.js     서비스 워커 생성기 (node build-sw.js) — sw.js 는 커밋하지 않는다
 manifest.webmanifest / icons/   설치용 메타데이터와 아이콘
 .github/workflows/deploy.yml    검증 후 Pages 배포
 grade-test.js   채점 엔진 회귀 테스트 (node grade-test.js)

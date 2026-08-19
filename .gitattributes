@@ -1,2 +1,29 @@
-# Auto detect text files and perform LF normalization
-* text=auto
+# 텍스트는 저장소에 LF 로 통일한다
+*.js           text eol=lf
+*.mjs          text eol=lf
+*.css          text eol=lf
+*.html         text eol=lf
+*.json         text eol=lf
+*.webmanifest  text eol=lf
+*.md           text eol=lf
+*.yml          text eol=lf
+*.yaml         text eol=lf
+CNAME          text eol=lf
+LICENSE        text eol=lf
+.gitattributes text eol=lf
+.gitignore     text eol=lf
+
+# 바이너리는 절대 손대지 않는다.
+# 예전 설정(`* text=auto`)은 이 파일들까지 줄바꿈 정규화 대상으로 봐서,
+# git 버전에 따라 체크아웃 바이트가 달라질 수 있었다.
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.gif   binary
+*.ico   binary
+*.woff  binary
+*.woff2 binary
+*.ttf   binary
+*.otf   binary
+*.eot   binary
+*.pdf   binary

@@ -86,6 +86,10 @@ body {
   background-position: center top;
 }
 
+/* 세로로만 움직인다. 무엇 하나가 조금 삐져나가더라도 화면이 옆으로 끌려가지 않게. */
+html, body { overflow-x: hidden; overscroll-behavior-x: none; }
+body { max-width: 100%; }
+
 button { font: inherit; color: inherit; cursor: pointer; }
 input { font: inherit; }
 
@@ -141,10 +145,17 @@ body[data-view="hub"] header.top { justify-content: flex-end; }
 
 .hub {
   position: relative;
-  width: 100%; max-width: 470px; margin: 8px auto 0;
+  width: 100%; max-width: var(--hub-max, 470px); margin: 8px auto 0;
   aspect-ratio: 1 / 1;
-  --r: 172px;
-  --orb: 78px;
+
+  /* 반지름과 구슬 크기를 상자 폭에 비례시킨다.
+     예전에는 px 로 못 박아 둬서, 화면이 좁으면 고리가 상자보다 커지고
+     구슬이 밖으로 삐져나가 페이지가 가로로 밀렸다.
+     .366 은 hub-web(viewBox 100×100)의 WEB_R = 36.5 와 맞춘 값이다. */
+  --hub-max: 470px;
+  --hub-w: min(calc(100vw - 34px), var(--hub-max));
+  --r: calc(var(--hub-w) * .366);
+  --orb: calc(var(--hub-w) * .166);
 }
 /* 구슬과 점선 웹을 담는 고리. 평소엔 멈춰 있다가 구슬을 누르면
    그 구슬이 맨 위로 오도록 돈다. 회전각은 JS 가 인라인 transform 으로 넣는다.
@@ -455,7 +466,7 @@ footer b { font-family: var(--serif); }
   .pill { padding: 6px 11px; font-size: 11.5px; gap: 5px; }
   .icon-btn { width: 36px; height: 36px; }
   #hubView { min-height: min(60vh, 430px); }
-  .hub { --r: 128px; --orb: 60px; max-width: 336px; }
+  .hub { --hub-max: 336px; }
   .hub-core .word { font-size: clamp(24px, 8.5vw, 34px); }
   .hub-core .kicker { font-size: 13px; }
   .orb .ball { font-size: 20px; }
@@ -465,7 +476,106 @@ footer b { font-family: var(--serif); }
   .card { padding: 18px; }
 }
 
+/* ---------------------------------------------------------------- 연습장 */
+
+/* 전체 화면을 덮는 필기판. 문제를 위에 띄워 두고 그 아래에 손으로 푼다. */
+.pad {
+  position: fixed; inset: 0; z-index: 60;
+  display: flex; flex-direction: column;
+  background: var(--bg);
+  overscroll-behavior: contain;
+}
+body.pad-open { overflow: hidden; }
+
+.pad-bar {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 14px; border-bottom: 1px solid var(--line);
+  background: var(--panel); backdrop-filter: blur(8px);
+}
+/* 문제는 한 줄로 눕혀 둔다 — 길면 가로로만 넘긴다 */
+.pad-prob {
+  min-width: 0; flex: 1 1 auto;
+  overflow-x: auto; overflow-y: hidden;
+  font-size: 19px; white-space: nowrap;
+  scrollbar-width: thin;
+}
+.pad-prob .katex-display { margin: 0; }
+.pad-prob .katex-display > .katex { text-align: left; }
+
+.pad-tools {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 6px;
+  padding: 8px 14px; border-bottom: 1px solid var(--line-soft);
+  background: var(--panel-2);
+}
+.pad-tools .spacer { flex: 1 1 auto; }
+.tool {
+  font: inherit; font-size: 12px; font-weight: 500;
+  padding: 7px 12px; border-radius: 999px;
+  border: 1px solid var(--line); background: var(--panel);
+  color: var(--ink-2); cursor: pointer;
+  transition: border-color .15s, color .15s, background .15s;
+}
+.tool:hover { border-color: var(--accent); color: var(--ink); }
+.tool.on { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+.tool.pen-only.on { border-color: var(--ok); color: var(--ok); background: var(--ok-soft); }
+.tool-sep { width: 1px; height: 20px; background: var(--line); margin: 0 2px; }
+
+.swatches, .widths { display: flex; align-items: center; gap: 5px; }
+.swatch {
+  width: 24px; height: 24px; padding: 0; border-radius: 50%;
+  border: 2px solid transparent; background: none; cursor: pointer;
+  display: grid; place-items: center;
+}
+.swatch i { display: block; width: 15px; height: 15px; border-radius: 50%;
+            box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .18); }
+.swatch.on { border-color: var(--accent); }
+
+.wbtn {
+  width: 26px; height: 26px; padding: 0; border-radius: 50%;
+  border: 1px solid var(--line); background: var(--panel); cursor: pointer;
+  display: grid; place-items: center;
+}
+.wbtn i { display: block; border-radius: 50%; background: var(--ink-2); }
+.wbtn.on { border-color: var(--accent); background: var(--accent-soft); }
+.wbtn.on i { background: var(--accent); }
+
+/* 캔버스가 얹히는 모눈종이 */
+.pad-sheet {
+  position: relative; flex: 1 1 auto; min-height: 0;
+  background-color: var(--panel-solid);
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 28px 28px;
+  background-position: center top;
+}
+/* touch-action 을 꺼야 펜이 스크롤로 먹히지 않는다.
+   손가락 입력은 자바스크립트에서 걸러내므로 손바닥이 닿아도 선이 그어지지 않는다. */
+#padCanvas { position: absolute; inset: 0; width: 100%; height: 100%;
+             touch-action: none; cursor: crosshair; }
+
+.pad-toast {
+  position: absolute; left: 50%; bottom: 22px; transform: translateX(-50%) translateY(8px);
+  max-width: min(90%, 420px);
+  padding: 10px 16px; border-radius: 999px;
+  background: var(--panel); border: 1px solid var(--line); box-shadow: var(--lift);
+  backdrop-filter: blur(8px);
+  font-size: 12.5px; color: var(--ink-2); text-align: center;
+  opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s;
+}
+.pad-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+@media (max-width: 560px) {
+  .pad-bar { padding: 8px 10px; }
+  /* 좁은 화면에서는 수식에 자리를 다 내준다 */
+  .pad-bar > .chip { display: none; }
+  .pad-prob { font-size: 16px; }
+  .pad-tools { padding: 7px 10px; gap: 5px; }
+  .tool { padding: 6px 10px; font-size: 11.5px; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .orb .ball, .btn, .day, .icon-btn, .levels button, .palette button, .orb-back { transition: none; }
   .hub-ring, .orb .spin { transition: none; }
+  .tool, .pad-toast { transition: none; }
 }

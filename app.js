@@ -5,6 +5,12 @@
   var STORE_KEY = 'dailyIntegral.local.v1';
   var $ = function (id) { return document.getElementById(id); };
 
+  // 안드로이드 앱(APK)은 내가 직접 깔아서 쓰는 것이라 관리자 키를 묻지 않는다.
+  // 웹은 주소만 알면 누구나 들어오므로 잠금을 그대로 둔다.
+  var IS_APP = location.hostname === 'appassets.androidplatform.net';
+
+  function isAdmin() { return IS_APP || store.admin; }
+
   // 터치 기기(휴대폰·태블릿)에서는 입력칸에 자동 포커스를 주지 않는다.
   // 포커스를 주면 문제를 열자마자 화면 절반을 가리며 키보드가 올라온다.
   function isTouch() {
@@ -21,6 +27,8 @@
       lastSolvedDay: null,
       days: {},                       // '2026-08-18': { easy: {solved, attempts, hints, revealed} }
       practice: { solved: 0, attempts: 0, day: null, used: {} },
+      // penOnly 가 null 이면 '자동' — 터치가 되는 기기에서만 켠다
+      pad: { penOnly: null, color: 0, width: 1 },
       admin: false
     };
   }
@@ -36,6 +44,9 @@
       Object.keys(base).forEach(function (k) { if (s[k] === undefined) s[k] = base[k]; });
       Object.keys(base.practice).forEach(function (k) {
         if (s.practice[k] === undefined) s.practice[k] = base.practice[k];
+      });
+      Object.keys(base.pad).forEach(function (k) {
+        if (s.pad[k] === undefined) s.pad[k] = base.pad[k];
       });
       return s;
     } catch (e) { return blankStore(); }
@@ -143,14 +154,14 @@
   }
 
   function practiceLeft(level) {
-    if (store.admin) return Infinity;
+    if (isAdmin()) return Infinity;
     var q = PRACTICE_QUOTA[level];
     if (q === Infinity) return Infinity;
     return Math.max(0, q - practiceUsed(level));
   }
 
   function consumePractice(level) {
-    if (store.admin || PRACTICE_QUOTA[level] === Infinity) return;
+    if (isAdmin() || PRACTICE_QUOTA[level] === Infinity) return;
     store.practice.used[level] = practiceUsed(level) + 1;
     save();
   }
@@ -282,8 +293,10 @@
 
     var info = document.createElement('span');
     info.className = 'quota-info';
-    if (store.admin) {
-      info.innerHTML = '<b>관리자</b> · 하루 제한 없음';
+    if (isAdmin()) {
+      info.innerHTML = IS_APP
+        ? '앱 · 하루 제한 없음'
+        : '<b>관리자</b> · 하루 제한 없음';
     } else {
       info.innerHTML = PROBLEMS.levels.map(function (lv) {
         var q = PRACTICE_QUOTA[lv];
@@ -293,11 +306,13 @@
     }
     bar.appendChild(info);
 
-    var btn = document.createElement('button');
-    btn.className = 'btn ghost sm';
-    btn.textContent = store.admin ? '잠그기' : '관리자 키';
-    btn.onclick = store.admin ? lockAdmin : function () { askAdminKey(); };
-    bar.appendChild(btn);
+    if (!IS_APP) {
+      var btn = document.createElement('button');
+      btn.className = 'btn ghost sm';
+      btn.textContent = store.admin ? '잠그기' : '관리자 키';
+      btn.onclick = store.admin ? lockAdmin : function () { askAdminKey(); };
+      bar.appendChild(btn);
+    }
   }
 
   // onSuccess 를 주면 통과 뒤 그것만 실행한다 (아카이브에서 눌렀을 때 등)
@@ -466,6 +481,9 @@
       ? '예:  pi^2/6     (x 없는 상수로 답하세요)'
       : '예:  x³/3 + C     (적분상수는 생략해도 됩니다)';
     $('palette').classList.toggle('def', isDef);
+
+    // 연습장은 문제마다 따로 남는다
+    padSyncProblem();
 
     $('nextBtn').classList.toggle('hidden', session.mode !== 'practice');
     $('answerInput').value = '';
@@ -881,7 +899,7 @@
       var day = store.days[k] || {};
       var solvedCount = PROBLEMS.levels.filter(function (lv) { return day[lv] && day[lv].solved; }).length;
 
-      var shut = !store.admin && k !== TODAY_KEY;
+      var shut = !isAdmin() && k !== TODAY_KEY;
 
       var el = document.createElement('button');
       el.className = 'day' + (k === TODAY_KEY ? ' today' : '') +
@@ -906,10 +924,12 @@
       grid.appendChild(el);
     }
 
-    $('archiveNote').textContent = store.admin
-      ? '관리자 모드 · 지난 날짜도 열 수 있습니다'
-      : '지난 날짜는 관리자 키가 있어야 열립니다';
+    $('archiveNote').textContent = IS_APP
+      ? '지난 날짜도 모두 열 수 있습니다'
+      : (store.admin ? '관리자 모드 · 지난 날짜도 열 수 있습니다'
+                     : '지난 날짜는 관리자 키가 있어야 열립니다');
     var kb = $('archiveKeyBtn');
+    kb.classList.toggle('hidden', IS_APP);
     kb.textContent = store.admin ? '잠그기' : '관리자 키';
     kb.onclick = store.admin ? lockAdmin : function () { askAdminKey(); };
   }
@@ -1045,6 +1065,385 @@
     });
   }
 
+  // ------------------------------------------------------------- 연습장
+
+  /*
+   * 손으로 풀어 보는 필기판. 문제를 위에 띄워 두고 그 아래 모눈종이에 쓴다.
+   *
+   *   필기는 비트맵이 아니라 획(stroke) 목록으로 들고 있다. 되돌리기가 공짜가 되고,
+   *   화면을 돌리거나 창을 줄여도 다시 그리면 되고, 저장도 가볍다.
+   *   좌표는 캔버스 가로폭으로 나눠 정규화해 둔다 — 가로세로를 같은 값으로 나누므로
+   *   크기가 달라져도 글씨 비율이 찌그러지지 않는다.
+   */
+
+  var PAD_KEY = 'dailyIntegral.pad.v1';
+
+  // 0번은 테마를 따라가야 해서(다크 모드에서 검은 글씨는 안 보인다) 그릴 때 값을 읽는다
+  var PAD_COLORS = [
+    { name: '먹', cssVar: '--ink' },
+    { name: '파랑', hex: '#3b82c4' },
+    { name: '빨강', hex: '#cf4257' },
+    { name: '초록', hex: '#17916a' }
+  ];
+  var PAD_WIDTHS = [1.5, 2.6, 4.4];      // CSS 픽셀 기준 기본 굵기
+  var PAD_ERASER = 7;                    // 지우개는 펜 굵기의 몇 배
+
+  var pad = {
+    ctx: null,
+    w: 0, h: 0,                // 캔버스 CSS 크기
+    strokes: [],               // 지금 문제의 획 목록
+    byProblem: {},             // 문제 id -> 획 목록 (세션 동안 유지)
+    problemId: null,
+    cleared: null,             // '전체 지우기' 직전 상태 (되돌리기용)
+    cur: null,                 // 그리는 중인 획
+    mode: 'pen',
+    color: 0,
+    width: 1,
+    penOnly: true,
+    penSeen: false,            // 펜이 한 번이라도 닿았는지
+    lastNag: 0,
+    toastTimer: null,
+    saveTimer: null
+  };
+
+  function padColor(i) {
+    var c = PAD_COLORS[i] || PAD_COLORS[0];
+    if (c.hex) return c.hex;
+    var v = getComputedStyle(document.documentElement).getPropertyValue(c.cssVar);
+    return (v || '').trim() || '#16202e';
+  }
+
+  // 기본값: 터치가 되는 기기(태블릿·휴대폰)에서만 '펜만'을 켠다.
+  // 마우스밖에 없는 컴퓨터에서 켜 두면 아무것도 못 그리게 된다.
+  function padPenOnlyDefault() {
+    return (navigator.maxTouchPoints || 0) > 0;
+  }
+
+  function padToast(msg) {
+    var t = $('padToast');
+    if (!t) return;
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(pad.toastTimer);
+    pad.toastTimer = setTimeout(function () { t.classList.remove('show'); }, 2400);
+  }
+
+  // --- 크기 맞추기 -------------------------------------------------
+
+  function padResize() {
+    var sheet = $('padSheet'), cv = $('padCanvas');
+    if (!sheet || !cv) return;
+    var r = sheet.getBoundingClientRect();
+    if (!r.width || !r.height) return;
+    var dpr = Math.min(window.devicePixelRatio || 1, 3);
+    pad.w = r.width;
+    pad.h = r.height;
+    cv.width = Math.round(r.width * dpr);
+    cv.height = Math.round(r.height * dpr);
+    pad.ctx = cv.getContext('2d');
+    pad.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    padRedraw();
+  }
+
+  // --- 그리기 ------------------------------------------------------
+
+  function padPrep(ctx, st) {
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    if (st.e) {
+      ctx.globalCompositeOperation = 'destination-out';
+      ctx.strokeStyle = 'rgba(0,0,0,1)';
+    } else {
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.strokeStyle = padColor(st.c);
+    }
+  }
+
+  // 필압에 따라 굵기가 변해야 해서 마디마다 따로 긋는다.
+  // 끝을 둥글게 하면 마디 이음매가 보이지 않는다.
+  function padSegments(ctx, st, from) {
+    var base = (PAD_WIDTHS[st.w] || PAD_WIDTHS[1]) * (st.e ? PAD_ERASER : 1);
+    var W = pad.w;
+    var pts = st.p;
+    if (pts.length === 1 && from === 0) {          // 점 하나만 찍은 경우
+      ctx.beginPath();
+      ctx.arc(pts[0][0] * W, pts[0][1] * W, base * (0.45 + 0.95 * pts[0][2]) / 2, 0, 6.2832);
+      ctx.fillStyle = st.e ? 'rgba(0,0,0,1)' : padColor(st.c);
+      ctx.fill();
+      return;
+    }
+    for (var i = Math.max(1, from); i < pts.length; i++) {
+      var a = pts[i - 1], b = pts[i];
+      ctx.lineWidth = base * (0.45 + 0.95 * (a[2] + b[2]) / 2);
+      ctx.beginPath();
+      ctx.moveTo(a[0] * W, a[1] * W);
+      ctx.lineTo(b[0] * W, b[1] * W);
+      ctx.stroke();
+    }
+  }
+
+  function padRedraw() {
+    var ctx = pad.ctx;
+    if (!ctx) return;
+    ctx.clearRect(0, 0, pad.w, pad.h);
+    pad.strokes.forEach(function (st) { padPrep(ctx, st); padSegments(ctx, st, 0); });
+    if (pad.cur) { padPrep(ctx, pad.cur); padSegments(ctx, pad.cur, 0); }
+    ctx.globalCompositeOperation = 'source-over';
+  }
+
+  // --- 입력 --------------------------------------------------------
+
+  function padPoint(e) {
+    var r = $('padCanvas').getBoundingClientRect();
+    var pr = (e.pressure > 0 && e.pressure <= 1) ? e.pressure : 0.5;
+    return [
+      Math.round((e.clientX - r.left) / r.width * 1e4) / 1e4,
+      Math.round((e.clientY - r.top) / r.width * 1e4) / 1e4,
+      Math.round(pr * 100) / 100
+    ];
+  }
+
+  // 여기가 '펜만' 의 전부다. 손가락·손바닥은 pointerType 이 'touch' 라서 걸러진다.
+  function padAccepts(e) {
+    if (e.pointerType === 'pen') {
+      if (!pad.penSeen) { pad.penSeen = true; padRenderTools(); }
+      return true;
+    }
+    if (!pad.penOnly) return true;
+    var now = Date.now();
+    if (now - pad.lastNag > 2000) {
+      pad.lastNag = now;
+      padToast(e.pointerType === 'touch'
+        ? '손가락으로는 그려지지 않습니다. 펜을 쓰거나 위의 “펜만”을 끄세요.'
+        : '“펜만” 이 켜져 있습니다. 끄면 마우스로도 그릴 수 있습니다.');
+    }
+    return false;
+  }
+
+  function padDown(e) {
+    if (!padAccepts(e)) return;
+    e.preventDefault();
+    // S펜 버튼을 누른 채 그으면 그 획만 지우개가 된다
+    var erasing = pad.mode === 'eraser' || (e.buttons & 32) === 32 || e.button === 5;
+    pad.cur = { c: pad.color, w: pad.width, e: erasing, p: [padPoint(e)] };
+    try { $('padCanvas').setPointerCapture(e.pointerId); } catch (err) { /* 무시 */ }
+    padPrep(pad.ctx, pad.cur);
+    padSegments(pad.ctx, pad.cur, 0);
+  }
+
+  function padMove(e) {
+    if (!pad.cur) return;
+    e.preventDefault();
+    var from = pad.cur.p.length;
+    // 브라우저가 몰아 둔 중간 좌표까지 받아 오면 빠르게 그어도 각지지 않는다
+    var evs = (typeof e.getCoalescedEvents === 'function') ? e.getCoalescedEvents() : null;
+    if (evs && evs.length) {
+      for (var i = 0; i < evs.length; i++) pad.cur.p.push(padPoint(evs[i]));
+    } else {
+      pad.cur.p.push(padPoint(e));
+    }
+    padPrep(pad.ctx, pad.cur);
+    padSegments(pad.ctx, pad.cur, from);
+  }
+
+  function padUp(e) {
+    if (!pad.cur) return;
+    if (e) { try { $('padCanvas').releasePointerCapture(e.pointerId); } catch (err) { /* 무시 */ } }
+    pad.strokes.push(pad.cur);
+    pad.cur = null;
+    pad.cleared = null;
+    padSaveLater();
+  }
+
+  // --- 도구 --------------------------------------------------------
+
+  function padSetMode(m) {
+    pad.mode = m;
+    $('padPen').classList.toggle('on', m === 'pen');
+    $('padPen').setAttribute('aria-pressed', String(m === 'pen'));
+    $('padEraser').classList.toggle('on', m === 'eraser');
+    $('padEraser').setAttribute('aria-pressed', String(m === 'eraser'));
+  }
+
+  function padRenderTools() {
+    var cols = $('padColors');
+    cols.innerHTML = '';
+    PAD_COLORS.forEach(function (c, i) {
+      var b = document.createElement('button');
+      b.className = 'swatch' + (i === pad.color ? ' on' : '');
+      b.title = c.name;
+      b.setAttribute('aria-label', c.name);
+      var dot = document.createElement('i');
+      dot.style.background = padColor(i);
+      b.appendChild(dot);
+      b.onclick = function () {
+        pad.color = i;
+        store.pad.color = i;
+        save();
+        padSetMode('pen');
+        padRenderTools();
+      };
+      cols.appendChild(b);
+    });
+
+    var ws = $('padWidths');
+    ws.innerHTML = '';
+    PAD_WIDTHS.forEach(function (w, i) {
+      var b = document.createElement('button');
+      b.className = 'wbtn' + (i === pad.width ? ' on' : '');
+      b.title = ['가늘게', '보통', '굵게'][i];
+      b.setAttribute('aria-label', b.title);
+      var dot = document.createElement('i');
+      var d = 4 + i * 3;
+      dot.style.width = d + 'px';
+      dot.style.height = d + 'px';
+      b.appendChild(dot);
+      b.onclick = function () {
+        pad.width = i;
+        store.pad.width = i;
+        save();
+        padRenderTools();
+      };
+      ws.appendChild(b);
+    });
+
+    var po = $('padPenOnly');
+    po.classList.toggle('on', pad.penOnly);
+    po.setAttribute('aria-pressed', String(pad.penOnly));
+    po.title = pad.penOnly
+      ? '펜(S펜·애플펜슬)으로만 그려집니다. 손가락은 무시합니다.'
+      : '손가락·마우스로도 그려집니다.';
+  }
+
+  function padUndo() {
+    if (pad.strokes.length) {
+      pad.strokes.pop();
+    } else if (pad.cleared) {
+      pad.strokes = pad.cleared;
+      pad.cleared = null;
+      padToast('전체 지우기를 되돌렸습니다.');
+    } else {
+      return;
+    }
+    padRedraw();
+    padSaveLater();
+  }
+
+  function padClear() {
+    if (!pad.strokes.length) return;
+    pad.cleared = pad.strokes;
+    pad.strokes = [];
+    pad.byProblem[pad.problemId] = pad.strokes;
+    padRedraw();
+    padSaveLater();
+    padToast('다 지웠습니다. 되돌리기로 되살릴 수 있습니다.');
+  }
+
+  // --- 저장 --------------------------------------------------------
+
+  function padSaveLater() {
+    clearTimeout(pad.saveTimer);
+    pad.saveTimer = setTimeout(padSaveNow, 600);
+  }
+
+  function padSaveNow() {
+    try {
+      if (!pad.problemId) return;
+      if (!pad.strokes.length) { localStorage.removeItem(PAD_KEY); return; }
+      var json = JSON.stringify({ id: pad.problemId, strokes: pad.strokes });
+      // 너무 길게 쓴 날은 저장을 건너뛴다. 화면의 필기는 그대로 남는다.
+      if (json.length > 600000) return;
+      localStorage.setItem(PAD_KEY, json);
+    } catch (e) { /* 용량 초과·시크릿 모드 */ }
+  }
+
+  function padLoadSaved() {
+    try {
+      var raw = localStorage.getItem(PAD_KEY);
+      if (!raw) return;
+      var d = JSON.parse(raw);
+      if (d && d.id && Array.isArray(d.strokes)) pad.byProblem[d.id] = d.strokes;
+    } catch (e) { /* 무시 */ }
+  }
+
+  // --- 열고 닫기 ---------------------------------------------------
+
+  function padSyncProblem() {
+    var id = session.problem ? session.problem.id : null;
+    pad.problemId = id;
+    if (!id) { pad.strokes = []; return; }
+    if (!pad.byProblem[id]) pad.byProblem[id] = [];
+    pad.strokes = pad.byProblem[id];
+    pad.cleared = null;
+  }
+
+  function padOpen() {
+    if (!session.problem) return;
+    padSyncProblem();
+
+    var p = session.problem;
+    var isDef = p.value !== undefined;
+    var bounds = isDef ? '_{' + p.loLatex + '}^{' + p.hiLatex + '}' : '';
+    renderTex($('padProblem'), '\\int' + bounds + ' ' + p.latex + '\\,dx', false,
+      '∫ ' + p.integrand + ' dx');
+
+    document.body.classList.add('pad-open');
+    $('padOverlay').classList.remove('hidden');
+    $('answerInput').blur();
+    padRenderTools();
+    padSetMode(pad.mode);
+    // 레이아웃이 잡힌 다음에 크기를 재야 캔버스가 0 이 되지 않는다
+    requestAnimationFrame(padResize);
+  }
+
+  function padClose() {
+    padSaveNow();
+    $('padOverlay').classList.add('hidden');
+    document.body.classList.remove('pad-open');
+  }
+
+  function padInit() {
+    pad.color = store.pad.color || 0;
+    pad.width = (store.pad.width === undefined || store.pad.width === null) ? 1 : store.pad.width;
+    pad.penOnly = (store.pad.penOnly === null || store.pad.penOnly === undefined)
+      ? padPenOnlyDefault() : !!store.pad.penOnly;
+    padLoadSaved();
+
+    $('padBtn').onclick = padOpen;
+    $('padClose').onclick = padClose;
+    $('padPen').onclick = function () { padSetMode('pen'); };
+    $('padEraser').onclick = function () { padSetMode('eraser'); };
+    $('padUndo').onclick = padUndo;
+    $('padClear').onclick = padClear;
+    $('padPenOnly').onclick = function () {
+      pad.penOnly = !pad.penOnly;
+      store.pad.penOnly = pad.penOnly;
+      save();
+      padRenderTools();
+      padToast(pad.penOnly
+        ? '펜으로만 그려집니다. 손을 얹어도 선이 그어지지 않습니다.'
+        : '손가락·마우스로도 그릴 수 있습니다.');
+    };
+
+    var cv = $('padCanvas');
+    cv.addEventListener('pointerdown', padDown);
+    cv.addEventListener('pointermove', padMove);
+    cv.addEventListener('pointerup', padUp);
+    cv.addEventListener('pointercancel', function (e) { padUp(e); });
+    cv.addEventListener('pointerleave', function (e) { padUp(e); });
+    // 펜 버튼을 눌렀을 때 뜨는 브라우저 기본 메뉴를 막는다
+    cv.addEventListener('contextmenu', function (e) { e.preventDefault(); });
+
+    window.addEventListener('resize', function () {
+      if (!$('padOverlay').classList.contains('hidden')) padResize();
+    });
+    document.addEventListener('keydown', function (e) {
+      if ($('padOverlay').classList.contains('hidden')) return;
+      if (e.key === 'Escape') { e.preventDefault(); padClose(); }
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z') { e.preventDefault(); padUndo(); }
+    });
+  }
+
   // ------------------------------------------------------------- 초기화
 
   function applyTheme() {
@@ -1065,6 +1464,7 @@
     $('backBtn').onclick = function () { switchView('hub'); };
 
     $('submitBtn').onclick = check;
+    padInit();
     $('answerInput').addEventListener('input', onAnswerInput);
     $('answerInput').addEventListener('keydown', function (e) {
       if (e.key === 'Enter') { e.preventDefault(); check(); }

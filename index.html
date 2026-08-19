@@ -78,6 +78,7 @@
         <input id="answerInput" type="text" autocomplete="off" autocapitalize="off"
                spellcheck="false" placeholder="예:  x³/3 + C     (적분상수는 생략해도 됩니다)">
         <button class="btn" id="submitBtn">정답 확인</button>
+        <button class="btn ghost" id="padBtn">연습장 열기</button>
       </div>
 
       <div class="palette" id="palette"></div>
@@ -161,6 +162,37 @@
   <footer>
     Road to Juckboon master &middot; 문제 <b id="bankCount">0</b>개 수록
   </footer>
+</div>
+
+<!-- ------------------------------------------------------ 연습장 -->
+<div class="pad hidden" id="padOverlay" role="dialog" aria-modal="true" aria-label="연습장">
+  <div class="pad-bar">
+    <span class="chip">연습장</span>
+    <div class="pad-prob" id="padProblem"></div>
+    <span class="spacer"></span>
+    <button class="btn ghost sm" id="padClose">닫기</button>
+  </div>
+
+  <div class="pad-tools">
+    <button class="tool on" id="padPen" aria-pressed="true">&#9998; 펜</button>
+    <button class="tool" id="padEraser" aria-pressed="false">&#9003; 지우개</button>
+
+    <span class="tool-sep"></span>
+    <span class="swatches" id="padColors"></span>
+
+    <span class="tool-sep"></span>
+    <span class="widths" id="padWidths"></span>
+
+    <span class="spacer"></span>
+    <button class="tool" id="padUndo">&#8630; 되돌리기</button>
+    <button class="tool" id="padClear">전체 지우기</button>
+    <button class="tool pen-only on" id="padPenOnly" aria-pressed="true">펜만</button>
+  </div>
+
+  <div class="pad-sheet" id="padSheet">
+    <canvas id="padCanvas"></canvas>
+    <div class="pad-toast" id="padToast"></div>
+  </div>
 </div>
 
 <script src="vendor/katex/katex.min.js"></script>

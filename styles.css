@@ -146,6 +146,22 @@ body[data-view="hub"] header.top { justify-content: flex-end; }
   --r: 172px;
   --orb: 78px;
 }
+/* 구슬과 점선 웹을 통째로 담아 천천히 돌리는 고리.
+   구슬 안쪽 .spin 이 같은 키프레임을 reverse 로 되감아 글자는 늘 똑바로 선다. */
+.hub-ring {
+  position: absolute; inset: 0;
+  animation: hub-orbit 72s linear infinite;
+}
+.orb .spin {
+  position: relative; display: block; width: 100%; height: 100%;
+  animation: hub-orbit 72s linear infinite reverse;
+}
+@keyframes hub-orbit { to { transform: rotate(360deg); } }
+
+/* 고르려고 가져다 대면 멈춘다 */
+.hub:hover .hub-ring, .hub:hover .orb .spin,
+.hub:focus-within .hub-ring, .hub:focus-within .orb .spin { animation-play-state: paused; }
+
 .hub-web { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
 .hub-web line, .hub-web polygon {
   fill: none; stroke: var(--line); stroke-width: 1;
@@ -155,7 +171,7 @@ body[data-view="hub"] header.top { justify-content: flex-end; }
 .hub-web line { opacity: .45; }
 
 .hub-core {
-  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+  position: absolute; left: 50%; top: 50%; z-index: 1; transform: translate(-50%, -50%);
   text-align: center; width: 56%; pointer-events: none;
 }
 .hub-core .word {
@@ -398,4 +414,5 @@ footer b { font-family: var(--serif); }
 
 @media (prefers-reduced-motion: reduce) {
   .orb .ball, .btn, .day, .icon-btn, .levels button, .palette button, .orb-back { transition: none; }
+  .hub-ring, .orb .spin { animation: none; }
 }

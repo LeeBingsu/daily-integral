@@ -481,8 +481,8 @@
   var WEB_R = 36.5;   // viewBox(100×100) 기준 반지름 — CSS 의 --r 비율과 맞춰 둔 값
 
   function renderHub() {
-    var hub = $('hub');
-    hub.querySelectorAll('.orb').forEach(function (n) { n.remove(); });
+    var ring = $('hubRing');
+    ring.querySelectorAll('.orb').forEach(function (n) { n.remove(); });
 
     var n = ORBS.length, pts = [];
     ORBS.forEach(function (o, i) {
@@ -496,22 +496,26 @@
       b.style.setProperty('--c', o.color);
       b.setAttribute('aria-label', o.label);
 
+      var spin = document.createElement('span');
+      spin.className = 'spin';
+      b.appendChild(spin);
+
       var ball = document.createElement('span');
       ball.className = 'ball';
       ball.textContent = o.glyph;
-      b.appendChild(ball);
+      spin.appendChild(ball);
 
       var lab = document.createElement('span');
       lab.className = 'lab';
       lab.textContent = o.label;
-      b.appendChild(lab);
+      spin.appendChild(lab);
 
       var rec = PROBLEMS.labels[o.key] ? recordFor(TODAY_KEY, o.key) : null;
       if (rec && rec.solved) {
         var t = document.createElement('span');
         t.className = 'tick';
         t.textContent = '\u2713';
-        b.appendChild(t);
+        spin.appendChild(t);
       }
 
       b.onclick = function () {
@@ -522,7 +526,7 @@
           switchView('daily');
         }
       };
-      hub.appendChild(b);
+      ring.appendChild(b);
     });
 
     drawWeb(pts);

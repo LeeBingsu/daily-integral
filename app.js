@@ -20,7 +20,8 @@
       best: 0,
       lastSolvedDay: null,
       days: {},                       // '2026-08-18': { easy: {solved, attempts, hints, revealed} }
-      practice: { solved: 0, attempts: 0 }
+      practice: { solved: 0, attempts: 0, day: null, used: {} },
+      admin: false
     };
   }
 
@@ -33,6 +34,9 @@
       var s = JSON.parse(raw);
       var base = blankStore();
       Object.keys(base).forEach(function (k) { if (s[k] === undefined) s[k] = base[k]; });
+      Object.keys(base.practice).forEach(function (k) {
+        if (s.practice[k] === undefined) s.practice[k] = base.practice[k];
+      });
       return s;
     } catch (e) { return blankStore(); }
   }
@@ -104,6 +108,133 @@
     var p, guard = 0;
     do { p = bank[Math.floor(Math.random() * bank.length)]; } while (p.id === avoidId && ++guard < 20);
     return p;
+  }
+
+  // ------------------------------------------------------------- 연습 모드 하루 몫
+
+  // 무한 연습이 정말 무한해지지 않도록 난이도별로 하루 배당을 둔다.
+  // Infinity 는 저장하지 않고 상수로만 쓰므로 JSON 직렬화에 걸리지 않는다.
+  var PRACTICE_QUOTA = { easy: Infinity, medium: 3, hard: 7, monster: 1 };
+
+  // 관리자 키의 해시(FNV-1a). 소스에 키를 그대로 적어두지 않으려는 것뿐이고,
+  // 브라우저 콘솔로 store 를 고치면 뚫린다 — 자기 절제용 장치이지 접근 통제가 아니다.
+  var ADMIN_HASH = '4cde032d';
+
+  function fnv1a(str) {
+    var h = 0x811c9dc5;
+    for (var i = 0; i < str.length; i++) {
+      h ^= str.charCodeAt(i);
+      h = (h + ((h << 1) + (h << 4) + (h << 7) + (h << 8) + (h << 24))) >>> 0;
+    }
+    return h.toString(16);
+  }
+
+  // 날짜가 바뀌면 사용량을 턴다
+  function rollPracticeDay() {
+    if (store.practice.day === TODAY_KEY) return;
+    store.practice.day = TODAY_KEY;
+    store.practice.used = {};
+    save();
+  }
+
+  function practiceUsed(level) {
+    rollPracticeDay();
+    return store.practice.used[level] || 0;
+  }
+
+  function practiceLeft(level) {
+    if (store.admin) return Infinity;
+    var q = PRACTICE_QUOTA[level];
+    if (q === Infinity) return Infinity;
+    return Math.max(0, q - practiceUsed(level));
+  }
+
+  function consumePractice(level) {
+    if (store.admin || PRACTICE_QUOTA[level] === Infinity) return;
+    store.practice.used[level] = practiceUsed(level) + 1;
+    save();
+  }
+
+  // 연습 문제 한 개를 꺼낸다. 몫이 없으면 자물쇠 화면을 띄운다.
+  function startPractice(level, avoidId) {
+    session.mode = 'practice';
+    session.level = level;
+    if (practiceLeft(level) <= 0) {
+      showLock(level);
+      renderLevels();
+      renderQuota();
+      return false;
+    }
+    consumePractice(level);
+    showLock(null);
+    loadProblem(randomProblem(level, avoidId));
+    renderQuota();
+    return true;
+  }
+
+  function showLock(level) {
+    var locked = !!level;
+    $('lockCard').classList.toggle('hidden', !locked);
+    $('playCard').classList.toggle('hidden', locked);
+    $('rulesCard').classList.toggle('hidden', locked);
+    if (!locked) return;
+    var q = PRACTICE_QUOTA[level];
+    $('lockMsg').innerHTML = '<b>' + PROBLEMS.labels[level] + '</b> 연습은 하루 ' + q +
+      '문제까지입니다. 오늘 몫을 다 썼어요.';
+    $('lockSub').textContent = '자정에 다시 채워집니다. 다른 난이도를 고르거나, ' +
+      '오늘의 문제를 풀어 보세요.';
+  }
+
+  function renderQuota() {
+    var bar = $('quotaBar');
+    bar.classList.toggle('hidden', session.mode !== 'practice');
+    if (session.mode !== 'practice') return;
+    bar.innerHTML = '';
+
+    var info = document.createElement('span');
+    info.className = 'quota-info';
+    if (store.admin) {
+      info.innerHTML = '<b>관리자</b> · 하루 제한 없음';
+    } else {
+      info.innerHTML = PROBLEMS.levels.map(function (lv) {
+        var q = PRACTICE_QUOTA[lv];
+        if (q === Infinity) return PROBLEMS.labels[lv] + ' <b>\u221e</b>';
+        return PROBLEMS.labels[lv] + ' <b>' + practiceLeft(lv) + '</b>/' + q;
+      }).join('<i>\u00b7</i>');
+    }
+    bar.appendChild(info);
+
+    var btn = document.createElement('button');
+    btn.className = 'btn ghost sm';
+    btn.textContent = store.admin ? '잠그기' : '관리자 키';
+    btn.onclick = store.admin ? lockAdmin : askAdminKey;
+    bar.appendChild(btn);
+  }
+
+  function askAdminKey() {
+    var v = window.prompt('관리자 키를 입력하면 하루 제한이 풀립니다.');
+    if (v === null) return;
+    if (fnv1a(v.trim()) !== ADMIN_HASH) {
+      showFeedback('bad', '관리자 키가 맞지 않습니다.');
+      return;
+    }
+    store.admin = true;
+    save();
+    renderQuota();
+    renderLevels();
+    if ($('lockCard').classList.contains('hidden')) {
+      showFeedback('ok', '관리자 모드입니다. 하루 제한이 풀렸습니다.');
+    } else {
+      startPractice(session.level, session.problem && session.problem.id);
+    }
+  }
+
+  function lockAdmin() {
+    store.admin = false;
+    save();
+    renderQuota();
+    renderLevels();
+    if (practiceLeft(session.level) <= 0) showLock(session.level);
   }
 
   // ------------------------------------------------------------- 수식 렌더
@@ -612,10 +743,18 @@
           c.textContent = '✓';
           b.appendChild(c);
         }
+      } else {
+        var left = practiceLeft(lv);
+        if (left !== Infinity) {
+          var n = document.createElement('span');
+          n.className = 'left' + (left === 0 ? ' out' : '');
+          n.textContent = left === 0 ? '\u00d7' : String(left);
+          b.appendChild(n);
+        }
       }
       b.onclick = function () {
         session.level = lv;
-        if (session.mode === 'practice') loadProblem(randomProblem(lv, null));
+        if (session.mode === 'practice') startPractice(lv, null);
         else loadProblem(problemForDay(lv, dayNumberOf(dateFromKey(session.dateKey))));
       };
       bar.appendChild(b);
@@ -734,10 +873,11 @@
     if (view === 'daily') {
       session.mode = 'daily';
       session.dateKey = TODAY_KEY;
+      showLock(null);
+      renderQuota();
       loadProblem(problemForDay(session.level, dayNumberOf(new Date())));
     } else if (view === 'practice') {
-      session.mode = 'practice';
-      loadProblem(randomProblem(session.level, session.problem && session.problem.id));
+      startPractice(session.level, session.problem && session.problem.id);
     }
   }
 
@@ -826,7 +966,7 @@
     $('revealBtn').onclick = function () { revealSolution(false); };
 
     $('nextBtn').onclick = function () {
-      loadProblem(randomProblem(session.level, session.problem && session.problem.id));
+      startPractice(session.level, session.problem && session.problem.id);
     };
 
     $('resetDataBtn').onclick = function () {

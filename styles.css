@@ -253,6 +253,30 @@ body:not([data-view="hub"]) .backwrap { display: flex; }
 .levels button[data-level="monster"][aria-selected="true"] { border-color: var(--lv-monster); box-shadow: var(--lift), 0 0 0 4px color-mix(in srgb, var(--lv-monster) 12%, transparent); }
 .levels .check { color: var(--ok); font-size: 12px; }
 
+/* ------------------------------------------------------- 연습 모드 하루 몫 */
+.quota {
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  justify-content: center; margin: -6px 0 18px;
+}
+.quota-info { font-size: 12px; color: var(--ink-3); letter-spacing: .04em; }
+.quota-info b { color: var(--ink-2); font-family: var(--serif); font-size: 13.5px; }
+.quota-info i { font-style: normal; opacity: .45; margin: 0 7px; }
+
+.levels .left {
+  min-width: 18px; height: 18px; padding: 0 5px; border-radius: 999px;
+  background: var(--panel-2); border: 1px solid var(--line-soft);
+  font-family: var(--serif); font-size: 11px; color: var(--ink-3);
+  display: inline-grid; place-items: center;
+}
+.levels .left.out { color: var(--bad); border-color: color-mix(in srgb, var(--bad) 35%, transparent); }
+
+.card.lock { text-align: center; }
+.card.lock .card-head { justify-content: center; }
+.lock-mark { font-size: 34px; color: var(--ink-3); opacity: .35; margin: 18px 0 2px; }
+.lock-msg { font-size: 15px; margin: 0 0 6px; color: var(--ink-2); }
+.lock-msg b { color: var(--ink); }
+.card.lock .muted { margin: 0 0 6px; }
+
 /* ---------------------------------------------------------------- 카드 */
 .card {
   background: var(--panel); border: 1px solid var(--line);

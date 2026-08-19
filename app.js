@@ -178,11 +178,100 @@
     $('playCard').classList.toggle('hidden', locked);
     $('rulesCard').classList.toggle('hidden', locked);
     if (!locked) return;
+    buildGrass();
     var q = PRACTICE_QUOTA[level];
     $('lockMsg').innerHTML = '<b>' + PROBLEMS.labels[level] + '</b> 연습은 하루 ' + q +
       '문제까지입니다. 오늘 몫을 다 썼어요.';
     $('lockSub').textContent = '자정에 다시 채워집니다. 다른 난이도를 고르거나, ' +
       '오늘의 문제를 풀어 보세요.';
+  }
+
+  // ------------------------------------------------------------- Touch Grass
+
+  // 잔디밭은 SVG 로 직접 그린다. 직접 찍었거나 사용 허락을 받은 사진이 있으면
+  // 파일을 넣고 아래 경로만 채우면 그 사진이 대신 깔린다. 비워 두면 SVG 를 쓴다.
+  var GRASS_PHOTO = '';
+
+  var grassDrawn = false;
+
+  function buildGrass() {
+    if (grassDrawn) return;
+    grassDrawn = true;
+
+    if (GRASS_PHOTO) {
+      var art = $('grassArt');
+      var img = document.createElement('img');
+      img.className = 'grass-photo';
+      img.alt = '';
+      img.onerror = function () { img.remove(); };
+      img.src = GRASS_PHOTO;
+      art.insertBefore(img, art.firstChild);
+    }
+
+    var NS = 'http://www.w3.org/2000/svg';
+    var svg = $('grassSvg');
+    var W = 600, H = 260;
+
+    // 씨앗 고정 난수 — 볼 때마다 잔디가 달라지지 않게 한다
+    var seed = 20260819;
+    function rnd() {
+      seed = (seed * 1103515245 + 12345) & 0x7fffffff;
+      return seed / 0x7fffffff;
+    }
+
+    var defs = document.createElementNS(NS, 'defs');
+    defs.innerHTML =
+      '<linearGradient id="grassSky" x1="0" y1="0" x2="0" y2="1">' +
+        '<stop offset="0" stop-color="#cfe89a"/><stop offset="1" stop-color="#5aa03a"/>' +
+      '</linearGradient>' +
+      '<radialGradient id="grassSun" cx="0.82" cy="0.12" r="0.75">' +
+        '<stop offset="0" stop-color="#fff8c8" stop-opacity=".85"/>' +
+        '<stop offset="1" stop-color="#fff8c8" stop-opacity="0"/>' +
+      '</radialGradient>';
+    svg.appendChild(defs);
+
+    var bg = document.createElementNS(NS, 'rect');
+    bg.setAttribute('width', W); bg.setAttribute('height', H);
+    bg.setAttribute('fill', 'url(#grassSky)');
+    svg.appendChild(bg);
+
+    // 아래쪽은 빽빽한 뗏장으로 깔아 밑동이 비지 않게 한다
+    var turf = document.createElementNS(NS, 'rect');
+    turf.setAttribute('y', H - 70); turf.setAttribute('width', W); turf.setAttribute('height', 70);
+    turf.setAttribute('fill', '#4b8a2e'); turf.setAttribute('opacity', '.55');
+    svg.appendChild(turf);
+
+    // 뒤에서 앞으로 네 겹 — 뒤는 흐리고 짧게, 앞은 진하고 길게
+    [[240, 40, 88, 1.7, .5], [230, 70, 130, 2.4, .72], [210, 105, 180, 3.2, .9],
+     [150, 150, 245, 4.4, 1]]
+      .forEach(function (layer) {
+        var n = layer[0], hMin = layer[1], hMax = layer[2], wMax = layer[3], op = layer[4];
+        for (var i = 0; i < n; i++) {
+          var x = rnd() * (W + 40) - 20;
+          var h = hMin + rnd() * (hMax - hMin);
+          var lean = (rnd() - 0.5) * h * 0.55;
+          var w = 1.1 + rnd() * wMax;
+          var hue = 74 + rnd() * 34;
+          var light = 24 + rnd() * 26 + (1 - op) * 14;
+          var d = 'M' + x.toFixed(1) + ',' + H +
+                  ' Q' + (x + lean * 0.3).toFixed(1) + ',' + (H - h * 0.58).toFixed(1) +
+                  ' ' + (x + lean).toFixed(1) + ',' + (H - h).toFixed(1);
+          var p = document.createElementNS(NS, 'path');
+          p.setAttribute('d', d);
+          p.setAttribute('stroke', 'hsl(' + hue.toFixed(0) + ',' + (44 + rnd() * 26).toFixed(0) +
+                         '%,' + light.toFixed(0) + '%)');
+          p.setAttribute('stroke-width', w.toFixed(2));
+          p.setAttribute('stroke-linecap', 'round');
+          p.setAttribute('fill', 'none');
+          p.setAttribute('opacity', op.toFixed(2));
+          svg.appendChild(p);
+        }
+      });
+
+    var sun = document.createElementNS(NS, 'rect');
+    sun.setAttribute('width', W); sun.setAttribute('height', H);
+    sun.setAttribute('fill', 'url(#grassSun)');
+    svg.appendChild(sun);
   }
 
   function renderQuota() {

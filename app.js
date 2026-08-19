@@ -479,10 +479,39 @@
   ];
 
   var WEB_R = 36.5;   // viewBox(100×100) 기준 반지름 — CSS 의 --r 비율과 맞춰 둔 값
+  var TURN_MS = 620;  // styles.css 의 --turn 과 같은 값
+
+  var orbEls = [];        // 구슬 버튼
+  var spinEls = [];       // 구슬 안쪽 회전 보정 래퍼
+  var ringAngle = 0;      // 고리의 누적 회전각(도). 360 을 넘어도 되감지 않는다
+  var topIndex = 0;
+
+  function reducedMotion() {
+    return !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  }
+
+  // 고리를 돌려 i 번 구슬을 맨 위로 올린다. 항상 가까운 쪽으로 돈다.
+  function spinToTop(i, done) {
+    var target = -360 * i / ORBS.length;
+    var delta = ((target - ringAngle) % 360 + 540) % 360 - 180;
+    ringAngle += delta;
+
+    $('hubRing').style.transform = 'rotate(' + ringAngle + 'deg)';
+    spinEls.forEach(function (el) { el.style.transform = 'rotate(' + (-ringAngle) + 'deg)'; });
+
+    orbEls.forEach(function (el, k) { el.classList.toggle('top', k === i); });
+    topIndex = i;
+
+    if (!done) return;
+    var moving = Math.abs(delta) > 0.5 && !reducedMotion();
+    if (moving) setTimeout(done, TURN_MS);
+    else done();
+  }
 
   function renderHub() {
     var ring = $('hubRing');
     ring.querySelectorAll('.orb').forEach(function (n) { n.remove(); });
+    orbEls = []; spinEls = [];
 
     var n = ORBS.length, pts = [];
     ORBS.forEach(function (o, i) {
@@ -519,17 +548,28 @@
       }
 
       b.onclick = function () {
-        if (o.key === 'practice' || o.key === 'archive' || o.key === 'stats') {
-          switchView(o.key);
-        } else {
-          session.level = o.key;
-          switchView('daily');
-        }
+        spinToTop(i, function () {
+          if (o.key === 'practice' || o.key === 'archive' || o.key === 'stats') {
+            switchView(o.key);
+          } else {
+            session.level = o.key;
+            switchView('daily');
+          }
+        });
       };
+      orbEls.push(b);
+      spinEls.push(spin);
       ring.appendChild(b);
     });
 
     drawWeb(pts);
+
+    // 다시 그려도 직전 회전 상태를 그대로 이어받는다 — 이때는 굴러가지 않게 한다
+    var frozen = [ring].concat(spinEls);
+    frozen.forEach(function (el) { el.style.transition = 'none'; });
+    spinToTop(topIndex);
+    void ring.offsetWidth;
+    frozen.forEach(function (el) { el.style.transition = ''; });
   }
 
   // 구슬 사이를 잇는 점선 — 바깥 다각형과 별 모양 대각선

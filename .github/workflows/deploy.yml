@@ -1,0 +1,72 @@
+name: 검증 후 배포
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 배포는 한 번에 하나만. 진행 중인 배포를 끊지는 않는다.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    name: 문제 은행 검증
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # problems.js 는 generate.js 가 만드는 파일이다.
+      # 커밋된 것과 방금 만든 것이 다르면 누군가 생성물을 직접 고쳤다는 뜻.
+      - name: 문제 은행 재생성
+        run: node generate.js
+      - name: 커밋된 problems.js 가 최신인지
+        run: git diff --exit-code problems.js
+
+      - name: 전 문항 수치 검증
+        run: node verify.js
+      - name: 채점 엔진 회귀 테스트
+        run: node grade-test.js
+
+      # sw.js 도 생성물이다. 자산이 바뀌었는데 다시 만들지 않으면
+      # 캐시 버전이 그대로라 방문자에게 갱신이 전달되지 않는다.
+      - name: 서비스 워커 재생성
+        run: node build-sw.js
+      - name: 커밋된 sw.js 가 최신인지
+        run: git diff --exit-code sw.js
+
+      - name: 배포용 디렉터리 꾸리기
+        run: |
+          mkdir -p _site
+          cp index.html styles.css app.js parser.js problems.js sw.js \
+             manifest.webmanifest CNAME _site/
+          cp -r icons vendor _site/
+          echo "--- 배포 파일 목록"
+          find _site -type f | sort
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    name: GitHub Pages 배포
+    needs: verify
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

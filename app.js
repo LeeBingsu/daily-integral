@@ -343,8 +343,7 @@
     bar.appendChild(info);
   }
 
-  // onSuccess 를 주면 통과 뒤 그것만 실행한다 (아카이브에서 눌렀을 때 등)
-  function askAdminKey(onSuccess) {
+  function askAdminKey() {
     var v = window.prompt('관리자 키를 입력하면 연습 하루 제한과 아카이브 잠금이 풀립니다.');
     if (v === null) return;
     if (fnv1a(v.trim()) !== ADMIN_HASH) {
@@ -357,7 +356,6 @@
     renderLevels();
     renderArchive();
     renderAdminBtn();
-    if (onSuccess) { onSuccess(); return; }
     if ($('lockCard').classList.contains('hidden')) {
       showFeedback('ok', '관리자 모드입니다. 하루 제한이 풀렸습니다.');
     } else {
@@ -960,7 +958,8 @@
           switchView('daily', true);
           loadProblem(problemForDay(session.level, dayNumberOf(dateFromKey(key))));
         }
-        el.onclick = closed ? function () { askAdminKey(open); } : open;
+        // 잠긴 날짜는 여기서 키를 묻지 않는다. 키는 맨 아래 버튼에서만 넣는다.
+        el.onclick = closed ? function () { showToast('권한이 없습니다.'); } : open;
       })(k, shut);
       grid.appendChild(el);
     }
@@ -1157,7 +1156,6 @@
     penOnly: true,
     penSeen: false,            // 펜이 한 번이라도 닿았는지
     lastNag: 0,
-    toastTimer: null,
     saveTimer: null
   };
 
@@ -1174,13 +1172,16 @@
     return (navigator.maxTouchPoints || 0) > 0;
   }
 
-  function padToast(msg) {
-    var t = $('padToast');
+  // 화면 아래에 잠깐 떴다 사라지는 알림. 연습장 안팎 어디서든 쓴다.
+  var toastTimer = null;
+
+  function showToast(msg) {
+    var t = $('toast');
     if (!t) return;
     t.textContent = msg;
     t.classList.add('show');
-    clearTimeout(pad.toastTimer);
-    pad.toastTimer = setTimeout(function () { t.classList.remove('show'); }, 2400);
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { t.classList.remove('show'); }, 2400);
   }
 
   // --- 크기 맞추기 -------------------------------------------------
@@ -1268,7 +1269,7 @@
     var now = Date.now();
     if (now - pad.lastNag > 2000) {
       pad.lastNag = now;
-      padToast(e.pointerType === 'touch'
+      showToast(e.pointerType === 'touch'
         ? '손가락으로는 그려지지 않습니다. 펜을 쓰거나 위의 “펜만”을 끄세요.'
         : '“펜만” 이 켜져 있습니다. 끄면 마우스로도 그릴 수 있습니다.');
     }
@@ -1376,7 +1377,7 @@
     } else if (pad.cleared) {
       pad.strokes = pad.cleared;
       pad.cleared = null;
-      padToast('전체 지우기를 되돌렸습니다.');
+      showToast('전체 지우기를 되돌렸습니다.');
     } else {
       return;
     }
@@ -1391,7 +1392,7 @@
     pad.byProblem[pad.problemId] = pad.strokes;
     padRedraw();
     padSaveLater();
-    padToast('다 지웠습니다. 되돌리기로 되살릴 수 있습니다.');
+    showToast('다 지웠습니다. 되돌리기로 되살릴 수 있습니다.');
   }
 
   // --- 저장 --------------------------------------------------------
@@ -1475,7 +1476,7 @@
       store.pad.penOnly = pad.penOnly;
       save();
       padRenderTools();
-      padToast(pad.penOnly
+      showToast(pad.penOnly
         ? '펜으로만 그려집니다. 손을 얹어도 선이 그어지지 않습니다.'
         : '손가락·마우스로도 그릴 수 있습니다.');
     };
